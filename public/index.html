@@ -819,7 +819,7 @@
   function renderPlayer(data) {
     // Skin from Crafatar
     document.getElementById('playerSkin').src =
-      `https://crafatar.com/avatars/${data.uuid}?size=90&overlay&default=MHF_Steve`;
+      `https://mc-heads.net/avatar/${data.uuid}/90`
 
     document.getElementById('playerName').textContent = data.name;
     document.getElementById('playerUUID').textContent = data.uuid;
@@ -912,7 +912,7 @@
             <div class="lb-rank">${rankDisplay}</div>
             <div class="lb-player">
               <img class="lb-avatar" 
-                   src="https://crafatar.com/avatars/${p.uuid}?size=32&overlay&default=MHF_Steve" 
+                   src="https://mc-heads.net/avatar/${p.uuid}/32"
                    alt="${p.name}" loading="lazy"/>
               <span class="lb-name">${p.name}</span>
             </div>
