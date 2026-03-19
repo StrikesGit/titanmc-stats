@@ -77,6 +77,25 @@ app.get('/api/player/:name', async (req, res) => {
   }
 });
 
+
+// GET /api/players — All players list
+app.get('/api/players', async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      `SELECT uuid, name, last_updated FROM \`${TABLE}\` ORDER BY last_updated DESC`
+    );
+    res.json(rows.map(r => ({
+      uuid: r.uuid,
+      name: r.name,
+      last_updated: r.last_updated,
+    })));
+  } catch (err) {
+    console.error('DB error:', err.message);
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+
 // GET /api/leaderboard — Top 10 players by ticket balance
 app.get('/api/leaderboard', async (req, res) => {
   try {
