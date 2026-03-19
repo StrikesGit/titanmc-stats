@@ -3,936 +3,487 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TitanMC — Player Stats</title>
+<title>TitanMC Prison — Player Stats</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg:        #080810;
-    --bg2:       #0e0e1a;
-    --bg3:       #13131f;
-    --border:    rgba(255,255,255,0.06);
-    --gold:      #f5a623;
-    --gold2:     #ffcc5c;
-    --orange:    #ff6b35;
-    --glow:      rgba(245,166,35,0.18);
-    --glow2:     rgba(245,166,35,0.06);
-    --text:      #e8e8f0;
-    --muted:     #6b6b88;
-    --accent:    #7c3aed;
-    --green:     #22c55e;
-    --red:       #ef4444;
-    --font-head: 'Bebas Neue', sans-serif;
-    --font-mono: 'Share Tech Mono', monospace;
-    --font-body: 'Barlow', sans-serif;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.5;
-  }
-
-  /* ── AMBIENT GLOW ── */
-  .ambient {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .ambient-1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%);
-    top: -150px; left: -100px;
-    animation: drift1 18s ease-in-out infinite;
-  }
-  .ambient-2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
-    bottom: -100px; right: -80px;
-    animation: drift2 22s ease-in-out infinite;
-  }
-  @keyframes drift1 {
-    0%,100% { transform: translate(0,0); }
-    50% { transform: translate(40px, 30px); }
-  }
-  @keyframes drift2 {
-    0%,100% { transform: translate(0,0); }
-    50% { transform: translate(-30px, -20px); }
-  }
-
-  /* ── LAYOUT ── */
-  .page { position: relative; z-index: 2; }
-
-  /* ── HEADER ── */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 40px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(8,8,16,0.8);
-    backdrop-filter: blur(20px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .logo-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, var(--gold), var(--orange));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    box-shadow: 0 0 20px rgba(245,166,35,0.4);
-  }
-
-  .logo-text {
-    font-family: var(--font-head);
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--text);
-  }
-  .logo-text span { color: var(--gold); }
-
-  .header-badge {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    text-align: center;
-    padding: 80px 20px 60px;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 6px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.1s;
-  }
-
-  .hero-title {
-    font-family: var(--font-head);
-    font-size: clamp(52px, 10vw, 110px);
-    line-height: 0.9;
-    letter-spacing: 6px;
-    color: var(--text);
-    margin-bottom: 16px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.2s;
-  }
-  .hero-title .accent { color: var(--gold); }
-
-  .hero-sub {
-    font-size: 15px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.35s;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── SEARCH ── */
-  .search-container {
-    max-width: 540px;
-    margin: 0 auto;
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 0.5s;
-  }
-
-  .search-box {
-    display: flex;
-    align-items: center;
-    background: var(--bg3);
-    border: 1px solid rgba(245,166,35,0.25);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .search-box:focus-within {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 4px var(--glow), 0 0 40px var(--glow);
-  }
-
-  .search-icon {
-    padding: 0 16px;
-    color: var(--muted);
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  #searchInput {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 15px;
-    letter-spacing: 1px;
-    padding: 16px 0;
-  }
-
-  #searchInput::placeholder { color: var(--muted); }
-
-  #searchBtn {
-    background: linear-gradient(135deg, var(--gold), var(--orange));
-    border: none;
-    color: #000;
-    font-family: var(--font-head);
-    font-size: 15px;
-    letter-spacing: 2px;
-    padding: 16px 28px;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    white-space: nowrap;
-  }
-
-  #searchBtn:hover { opacity: 0.88; }
-  #searchBtn:active { transform: scale(0.97); }
-
-  /* ── DIVIDER ── */
-  .divider {
-    width: 1px;
-    height: 28px;
-    background: var(--border);
-  }
-
-  /* ── MAIN CONTENT ── */
-  .content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 20px 80px;
-  }
-
-  /* ── ERROR STATE ── */
-  .error-msg {
-    text-align: center;
-    padding: 32px;
-    color: var(--red);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 1px;
-    background: rgba(239,68,68,0.06);
-    border: 1px solid rgba(239,68,68,0.2);
-    border-radius: 12px;
-    margin-top: 24px;
-    display: none;
-  }
-
-  /* ── LOADING ── */
-  .loading {
-    text-align: center;
-    padding: 48px;
-    display: none;
-  }
-
-  .spinner {
-    width: 40px; height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin: 0 auto 16px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading p {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-
-  /* ── PLAYER CARD ── */
-  #playerCard {
-    display: none;
-    margin-top: 32px;
-    animation: fadeUp 0.5s ease forwards;
-  }
-
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 28px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 16px 16px 0 0;
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(245,166,35,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
-
-  /* Corner decorations */
-  .card-header::after {
-    content: '';
-    position: absolute;
-    top: 16px; right: 16px;
-    width: 60px; height: 60px;
-    border-top: 2px solid rgba(245,166,35,0.2);
-    border-right: 2px solid rgba(245,166,35,0.2);
-    border-radius: 0 8px 0 0;
-  }
-
-  .player-skin-wrap {
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  #playerSkin {
-    width: 90px;
-    height: 90px;
-    image-rendering: pixelated;
-    border-radius: 10px;
-    border: 2px solid rgba(245,166,35,0.3);
-    box-shadow: 0 0 30px rgba(245,166,35,0.15);
-  }
-
-  .skin-glow {
-    position: absolute;
-    inset: -8px;
-    background: radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .player-info { flex: 1; min-width: 0; }
-
-  .player-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .player-label::before {
-    content: '';
-    display: inline-block;
-    width: 16px; height: 1px;
-    background: var(--gold);
-    opacity: 0.5;
-  }
-
-  .player-name {
-    font-family: var(--font-head);
-    font-size: 44px;
-    letter-spacing: 3px;
-    line-height: 1;
-    color: var(--text);
-    margin-bottom: 12px;
-    word-break: break-all;
-  }
-
-  .player-meta {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .meta-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .meta-pill .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-  }
-
-  .meta-pill .dot.stale { background: var(--muted); box-shadow: none; }
-
-  /* ── STATS GRID ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 16px 16px;
-    overflow: hidden;
-  }
-
-  .stat-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 32px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-    position: relative;
-  }
-
-  .stat-row:last-child { border-bottom: none; }
-  .stat-row:hover { background: rgba(245,166,35,0.03); }
-
-  .stat-row::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--gold), var(--orange));
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .stat-row:hover::before { opacity: 1; }
-
-  .stat-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-  }
-
-  .stat-icon {
-    width: 34px; height: 34px;
-    background: rgba(245,166,35,0.08);
-    border: 1px solid rgba(245,166,35,0.15);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    flex-shrink: 0;
-  }
-
-  .stat-value {
-    font-family: var(--font-mono);
-    font-size: 22px;
-    color: var(--text);
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .stat-value .unit {
-    font-size: 12px;
-    color: var(--gold);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.8;
-  }
-
-  .stat-value.big {
-    font-size: 32px;
-    color: var(--gold2);
-    text-shadow: 0 0 30px rgba(245,166,35,0.3);
-  }
-
-  /* ── LEADERBOARD ── */
-  .section-title {
-    font-family: var(--font-head);
-    font-size: 28px;
-    letter-spacing: 4px;
-    color: var(--text);
-    margin: 56px 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .section-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .lb-table {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .lb-header {
-    display: grid;
-    grid-template-columns: 56px 1fr 160px;
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(245,166,35,0.04);
-  }
-
-  .lb-header span {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .lb-header span:last-child { text-align: right; }
-
-  .lb-row {
-    display: grid;
-    grid-template-columns: 56px 1fr 160px;
-    align-items: center;
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .lb-row:last-child { border-bottom: none; }
-  .lb-row:hover { background: rgba(245,166,35,0.04); }
-
-  .lb-row.top1 { background: rgba(245,166,35,0.06); }
-  .lb-row.top2 { background: rgba(192,192,192,0.04); }
-  .lb-row.top3 { background: rgba(205,127,50,0.04); }
-
-  .lb-rank {
-    font-family: var(--font-head);
-    font-size: 22px;
-    letter-spacing: 1px;
-  }
-
-  .rank-1 { color: var(--gold); text-shadow: 0 0 16px rgba(245,166,35,0.5); }
-  .rank-2 { color: #c0c0c0; }
-  .rank-3 { color: #cd7f32; }
-  .rank-other { color: var(--muted); font-size: 16px; }
-
-  .lb-player {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .lb-avatar {
-    width: 32px; height: 32px;
-    border-radius: 6px;
-    image-rendering: pixelated;
-    border: 1px solid var(--border);
-  }
-
-  .lb-name {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-
-  .lb-tickets {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    color: var(--gold);
-    text-align: right;
-    letter-spacing: 1px;
-  }
-
-  .lb-loading {
-    text-align: center;
-    padding: 32px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 2px;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: gap;
-    gap: 12px;
-  }
-
-  .footer-logo {
-    font-family: var(--font-head);
-    font-size: 16px;
-    letter-spacing: 3px;
-    color: var(--muted);
-  }
-
-  .footer-logo span { color: var(--gold); }
-
-  .footer-note {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    opacity: 0.6;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    .hero { padding: 48px 16px 40px; }
-    .card-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
-    .stat-row { padding: 18px 24px; }
-    .stat-value.big { font-size: 26px; }
-    .lb-row { grid-template-columns: 44px 1fr 120px; }
-  }
-
-  /* ── NUMBER COUNTER ANIMATION ── */
-  @keyframes countUp {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .count-anim { animation: countUp 0.4s ease forwards; }
+:root {
+  --bg:       #0a0a0f;
+  --bg2:      #0f0f18;
+  --bg3:      #13131e;
+  --bg4:      #1a1a28;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.04);
+  --gold:     #f0a500;
+  --gold2:    #ffd166;
+  --orange:   #ff6b2b;
+  --blue:     #4f8ef7;
+  --green:    #2ecc71;
+  --red:      #e74c3c;
+  --muted:    #4a4a6a;
+  --muted2:   #6a6a8a;
+  --text:     #d8d8f0;
+  --text2:    #a0a0c0;
+  --head:     'Oxanium', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --body:     'Rajdhani', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,142,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(240,165,0,0.05) 0%,transparent 50%),radial-gradient(ellipse at 85% 85%,rgba(79,142,247,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:24px 20px 18px;border-bottom:1px solid var(--border);}
+.logo-mark{font-family:var(--head);font-size:19px;font-weight:800;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:2px;}
+.logo-mark span{color:var(--gold);}
+.logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;}
+.sidebar-search{padding:14px;}
+.search-wrap{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;}
+.search-wrap:focus-within{border-color:rgba(240,165,0,0.4);box-shadow:0 0 0 3px rgba(240,165,0,0.07);}
+.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 12px;letter-spacing:0.5px;}
+.search-wrap input::placeholder{color:var(--muted);}
+.search-wrap button{background:var(--gold);border:none;color:#000;font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:1px;padding:10px 14px;cursor:pointer;transition:opacity 0.2s;}
+.search-wrap button:hover{opacity:0.85;}
+.sidebar-nav{padding:10px 0;flex:1;}
+.nav-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding:8px 18px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;font-size:14px;font-weight:500;color:var(--muted2);cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;border-left:2px solid transparent;}
+.nav-item:hover,.nav-item.active{color:var(--text);background:rgba(240,165,0,0.05);border-left-color:var(--gold);}
+.nav-item .ico{font-size:14px;width:18px;text-align:center;}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border);}
+.server-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--muted2);}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* MAIN */
+.main{flex:1;min-width:0;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:var(--head);font-size:13px;font-weight:600;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
+.topbar-badge{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--gold);background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);padding:4px 10px;border-radius:4px;}
+.content{padding:28px;max-width:1100px;}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:80px 20px;animation:fadeUp 0.5s ease forwards 0.2s;opacity:0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.empty-icon{font-size:44px;margin-bottom:14px;opacity:0.3;}
+.empty-title{font-family:var(--head);font-size:22px;font-weight:700;letter-spacing:3px;color:var(--muted2);margin-bottom:6px;}
+.empty-sub{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+/* PROFILE */
+#profileSection{display:none;animation:fadeUp 0.4s ease forwards;}
+.profile-header{display:flex;align-items:flex-start;gap:22px;margin-bottom:20px;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden;}
+.profile-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--orange),transparent);}
+.pskin-wrap{position:relative;flex-shrink:0;}
+.pskin-wrap img{width:76px;height:76px;image-rendering:pixelated;border-radius:8px;border:1px solid var(--border);background:var(--bg3);}
+.pskin-glow{position:absolute;inset:-6px;background:radial-gradient(circle,rgba(240,165,0,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.profile-info{flex:1;min-width:0;}
+.profile-tag{font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+.profile-name{font-family:var(--head);font-size:36px;font-weight:800;letter-spacing:2px;color:var(--text);line-height:1;margin-bottom:10px;word-break:break-all;}
+.profile-badges{display:flex;flex-wrap:wrap;gap:6px;}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:3px 9px;border-radius:4px;border:1px solid;}
+.bon{color:var(--green);border-color:rgba(46,204,113,0.3);background:rgba(46,204,113,0.06);}
+.boff{color:var(--muted2);border-color:var(--border);background:var(--bg3);}
+.bgold{color:var(--gold);border-color:rgba(240,165,0,0.3);background:rgba(240,165,0,0.06);}
+.bblue{color:var(--blue);border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.06);}
+.profile-uuid{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:7px;}
+
+/* QUICK STATS */
+.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.qs-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.qs-card:hover{border-color:rgba(240,165,0,0.2);}
+.qs-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0;transition:opacity 0.2s;}
+.qs-card:hover::after{opacity:1;}
+.qs-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px;}
+.qs-value{font-family:var(--head);font-size:24px;font-weight:700;color:var(--text);letter-spacing:1px;line-height:1;}
+.qs-value.na{color:var(--muted);font-size:18px;}
+.qs-value.gold{color:var(--gold2);}
+.qs-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px;}
+
+/* SECTION */
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden;}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.01);}
+.section-title{font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:3px;color:var(--text2);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.sdl{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.section-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+
+/* STAT ROWS */
+.srow{display:flex;align-items:center;justify-content:space-between;padding:13px 22px;border-bottom:1px solid var(--border2);transition:background 0.15s;}
+.srow:last-child{border-bottom:none;}
+.srow:hover{background:rgba(255,255,255,0.02);}
+.srow-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text2);letter-spacing:0.3px;}
+.srow-icon{width:28px;height:28px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.srow-right{font-family:var(--mono);font-size:13px;color:var(--text);letter-spacing:0.5px;display:flex;align-items:center;gap:8px;}
+.srow-right.na{color:var(--muted);font-size:11px;}
+.srow-right.gold{color:var(--gold);}
+.srow-right.green{color:var(--green);}
+.rank-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:3px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);color:var(--gold);}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+
+/* CURRENCY */
+.curr-grid{display:grid;grid-template-columns:1fr 1fr;}
+.curr-item{padding:14px 22px;border-bottom:1px solid var(--border2);border-right:1px solid var(--border2);position:relative;overflow:hidden;transition:background 0.15s;}
+.curr-item:hover{background:rgba(255,255,255,0.02);}
+.curr-item:nth-child(even){border-right:none;}
+.curr-item:nth-last-child(-n+2){border-bottom:none;}
+.curr-name{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px;}
+.curr-val{font-family:var(--head);font-size:20px;font-weight:700;color:var(--text);letter-spacing:1px;}
+.curr-val.na{color:var(--muted);font-size:14px;}
+.curr-val.gold{color:var(--gold2);}
+.curr-val.blue{color:var(--blue);}
+.curr-val.purple{color:#a78bfa;}
+
+/* COMING SOON */
+.cs{position:relative;}
+.cs-tag{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:3px 10px;border-radius:3px;text-transform:uppercase;white-space:nowrap;pointer-events:none;z-index:2;}
+.cs>*:not(.cs-tag){opacity:0.25;pointer-events:none;filter:blur(0.5px);}
+
+/* PETS */
+.pets-mini{display:grid;grid-template-columns:repeat(3,1fr);}
+.pet-cell{padding:12px;border-right:1px solid var(--border2);border-top:1px solid var(--border2);text-align:center;}
+.pet-cell:nth-child(3n){border-right:none;}
+.pet-emoji{font-size:24px;margin-bottom:4px;opacity:0.4;}
+.pet-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:2px;}
+.pet-xp{font-family:var(--head);font-size:14px;font-weight:700;color:var(--muted);}
+
+/* LEADERBOARD */
+.lb-head{display:grid;grid-template-columns:46px 1fr 110px;padding:10px 22px;border-bottom:1px solid var(--border);background:var(--bg3);}
+.lb-head span{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.lb-head span:last-child{text-align:right;}
+.lb-row{display:grid;grid-template-columns:46px 1fr 110px;align-items:center;padding:11px 22px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background 0.15s;text-decoration:none;color:inherit;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:rgba(240,165,0,0.04);}
+.lb-rank{font-family:var(--head);font-size:17px;font-weight:700;}
+.r1{color:var(--gold);text-shadow:0 0 10px rgba(240,165,0,0.4);}
+.r2{color:#c0c0c0;}
+.r3{color:#cd7f32;}
+.rn{color:var(--muted);font-size:13px;}
+.lb-pinfo{display:flex;align-items:center;gap:8px;}
+.lb-av{width:26px;height:26px;border-radius:4px;image-rendering:pixelated;background:var(--bg3);border:1px solid var(--border);}
+.lb-pname{font-size:13px;font-weight:600;letter-spacing:0.3px;}
+.lb-val{font-family:var(--mono);font-size:12px;color:var(--gold);text-align:right;letter-spacing:0.5px;}
+
+/* ERROR / LOADING */
+.error-box{font-family:var(--mono);font-size:12px;color:var(--red);background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:13px 18px;letter-spacing:1px;display:none;margin-bottom:18px;}
+.loading-box{display:none;text-align:center;padding:60px;}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-box p{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+
+@media(max-width:900px){.sidebar{display:none;}.quick-stats{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.content{padding:16px;}}
 </style>
 </head>
 <body>
-
-<!-- Ambient -->
-<div class="ambient ambient-1"></div>
-<div class="ambient ambient-2"></div>
-
 <div class="page">
 
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🎫</div>
-      <div class="logo-text">TITAN<span>MC</span></div>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">TITAN<span>MC</span></div>
+      <div class="logo-sub">Prison Classic · Season 2</div>
     </div>
-    <div class="header-badge">PLAYER STATS · SEASON 2</div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-eyebrow">⛏ Prison Server · OG Classic</div>
-    <div class="hero-title">PLAYER<br><span class="accent">LOOKUP</span></div>
-    <div class="hero-sub">Search any player to view their stats and ticket balance</div>
-
-    <!-- Search -->
-    <div class="search-container">
-      <div class="search-box">
-        <div class="search-icon">🔍</div>
-        <input type="text" id="searchInput" placeholder="Enter username..." maxlength="16" autocomplete="off" spellcheck="false"/>
-        <div class="divider"></div>
-        <button id="searchBtn" onclick="searchPlayer()">SEARCH</button>
+    <div class="sidebar-search">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search player..." maxlength="16" autocomplete="off" spellcheck="false"/>
+        <button onclick="searchPlayer()">GO</button>
       </div>
     </div>
-  </section>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <div class="nav-item active"><span class="ico">⛏</span> Overview</div>
+      <div class="nav-item"><span class="ico">💎</span> Mining</div>
+      <div class="nav-item"><span class="ico">💰</span> Economy</div>
+      <div class="nav-item"><span class="ico">🏆</span> Leaderboard</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="server-status">
+        <div class="sdot"></div>
+        titanmc.gg · ONLINE
+      </div>
+    </div>
+  </aside>
 
-  <!-- Content -->
-  <div class="content">
-
-    <!-- Error -->
-    <div class="error-msg" id="errorMsg"></div>
-
-    <!-- Loading -->
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>Fetching inmate records...</p>
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title">TitanMC — Player Statistics</div>
+      <div class="topbar-badge">PRISON CLASSIC</div>
     </div>
 
-    <!-- Player Card -->
-    <div id="playerCard">
-      <div class="card-header">
-        <div class="player-skin-wrap">
-          <div class="skin-glow"></div>
-          <img id="playerSkin" src="" alt="Player Skin"/>
-        </div>
-        <div class="player-info">
-          <div class="player-label">Inmate File</div>
-          <div class="player-name" id="playerName"></div>
-          <div class="player-meta">
-            <div class="meta-pill" id="statusPill">
-              <span class="dot stale"></span>
-              <span id="lastSeen"></span>
+    <div class="content">
+
+      <div class="error-box" id="errorBox"></div>
+      <div class="loading-box" id="loadingBox">
+        <div class="spinner"></div>
+        <p>Fetching inmate records...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">⛏</div>
+        <div class="empty-title">PLAYER LOOKUP</div>
+        <div class="empty-sub">Enter a username in the sidebar to view their stats</div>
+      </div>
+
+      <!-- Profile -->
+      <div id="profileSection">
+        <div class="profile-header">
+          <div class="pskin-wrap">
+            <div class="pskin-glow"></div>
+            <img id="pSkin" src="" alt="Skin"/>
+          </div>
+          <div class="profile-info">
+            <div class="profile-tag">⛓ Inmate Record · TitanMC Prison Classic</div>
+            <div class="profile-name" id="pName">—</div>
+            <div class="profile-badges">
+              <span class="badge boff" id="pStatus">Offline</span>
+              <span class="badge bblue">Mine: N/A</span>
+              <span class="badge bgold">Prestige: N/A</span>
             </div>
-            <div class="meta-pill">
-              <span style="color:var(--muted)">UUID:</span>
-              <span id="playerUUID" style="font-family:var(--font-mono);font-size:10px;opacity:0.5;"></span>
+            <div class="profile-uuid" id="pUUID"></div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="qs-card">
+            <div class="qs-label">🎫 Tickets</div>
+            <div class="qs-value gold" id="qTickets">—</div>
+            <div class="qs-sub">Ticket Balance</div>
+          </div>
+          <div class="qs-card cs">
+            <div class="cs-tag">Coming Soon</div>
+            <div class="qs-label">⛏ Blocks Mined</div>
+            <div class="qs-value na">N/A</div>
+            <div class="qs-sub">All Time</div>
+          </div>
+          <div class="qs-card cs">
+            <div class="cs-tag">Coming Soon</div>
+            <div class="qs-label">💰 Balance</div>
+            <div class="qs-value na">N/A</div>
+            <div class="qs-sub">In-Game Money</div>
+          </div>
+          <div class="qs-card cs">
+            <div class="cs-tag">Coming Soon</div>
+            <div class="qs-label">🕒 Play Time</div>
+            <div class="qs-value na">N/A</div>
+            <div class="qs-sub">Total Hours</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <!-- Info -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>INFORMATION</div>
+              <div class="section-tag">Activity</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🌍</div>Region</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right na">N/A</div></div>
+          </div>
+
+          <!-- Currencies -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>CURRENCIES</div>
+              <div class="section-tag">Economy</div>
+            </div>
+            <div class="curr-grid">
+              <div class="curr-item"><div class="curr-name">🎫 Tickets</div><div class="curr-val gold" id="cTickets">—</div></div>
+              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">💰 Money</div><div class="curr-val na">N/A</div></div>
+              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">🪙 Tokens</div><div class="curr-val na">N/A</div></div>
+              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">💎 Gems</div><div class="curr-val na">N/A</div></div>
             </div>
           </div>
         </div>
+
+        <!-- Mining -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-title"><span class="sdl"></span>MINING</div>
+            <div class="section-tag">Stats</div>
+          </div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">📊</div>Mining Level</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">⭐</div>Favorite Mine</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Daily Record</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">🎯</div>Mine Rank</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
+        </div>
+
+        <div class="two-col">
+          <!-- Pets -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>PETS</div>
+              <div class="section-tag">Companions</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐾</div>Total XP Earned</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐶</div>Pets Equipped</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⬆</div>Total Level Ups</div><div class="srow-right na">N/A</div></div>
+            <div class="pets-mini">
+              <div class="pet-cell"><div class="pet-emoji">🐱</div><div class="pet-lbl">Pet 1</div><div class="pet-xp">N/A</div></div>
+              <div class="pet-cell"><div class="pet-emoji">🐺</div><div class="pet-lbl">Pet 2</div><div class="pet-xp">N/A</div></div>
+              <div class="pet-cell"><div class="pet-emoji">🦊</div><div class="pet-lbl">Pet 3</div><div class="pet-xp">N/A</div></div>
+            </div>
+          </div>
+
+          <!-- Chambers -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>CHAMBERS</div>
+              <div class="section-tag">Secret Rooms</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔒</div>Basic</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Classic</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">💎</div>Rare</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Epic</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🌟</div>Prestige</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔮</div>Preservation</div><div class="srow-right na">N/A</div></div>
+          </div>
+        </div>
+
+        <!-- Crates -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
+            <div class="section-tag">Loot</div>
+          </div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Total Crates</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">🍀</div>Lucky Blocks</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Mining Felon</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Mining Convict</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">⚔</div>Mining Detainee</div><div class="srow-right na">N/A</div></div>
+          <div class="srow"><div class="srow-left"><div class="srow-icon">🏴</div>Mining Inmate</div><div class="srow-right na">N/A</div></div>
+        </div>
+
+      </div><!-- end profileSection -->
+
+      <!-- Leaderboard — shown always -->
+      <div class="section" id="lbSection">
+        <div class="section-head">
+          <div class="section-title"><span class="sdl"></span>TOP TICKET HOLDERS</div>
+          <div class="section-tag">All Time</div>
+        </div>
+        <div class="lb-head">
+          <span>#</span><span>Player</span><span style="text-align:right">Tickets</span>
+        </div>
+        <div id="lbBody">
+          <div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:2px;">Loading rankings...</div>
+        </div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-row">
-          <div class="stat-label">
-            <div class="stat-icon">🎫</div>
-            Ticket Balance
-          </div>
-          <div class="stat-value big" id="statTickets">—</div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-label">
-            <div class="stat-icon">📋</div>
-            Player Name
-          </div>
-          <div class="stat-value" id="statName">—</div>
-        </div>
-        <div class="stat-row">
-          <div class="stat-label">
-            <div class="stat-icon">🕒</div>
-            Last Updated
-          </div>
-          <div class="stat-value" id="statUpdated">—</div>
-        </div>
-      </div>
     </div>
-
-    <!-- Leaderboard -->
-    <div class="section-eyebrow">Rankings</div>
-    <div class="section-title">TOP TICKET HOLDERS</div>
-
-    <div class="lb-table">
-      <div class="lb-header">
-        <span>#</span>
-        <span>Player</span>
-        <span style="text-align:right">Tickets</span>
-      </div>
-      <div id="leaderboardBody">
-        <div class="lb-loading">Loading rankings...</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-logo">TITAN<span>MC</span></div>
-    <div class="footer-note">Stats refresh in real-time from the game server</div>
-  </footer>
-
+  </main>
 </div>
 
 <script>
-  // ── SEARCH ──────────────────────────────────────────────────────────────────
-  const searchInput = document.getElementById('searchInput');
-  const playerCard  = document.getElementById('playerCard');
-  const errorMsg    = document.getElementById('errorMsg');
-  const loading     = document.getElementById('loading');
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') searchPlayer(); });
 
-  searchInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') searchPlayer();
-  });
+function showError(msg) {
+  document.getElementById('errorBox').textContent = '⚠ ' + msg;
+  document.getElementById('errorBox').style.display = 'block';
+  document.getElementById('profileSection').style.display = 'none';
+  document.getElementById('loadingBox').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+}
 
-  function showError(msg) {
-    errorMsg.textContent = msg;
-    errorMsg.style.display = 'block';
-    playerCard.style.display = 'none';
-    loading.style.display = 'none';
+async function searchPlayer() {
+  const name = searchInput.value.trim();
+  if (!name) return;
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('profileSection').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('loadingBox').style.display = 'block';
+  try {
+    const res = await fetch(`/api/player/${encodeURIComponent(name)}`);
+    const data = await res.json();
+    document.getElementById('loadingBox').style.display = 'none';
+    if (!res.ok) { showError(data.error || 'Player not found.'); return; }
+    renderPlayer(data);
+  } catch {
+    document.getElementById('loadingBox').style.display = 'none';
+    showError('Could not reach the server. Please try again.');
   }
+}
 
-  function hideError() {
-    errorMsg.style.display = 'none';
+function renderPlayer(data) {
+  document.getElementById('pSkin').src = `https://mc-heads.net/avatar/${data.uuid}/80`;
+  document.getElementById('pName').textContent = data.name;
+  document.getElementById('pUUID').textContent = 'UUID: ' + data.uuid;
+  document.getElementById('iName').textContent = data.name;
+
+  const updated = data.last_updated ? new Date(data.last_updated) : null;
+  const statusEl = document.getElementById('pStatus');
+  if (updated && (Date.now() - updated.getTime()) < 600000) {
+    statusEl.textContent = 'Online Recently';
+    statusEl.className = 'badge bon';
+  } else {
+    statusEl.textContent = updated ? 'Last seen ' + timeAgo(updated) : 'Offline';
+    statusEl.className = 'badge boff';
   }
+  document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
 
-  async function searchPlayer() {
-    const name = searchInput.value.trim();
-    if (!name) return;
+  animCount(document.getElementById('qTickets'), data.tickets);
+  document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
-    hideError();
-    playerCard.style.display = 'none';
-    loading.style.display = 'block';
+  document.getElementById('profileSection').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    try {
-      const res = await fetch(`/api/player/${encodeURIComponent(name)}`);
-      const data = await res.json();
+function animCount(el, to) {
+  const start = performance.now(), dur = 900;
+  (function update(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(to * e).toLocaleString();
+    if (p < 1) requestAnimationFrame(update);
+  })(performance.now());
+}
 
-      loading.style.display = 'none';
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60) return s + 's ago';
+  const m = Math.floor(s / 60); if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
 
-      if (!res.ok) {
-        showError(data.error || 'Player not found.');
-        return;
-      }
-
-      renderPlayer(data);
-    } catch (err) {
-      loading.style.display = 'none';
-      showError('Could not reach the server. Please try again.');
-    }
+async function loadLeaderboard() {
+  try {
+    const res = await fetch('/api/leaderboard');
+    const data = await res.json();
+    const medals = ['🥇','🥈','🥉'];
+    document.getElementById('lbBody').innerHTML = data.length
+      ? data.map((p,i) => `
+        <div class="lb-row" onclick="lookupLB('${p.name}')">
+          <div class="lb-rank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i<3?medals[i]:p.rank}</div>
+          <div class="lb-pinfo">
+            <img class="lb-av" src="https://mc-heads.net/avatar/${p.uuid}/26" loading="lazy"/>
+            <span class="lb-pname">${p.name}</span>
+          </div>
+          <div class="lb-val">${p.tickets.toLocaleString()}</div>
+        </div>`).join('')
+      : '<div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted)">No players yet.</div>';
+  } catch {
+    document.getElementById('lbBody').innerHTML = '<div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted)">Could not load.</div>';
   }
+}
 
-  function renderPlayer(data) {
-    // Skin from Crafatar
-    document.getElementById('playerSkin').src =
-      `https://mc-heads.net/avatar/${data.uuid}/90`
+function lookupLB(name) {
+  searchInput.value = name;
+  searchPlayer();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    document.getElementById('playerName').textContent = data.name;
-    document.getElementById('playerUUID').textContent = data.uuid;
-
-    // Ticket counter animation
-    const ticketEl = document.getElementById('statTickets');
-    animateCount(ticketEl, 0, data.tickets, 800);
-
-    document.getElementById('statName').textContent = data.name;
-
-    // Last updated
-    const updated = data.last_updated ? new Date(data.last_updated) : null;
-    document.getElementById('statUpdated').textContent =
-      updated ? updated.toLocaleString() : 'Unknown';
-
-    // Last seen pill
-    const pill = document.getElementById('statusPill');
-    const dot  = pill.querySelector('.dot');
-    const seen = document.getElementById('lastSeen');
-    if (updated) {
-      const mins = Math.floor((Date.now() - updated.getTime()) / 60000);
-      if (mins < 10) {
-        dot.classList.remove('stale');
-        seen.textContent = 'Online recently';
-      } else {
-        dot.classList.add('stale');
-        seen.textContent = `Last seen ${timeAgo(updated)}`;
-      }
-    }
-
-    playerCard.style.display = 'block';
-    playerCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function animateCount(el, from, to, duration) {
-    const start = performance.now();
-    el.classList.remove('count-anim');
-
-    function update(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.floor(from + (to - from) * eased);
-      el.innerHTML = `${current.toLocaleString()} <span class="unit">Tickets</span>`;
-      if (progress < 1) requestAnimationFrame(update);
-    }
-
-    requestAnimationFrame(update);
-  }
-
-  function timeAgo(date) {
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-    if (seconds < 60) return `${seconds}s ago`;
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
-  }
-
-  // ── LEADERBOARD ─────────────────────────────────────────────────────────────
-  async function loadLeaderboard() {
-    const body = document.getElementById('leaderboardBody');
-
-    try {
-      const res  = await fetch('/api/leaderboard');
-      const data = await res.json();
-
-      if (!res.ok || !Array.isArray(data)) {
-        body.innerHTML = '<div class="lb-loading">Could not load rankings.</div>';
-        return;
-      }
-
-      if (data.length === 0) {
-        body.innerHTML = '<div class="lb-loading">No players found yet.</div>';
-        return;
-      }
-
-      const medals = ['🥇', '🥈', '🥉'];
-
-      body.innerHTML = data.map((p, i) => {
-        const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-        const rankDisplay = i < 3
-          ? `<span class="rank-${i+1}">${medals[i]}</span>`
-          : `<span class="rank-other">${p.rank}</span>`;
-
-        return `
-          <div class="lb-row ${rankClass}" onclick="lookupFromLB('${p.name}')">
-            <div class="lb-rank">${rankDisplay}</div>
-            <div class="lb-player">
-              <img class="lb-avatar" 
-                   src="https://mc-heads.net/avatar/${p.uuid}/32"
-                   alt="${p.name}" loading="lazy"/>
-              <span class="lb-name">${p.name}</span>
-            </div>
-            <div class="lb-tickets">${p.tickets.toLocaleString()}</div>
-          </div>`;
-      }).join('');
-
-    } catch {
-      body.innerHTML = '<div class="lb-loading">Could not reach server.</div>';
-    }
-  }
-
-  function lookupFromLB(name) {
-    searchInput.value = name;
-    searchPlayer();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // Load on page start
-  loadLeaderboard();
+loadLeaderboard();
 </script>
 </body>
 </html>
