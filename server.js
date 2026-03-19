@@ -12,17 +12,16 @@ const PORT = process.env.PORT || 3000;
 const DB_CONFIG = {
   host: 'autorack.proxy.rlwy.net',
   port: 15703,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  user: 'root',
+  password: 'OgQsuhtYXAoegrFqArBrtNSaBnxVZCYJ',
+  database: 'railway',
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
   connectTimeout: 10000,
-  ssl: false,
 };
 
-const TABLE = process.env.DB_TABLE || 'titantickets_data';
+const TABLE = 'titantickets_data';
 
 let pool;
 
