@@ -395,6 +395,8 @@ async function loadPlayers() {
     allPlayers = await res.json();
     document.getElementById('playersCount').textContent = allPlayers.length + ' total';
     renderPlayerList(allPlayers);
+    // Load cosmetics
+  loadCosmetics(data.uuid);
   } catch {
     document.getElementById('playersList').innerHTML = '<div class="players-empty">Could not load.</div>';
   }
@@ -415,6 +417,27 @@ function renderPlayerList(players) {
       </div>
     </div>`;
   }).join('');
+}
+
+async function loadCosmetics(uuid) {
+  // Reset all to loading
+  document.querySelectorAll('.cosm-val').forEach(el => el.textContent = '...');
+
+  try {
+    const res = await fetch(`/api/cosmetics/${uuid}`);
+    const data = await res.json();
+    if (!res.ok) { document.querySelectorAll('.cosm-val').forEach(el => el.textContent = 'N/A'); return; }
+
+    document.getElementById('cHats').textContent          = data.hats;
+    document.getElementById('cParticles').textContent     = data.particles;
+    document.getElementById('cProjectiles').textContent   = data.projectileEffects;
+    document.getElementById('cEmotes').textContent        = data.emotes;
+    document.getElementById('cMounts').textContent        = data.mounts;
+    document.getElementById('cPets').textContent          = data.pets;
+    document.getElementById('cDeaths').textContent        = data.deathEffects;
+  } catch {
+    document.querySelectorAll('.cosm-val').forEach(el => el.textContent = 'N/A');
+  }
 }
 
 function filterPlayers(q) {
