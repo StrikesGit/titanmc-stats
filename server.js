@@ -78,6 +78,8 @@ app.get('/api/player/:name', async (req, res) => {
 });
 
 
+
+
 // GET /api/players — All players list
 app.get('/api/players', async (req, res) => {
   try {
@@ -92,6 +94,44 @@ app.get('/api/players', async (req, res) => {
   } catch (err) {
     console.error('DB error:', err.message);
     res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+// GET /api/cosmetics/:uuid — Get cosmetics counts for a player
+app.get('/api/cosmetics/:uuid', async (req, res) => {
+  const uuid = req.params.uuid;
+
+  try {
+    const cosmeticsTable = 'UltraCosmetics-UnlockedCosmetics';
+
+    const [rows] = await pool.execute(
+      `SELECT cosmetic_type, COUNT(*) as count 
+       FROM \`${cosmeticsTable}\` 
+       WHERE uuid = ? 
+       GROUP BY cosmetic_type`,
+      [uuid]
+    );
+
+    // Map results into an object { HAT: 3, PARTICLE: 5, ... }
+    const counts = {};
+    rows.forEach(r => {
+      counts[r.cosmetic_type] = r.count;
+    });
+
+    res.json({
+      hats:             counts['HAT']              || 0,
+      particles:        counts['PARTICLE']          || 0,
+      projectileEffects:counts['PROJECTILE_EFFECT'] || 0,
+      emotes:           counts['EMOTE']             || 0,
+      mounts:           counts['MOUNT']             || 0,
+      pets:             counts['PET']               || 0,
+      deathEffects:     counts['DEATH_EFFECT']      || 0,
+      total: rows.reduce((sum, r) => sum + r.count, 0)
+    });
+
+  } catch (err) {
+    console.error('Cosmetics error:', err.message);
+    res.status(500).json({ error: 'Could not fetch cosmetics.' });
   }
 });
 
