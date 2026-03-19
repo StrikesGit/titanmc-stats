@@ -19,9 +19,9 @@ const DB_CONFIG = {
   connectionLimit: 5,
   queueLimit: 0,
   connectTimeout: 10000,
+  ssl: false,
+  allowPublicKeyRetrieval: true,
 };
-
-const TABLE = process.env.DB_TABLE;
 
 let pool;
 
