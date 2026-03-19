@@ -32,12 +32,14 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .page{position:relative;z-index:1;display:flex;min-height:100vh;}
 
 /* ── SIDEBAR ── */
-.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
 .sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border);}
 .logo-mark{font-family:'Oxanium',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:2px;}
 .logo-mark span{color:var(--gold);}
 .logo-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;}
-.sidebar-search{padding:12px;}
+
+/* Search */
+.sidebar-search{padding:12px;border-bottom:1px solid var(--border);}
 .search-wrap{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;}
 .search-wrap:focus-within{border-color:rgba(240,165,0,0.4);box-shadow:0 0 0 3px rgba(240,165,0,0.07);}
 .search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;padding:9px 11px;letter-spacing:0.5px;}
@@ -45,31 +47,40 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .search-wrap button{background:var(--gold);border:none;color:#000;font-family:'Oxanium',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:9px 13px;cursor:pointer;transition:opacity 0.2s;}
 .search-wrap button:hover{opacity:0.85;}
 
-/* LEADERBOARD SIDEBAR */
-.lb-sidebar{flex:1;overflow-y:auto;padding:0;}
-.lb-sidebar-head{padding:12px 16px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);}
-.lb-sidebar-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background 0.15s;}
-.lb-sidebar-row:hover{background:rgba(240,165,0,0.05);}
-.lb-sidebar-row.active{background:rgba(240,165,0,0.07);border-left:2px solid var(--gold);}
-.lb-srank{font-family:'Oxanium',sans-serif;font-size:13px;font-weight:700;width:20px;text-align:center;flex-shrink:0;}
-.r1{color:var(--gold);}
-.r2{color:#c0c0c0;}
-.r3{color:#cd7f32;}
-.rn{color:var(--muted);font-size:11px;}
-.lb-sav{width:24px;height:24px;border-radius:4px;image-rendering:pixelated;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
-.lb-sinfo{flex:1;min-width:0;}
-.lb-sname{font-size:13px;font-weight:600;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-sval{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;}
-.lb-sidebar-empty{padding:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+/* Filter */
+.player-filter{padding:10px 12px;border-bottom:1px solid var(--border);}
+.filter-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;outline:none;color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11px;padding:7px 11px;letter-spacing:0.5px;transition:border-color 0.2s;}
+.filter-input:focus{border-color:rgba(240,165,0,0.3);}
+.filter-input::placeholder{color:var(--muted);}
 
-.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);}
+/* Player list */
+.players-list-head{padding:8px 14px 6px;display:flex;align-items:center;justify-content:space-between;}
+.players-list-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.players-count{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;}
+
+.players-list{flex:1;overflow-y:auto;}
+.players-list::-webkit-scrollbar{width:3px;}
+.players-list::-webkit-scrollbar-track{background:transparent;}
+.players-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+.player-row{display:flex;align-items:center;gap:9px;padding:8px 14px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background 0.15s;}
+.player-row:hover{background:rgba(240,165,0,0.05);}
+.player-row.active{background:rgba(240,165,0,0.08);border-left:2px solid var(--gold);}
+.player-av{width:26px;height:26px;border-radius:5px;image-rendering:pixelated;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
+.player-row-info{flex:1;min-width:0;}
+.player-row-name{font-size:13px;font-weight:600;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.player-row-seen{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.5px;margin-top:1px;}
+
+.players-empty{padding:24px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+
+.sidebar-footer{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
 .server-status{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
 .sdot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
 /* ── MAIN ── */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;padding-left:32px;padding-right:32px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
 .topbar-title{font-family:'Oxanium',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
 .topbar-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);padding:4px 10px;border-radius:4px;}
 
@@ -185,11 +196,17 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       </div>
     </div>
 
-    <div class="lb-sidebar">
-      <div class="lb-sidebar-head">🏆 Top Ticket Holders</div>
-      <div id="lbSidebar">
-        <div class="lb-sidebar-empty">Loading...</div>
-      </div>
+    <div class="player-filter">
+      <input type="text" class="filter-input" id="filterInput" placeholder="Filter players..." oninput="filterPlayers(this.value)"/>
+    </div>
+
+    <div class="players-list-head">
+      <div class="players-list-label">👥 Players</div>
+      <div class="players-count" id="playersCount">—</div>
+    </div>
+
+    <div class="players-list" id="playersList">
+      <div class="players-empty">Loading players...</div>
     </div>
 
     <div class="sidebar-footer">
@@ -220,13 +237,12 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
         <div class="empty-state" id="emptyState">
           <div class="empty-icon">⛏</div>
           <div class="empty-title">PLAYER LOOKUP</div>
-          <div class="empty-sub">Search a player or click a name from the leaderboard</div>
+          <div class="empty-sub">Click any player from the list or search by username</div>
         </div>
 
         <!-- PROFILE -->
         <div id="profileSection">
 
-          <!-- Header -->
           <div class="profile-header">
             <div class="pskin-wrap">
               <div class="pskin-glow"></div>
@@ -245,7 +261,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
-          <!-- Quick Stats -->
           <div class="quick-stats">
             <div class="qs-card">
               <div class="qs-label">🎫 Tickets</div>
@@ -272,7 +287,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
-          <!-- Info + Currencies -->
           <div class="two-col">
             <div class="section">
               <div class="section-head">
@@ -310,7 +324,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
-          <!-- Mining -->
           <div class="section">
             <div class="section-head">
               <div class="section-title"><span class="sdl"></span>MINING</div>
@@ -323,7 +336,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right na">N/A</div></div>
           </div>
 
-          <!-- Cosmetics + Cell -->
           <div class="two-col">
             <div class="section">
               <div class="section-head">
@@ -350,7 +362,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
-          <!-- Crates -->
           <div class="section">
             <div class="section-head">
               <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
@@ -365,16 +376,61 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
           </div>
 
         </div><!-- end profileSection -->
-
       </div>
     </div>
   </main>
 </div>
 
 <script>
+// ── ALL PLAYERS ──────────────────────────────────────────────────────────────
+let allPlayers = [];
+
 const searchInput = document.getElementById('searchInput');
 searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') searchPlayer(); });
 
+async function loadPlayers() {
+  try {
+    const res = await fetch('/api/players');
+    allPlayers = await res.json();
+    document.getElementById('playersCount').textContent = allPlayers.length + ' total';
+    renderPlayerList(allPlayers);
+  } catch {
+    document.getElementById('playersList').innerHTML = '<div class="players-empty">Could not load.</div>';
+  }
+}
+
+function renderPlayerList(players) {
+  if (!players.length) {
+    document.getElementById('playersList').innerHTML = '<div class="players-empty">No players found.</div>';
+    return;
+  }
+  document.getElementById('playersList').innerHTML = players.map(p => {
+    const updated = p.last_updated ? new Date(p.last_updated) : null;
+    const seen = updated ? timeAgo(updated) : 'Unknown';
+    return `
+      <div class="player-row" data-name="${p.name}" onclick="clickPlayer('${p.name}')">
+        <img class="player-av" src="https://mc-heads.net/avatar/${p.uuid}/26" loading="lazy"/>
+        <div class="player-row-info">
+          <div class="player-row-name">${p.name}</div>
+          <div class="player-row-seen">${seen}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterPlayers(query) {
+  const q = query.toLowerCase().trim();
+  const filtered = q ? allPlayers.filter(p => p.name.toLowerCase().includes(q)) : allPlayers;
+  document.getElementById('playersCount').textContent = filtered.length + ' / ' + allPlayers.length;
+  renderPlayerList(filtered);
+}
+
+function clickPlayer(name) {
+  searchInput.value = name;
+  searchPlayer();
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────────────────
 function showError(msg) {
   document.getElementById('errorBox').textContent = '⚠ ' + msg;
   document.getElementById('errorBox').style.display = 'block';
@@ -422,8 +478,8 @@ function renderPlayer(data) {
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
-  // Highlight active in sidebar
-  document.querySelectorAll('.lb-sidebar-row').forEach(r => {
+  // Highlight active row
+  document.querySelectorAll('.player-row').forEach(r => {
     r.classList.toggle('active', r.dataset.name === data.name);
   });
 
@@ -433,11 +489,11 @@ function renderPlayer(data) {
 
 function animCount(el, to) {
   const start = performance.now(), dur = 900;
-  (function update(now) {
+  (function tick(now) {
     const p = Math.min((now - start) / dur, 1);
     const e = 1 - Math.pow(1 - p, 3);
     el.textContent = Math.floor(to * e).toLocaleString();
-    if (p < 1) requestAnimationFrame(update);
+    if (p < 1) requestAnimationFrame(tick);
   })(performance.now());
 }
 
@@ -449,35 +505,7 @@ function timeAgo(date) {
   return Math.floor(h / 24) + 'd ago';
 }
 
-async function loadLeaderboard() {
-  try {
-    const res = await fetch('/api/leaderboard');
-    const data = await res.json();
-    const medals = ['🥇','🥈','🥉'];
-    if (!data.length) {
-      document.getElementById('lbSidebar').innerHTML = '<div class="lb-sidebar-empty">No players yet.</div>';
-      return;
-    }
-    document.getElementById('lbSidebar').innerHTML = data.map((p, i) => `
-      <div class="lb-sidebar-row" data-name="${p.name}" onclick="clickLB('${p.name}')">
-        <div class="lb-srank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i < 3 ? medals[i] : p.rank}</div>
-        <img class="lb-sav" src="https://mc-heads.net/avatar/${p.uuid}/24" loading="lazy"/>
-        <div class="lb-sinfo">
-          <div class="lb-sname">${p.name}</div>
-          <div class="lb-sval">${p.tickets.toLocaleString()} tickets</div>
-        </div>
-      </div>`).join('');
-  } catch {
-    document.getElementById('lbSidebar').innerHTML = '<div class="lb-sidebar-empty">Could not load.</div>';
-  }
-}
-
-function clickLB(name) {
-  searchInput.value = name;
-  searchPlayer();
-}
-
-loadLeaderboard();
+loadPlayers();
 </script>
 </body>
 </html>
