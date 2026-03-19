@@ -31,16 +31,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 10% 15%,rgba(37,150,190,0.07) 0%,transparent 50%),radial-gradient(ellipse at 90% 85%,rgba(37,150,190,0.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
 .page{position:relative;z-index:1;display:flex;min-height:100vh;}
 
-.profile-achievements{margin-top:16px;border-top:1px solid var(--border2);padding-top:12px;}
-.achievements-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px;}
-.achievements-list{display:flex;gap:12px;align-items:center;}
-.ach-item{position:relative;width:28px;height:28px;cursor:pointer;transition:transform 0.2s;}
-.ach-item img{width:100%;height:100%;image-rendering:pixelated;opacity:0.4;transition:opacity 0.2s,filter 0.2s;}
-.ach-item:hover{transform:translateY(-2px);z-index:10;}
-.ach-item:hover img{opacity:1;filter:drop-shadow(0 0 8px var(--blue2));}
-.ach-item::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:6px 10px;border-radius:4px;white-space:pre-line;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:100;text-align:center;min-width:120px;line-height:1.4;}
-.ach-item:hover::after{opacity:1;visibility:visible;border-color:var(--blue);}
-
 .sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
 .sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border);}
 .logo-mark{font-family:'Oxanium',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:2px;}
@@ -102,6 +92,16 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .bpurple{color:var(--purple);border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.06);}
 .borange{color:var(--orange);border-color:rgba(232,135,58,0.3);background:rgba(232,135,58,0.06);}
 .profile-uuid{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;}
+
+.profile-achievements{margin-top:16px;border-top:1px solid var(--border2);padding-top:12px;}
+.achievements-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px;}
+.achievements-list{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.ach-item{position:relative;width:28px;height:28px;cursor:pointer;transition:transform 0.2s;}
+.ach-item img{width:100%;height:100%;image-rendering:pixelated;opacity:1;transition:opacity 0.2s,filter 0.2s;}
+.ach-item:hover{transform:translateY(-2px);z-index:10;}
+.ach-item:hover img{filter:drop-shadow(0 0 8px var(--blue2));}
+.ach-item::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:6px 10px;border-radius:4px;white-space:pre-line;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:100;text-align:center;min-width:120px;line-height:1.4;}
+.ach-item:hover::after{opacity:1;visibility:visible;border-color:var(--blue);}
 
 .quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
 .qs-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 15px;position:relative;overflow:hidden;transition:border-color 0.2s;}
@@ -251,6 +251,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                 <span class="badge bpurple">Rebirth: N/A</span>
               </div>
               <div class="profile-uuid" id="pUUID"></div>
+              
               <div class="profile-achievements">
                 <div class="achievements-label">🏆 Achievements</div>
                 <div class="achievements-list">
@@ -269,8 +270,24 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                   <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
                     <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
                   </div>
+                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
+                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
+                  </div>
+                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
+                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
+                  </div>
+                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
+                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
+                  </div>
+                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
+                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
+                  </div>
+                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
+                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/nether_star.png" alt="Star"/>
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
 
