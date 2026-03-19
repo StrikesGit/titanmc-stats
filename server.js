@@ -10,18 +10,18 @@ const PORT = process.env.PORT || 3000;
 // IMPORTANT: Move these to environment variables before going public!
 // Create a .env file and use dotenv, or set them in your server panel.
 const DB_CONFIG = {
-  host: process.env.DB_HOST || 'gamesdal179.bisecthosting.com',
-  port: process.env.DB_PORT || 3307,
-  user: process.env.DB_USER || 'u80623255_d3AcJ05Fmy',
-  password: process.env.DB_PASS || 'REPLACE_WITH_YOUR_NEW_PASSWORD', // Change this after resetting!
-  database: process.env.DB_NAME || 's80623255_titanmc_luckperms',
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
   connectTimeout: 10000,
 };
 
-const TABLE = process.env.DB_TABLE || 'titantickets_data';
+const TABLE = process.env.DB_TABLE;
 
 let pool;
 
