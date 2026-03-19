@@ -8,196 +8,190 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg:       #0a0a0f;
-  --bg2:      #0f0f18;
-  --bg3:      #13131e;
-  --bg4:      #1a1a28;
-  --border:   rgba(255,255,255,0.07);
-  --border2:  rgba(255,255,255,0.04);
-  --gold:     #f0a500;
-  --gold2:    #ffd166;
-  --orange:   #ff6b2b;
-  --blue:     #4f8ef7;
-  --green:    #2ecc71;
-  --red:      #e74c3c;
-  --muted:    #4a4a6a;
-  --muted2:   #6a6a8a;
-  --text:     #d8d8f0;
-  --text2:    #a0a0c0;
-  --head:     'Oxanium', sans-serif;
-  --mono:     'JetBrains Mono', monospace;
-  --body:     'Rajdhani', sans-serif;
+  --bg:      #0a0a0f;
+  --bg2:     #0f0f18;
+  --bg3:     #13131e;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.04);
+  --gold:    #f0a500;
+  --gold2:   #ffd166;
+  --orange:  #ff6b2b;
+  --blue:    #4f8ef7;
+  --green:   #2ecc71;
+  --red:     #e74c3c;
+  --muted:   #4a4a6a;
+  --muted2:  #6a6a8a;
+  --text:    #d8d8f0;
+  --text2:   #a0a0c0;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,142,247,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(240,165,0,0.05) 0%,transparent 50%),radial-gradient(ellipse at 85% 85%,rgba(79,142,247,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,142,247,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 20%,rgba(240,165,0,0.05) 0%,transparent 50%),radial-gradient(ellipse at 85% 80%,rgba(79,142,247,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
 .page{position:relative;z-index:1;display:flex;min-height:100vh;}
 
-/* SIDEBAR */
-.sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
-.sidebar-logo{padding:24px 20px 18px;border-bottom:1px solid var(--border);}
-.logo-mark{font-family:var(--head);font-size:19px;font-weight:800;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:2px;}
+/* ── SIDEBAR ── */
+.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border);}
+.logo-mark{font-family:'Oxanium',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:2px;}
 .logo-mark span{color:var(--gold);}
-.logo-sub{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;}
-.sidebar-search{padding:14px;}
+.logo-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;}
+.sidebar-search{padding:12px;}
 .search-wrap{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;}
 .search-wrap:focus-within{border-color:rgba(240,165,0,0.4);box-shadow:0 0 0 3px rgba(240,165,0,0.07);}
-.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 12px;letter-spacing:0.5px;}
+.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;padding:9px 11px;letter-spacing:0.5px;}
 .search-wrap input::placeholder{color:var(--muted);}
-.search-wrap button{background:var(--gold);border:none;color:#000;font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:1px;padding:10px 14px;cursor:pointer;transition:opacity 0.2s;}
+.search-wrap button{background:var(--gold);border:none;color:#000;font-family:'Oxanium',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:9px 13px;cursor:pointer;transition:opacity 0.2s;}
 .search-wrap button:hover{opacity:0.85;}
-.sidebar-nav{padding:10px 0;flex:1;}
-.nav-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding:8px 18px 4px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;font-size:14px;font-weight:500;color:var(--muted2);cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;border-left:2px solid transparent;}
-.nav-item:hover,.nav-item.active{color:var(--text);background:rgba(240,165,0,0.05);border-left-color:var(--gold);}
-.nav-item .ico{font-size:14px;width:18px;text-align:center;}
-.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border);}
-.server-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--muted2);}
+
+/* LEADERBOARD SIDEBAR */
+.lb-sidebar{flex:1;overflow-y:auto;padding:0;}
+.lb-sidebar-head{padding:12px 16px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);}
+.lb-sidebar-row{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background 0.15s;}
+.lb-sidebar-row:hover{background:rgba(240,165,0,0.05);}
+.lb-sidebar-row.active{background:rgba(240,165,0,0.07);border-left:2px solid var(--gold);}
+.lb-srank{font-family:'Oxanium',sans-serif;font-size:13px;font-weight:700;width:20px;text-align:center;flex-shrink:0;}
+.r1{color:var(--gold);}
+.r2{color:#c0c0c0;}
+.r3{color:#cd7f32;}
+.rn{color:var(--muted);font-size:11px;}
+.lb-sav{width:24px;height:24px;border-radius:4px;image-rendering:pixelated;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
+.lb-sinfo{flex:1;min-width:0;}
+.lb-sname{font-size:13px;font-weight:600;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-sval{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;}
+.lb-sidebar-empty{padding:20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);}
+.server-status{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
 .sdot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
-/* MAIN */
-.main{flex:1;min-width:0;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
-.topbar-title{font-family:var(--head);font-size:13px;font-weight:600;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
-.topbar-badge{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--gold);background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);padding:4px 10px;border-radius:4px;}
-.content{padding:28px;max-width:1100px;}
+/* ── MAIN ── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;padding-left:32px;padding-right:32px;}
+.topbar-title{font-family:'Oxanium',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
+.topbar-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);padding:4px 10px;border-radius:4px;}
+
+/* CENTER CONTENT */
+.content-wrap{flex:1;display:flex;justify-content:center;padding:28px 32px 60px;}
+.content{width:100%;max-width:860px;}
 
 /* EMPTY */
-.empty-state{text-align:center;padding:80px 20px;animation:fadeUp 0.5s ease forwards 0.2s;opacity:0;}
+.empty-state{text-align:center;padding:100px 20px;animation:fadeUp 0.5s ease forwards 0.2s;opacity:0;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.empty-icon{font-size:44px;margin-bottom:14px;opacity:0.3;}
-.empty-title{font-family:var(--head);font-size:22px;font-weight:700;letter-spacing:3px;color:var(--muted2);margin-bottom:6px;}
-.empty-sub{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:0.25;}
+.empty-title{font-family:'Oxanium',sans-serif;font-size:24px;font-weight:700;letter-spacing:4px;color:var(--muted2);margin-bottom:8px;}
+.empty-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
 
 /* PROFILE */
 #profileSection{display:none;animation:fadeUp 0.4s ease forwards;}
-.profile-header{display:flex;align-items:flex-start;gap:22px;margin-bottom:20px;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden;}
+.profile-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:18px;padding:22px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden;}
 .profile-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--orange),transparent);}
 .pskin-wrap{position:relative;flex-shrink:0;}
-.pskin-wrap img{width:76px;height:76px;image-rendering:pixelated;border-radius:8px;border:1px solid var(--border);background:var(--bg3);}
-.pskin-glow{position:absolute;inset:-6px;background:radial-gradient(circle,rgba(240,165,0,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.pskin-wrap img{width:72px;height:72px;image-rendering:pixelated;border-radius:8px;border:1px solid var(--border);background:var(--bg3);}
+.pskin-glow{position:absolute;inset:-5px;background:radial-gradient(circle,rgba(240,165,0,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
 .profile-info{flex:1;min-width:0;}
-.profile-tag{font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
-.profile-name{font-family:var(--head);font-size:36px;font-weight:800;letter-spacing:2px;color:var(--text);line-height:1;margin-bottom:10px;word-break:break-all;}
+.profile-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+.profile-name{font-family:'Oxanium',sans-serif;font-size:34px;font-weight:800;letter-spacing:2px;color:var(--text);line-height:1;margin-bottom:9px;word-break:break-all;}
 .profile-badges{display:flex;flex-wrap:wrap;gap:6px;}
-.badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:3px 9px;border-radius:4px;border:1px solid;}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 9px;border-radius:4px;border:1px solid;}
 .bon{color:var(--green);border-color:rgba(46,204,113,0.3);background:rgba(46,204,113,0.06);}
 .boff{color:var(--muted2);border-color:var(--border);background:var(--bg3);}
 .bgold{color:var(--gold);border-color:rgba(240,165,0,0.3);background:rgba(240,165,0,0.06);}
 .bblue{color:var(--blue);border-color:rgba(79,142,247,0.3);background:rgba(79,142,247,0.06);}
-.profile-uuid{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:7px;}
+.bpurple{color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.06);}
+.profile-uuid{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:7px;}
 
 /* QUICK STATS */
-.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
-.qs-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.qs-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 15px;position:relative;overflow:hidden;transition:border-color 0.2s;}
 .qs-card:hover{border-color:rgba(240,165,0,0.2);}
 .qs-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0;transition:opacity 0.2s;}
 .qs-card:hover::after{opacity:1;}
-.qs-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px;}
-.qs-value{font-family:var(--head);font-size:24px;font-weight:700;color:var(--text);letter-spacing:1px;line-height:1;}
-.qs-value.na{color:var(--muted);font-size:18px;}
+.qs-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px;}
+.qs-value{font-family:'Oxanium',sans-serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:1px;line-height:1;}
+.qs-value.na{color:var(--muted);font-size:16px;}
 .qs-value.gold{color:var(--gold2);}
-.qs-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:4px;}
+.qs-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;}
 
 /* SECTION */
-.section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden;}
-.section-head{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.01);}
-.section-title{font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:3px;color:var(--text2);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.01);}
+.section-title{font-family:'Oxanium',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--text2);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
 .sdl{width:5px;height:5px;border-radius:50%;background:var(--gold);}
-.section-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
 
 /* STAT ROWS */
-.srow{display:flex;align-items:center;justify-content:space-between;padding:13px 22px;border-bottom:1px solid var(--border2);transition:background 0.15s;}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border2);transition:background 0.15s;}
 .srow:last-child{border-bottom:none;}
 .srow:hover{background:rgba(255,255,255,0.02);}
 .srow-left{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text2);letter-spacing:0.3px;}
-.srow-icon{width:28px;height:28px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
-.srow-right{font-family:var(--mono);font-size:13px;color:var(--text);letter-spacing:0.5px;display:flex;align-items:center;gap:8px;}
+.srow-icon{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.srow-right{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);letter-spacing:0.5px;display:flex;align-items:center;gap:7px;}
 .srow-right.na{color:var(--muted);font-size:11px;}
 .srow-right.gold{color:var(--gold);}
-.srow-right.green{color:var(--green);}
-.rank-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:3px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);color:var(--gold);}
+.rank-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:3px;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.2);color:var(--gold);}
 
 /* TWO COL */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 
-/* CURRENCY */
-.curr-grid{display:grid;grid-template-columns:1fr 1fr;}
-.curr-item{padding:14px 22px;border-bottom:1px solid var(--border2);border-right:1px solid var(--border2);position:relative;overflow:hidden;transition:background 0.15s;}
+/* CURRENCIES */
+.curr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;}
+.curr-item{padding:14px 20px;border-right:1px solid var(--border2);position:relative;overflow:hidden;transition:background 0.15s;}
 .curr-item:hover{background:rgba(255,255,255,0.02);}
-.curr-item:nth-child(even){border-right:none;}
-.curr-item:nth-last-child(-n+2){border-bottom:none;}
-.curr-name{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px;}
-.curr-val{font-family:var(--head);font-size:20px;font-weight:700;color:var(--text);letter-spacing:1px;}
+.curr-item:last-child{border-right:none;}
+.curr-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:5px;}
+.curr-val{font-family:'Oxanium',sans-serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:1px;}
 .curr-val.na{color:var(--muted);font-size:14px;}
 .curr-val.gold{color:var(--gold2);}
 .curr-val.blue{color:var(--blue);}
-.curr-val.purple{color:#a78bfa;}
 
 /* COMING SOON */
 .cs{position:relative;}
-.cs-tag{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:3px 10px;border-radius:3px;text-transform:uppercase;white-space:nowrap;pointer-events:none;z-index:2;}
-.cs>*:not(.cs-tag){opacity:0.25;pointer-events:none;filter:blur(0.5px);}
-
-/* PETS */
-.pets-mini{display:grid;grid-template-columns:repeat(3,1fr);}
-.pet-cell{padding:12px;border-right:1px solid var(--border2);border-top:1px solid var(--border2);text-align:center;}
-.pet-cell:nth-child(3n){border-right:none;}
-.pet-emoji{font-size:24px;margin-bottom:4px;opacity:0.4;}
-.pet-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:2px;}
-.pet-xp{font-family:var(--head);font-size:14px;font-weight:700;color:var(--muted);}
-
-/* LEADERBOARD */
-.lb-head{display:grid;grid-template-columns:46px 1fr 110px;padding:10px 22px;border-bottom:1px solid var(--border);background:var(--bg3);}
-.lb-head span{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
-.lb-head span:last-child{text-align:right;}
-.lb-row{display:grid;grid-template-columns:46px 1fr 110px;align-items:center;padding:11px 22px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background 0.15s;text-decoration:none;color:inherit;}
-.lb-row:last-child{border-bottom:none;}
-.lb-row:hover{background:rgba(240,165,0,0.04);}
-.lb-rank{font-family:var(--head);font-size:17px;font-weight:700;}
-.r1{color:var(--gold);text-shadow:0 0 10px rgba(240,165,0,0.4);}
-.r2{color:#c0c0c0;}
-.r3{color:#cd7f32;}
-.rn{color:var(--muted);font-size:13px;}
-.lb-pinfo{display:flex;align-items:center;gap:8px;}
-.lb-av{width:26px;height:26px;border-radius:4px;image-rendering:pixelated;background:var(--bg3);border:1px solid var(--border);}
-.lb-pname{font-size:13px;font-weight:600;letter-spacing:0.3px;}
-.lb-val{font-family:var(--mono);font-size:12px;color:var(--gold);text-align:right;letter-spacing:0.5px;}
+.cs-tag{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:3px 8px;border-radius:3px;text-transform:uppercase;white-space:nowrap;pointer-events:none;z-index:2;}
+.cs>*:not(.cs-tag){opacity:0.2;pointer-events:none;}
 
 /* ERROR / LOADING */
-.error-box{font-family:var(--mono);font-size:12px;color:var(--red);background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:13px 18px;letter-spacing:1px;display:none;margin-bottom:18px;}
+.error-box{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:12px 18px;letter-spacing:1px;display:none;margin-bottom:16px;}
 .loading-box{display:none;text-align:center;padding:60px;}
 .spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.loading-box p{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.loading-box p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
 
-@media(max-width:900px){.sidebar{display:none;}.quick-stats{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.content{padding:16px;}}
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .content-wrap{padding:16px;}
+  .curr-grid{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
 <div class="page">
 
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">TITAN<span>MC</span></div>
       <div class="logo-sub">Prison Classic · Season 2</div>
     </div>
+
     <div class="sidebar-search">
       <div class="search-wrap">
         <input type="text" id="searchInput" placeholder="Search player..." maxlength="16" autocomplete="off" spellcheck="false"/>
         <button onclick="searchPlayer()">GO</button>
       </div>
     </div>
-    <nav class="sidebar-nav">
-      <div class="nav-label">Menu</div>
-      <div class="nav-item active"><span class="ico">⛏</span> Overview</div>
-      <div class="nav-item"><span class="ico">💎</span> Mining</div>
-      <div class="nav-item"><span class="ico">💰</span> Economy</div>
-      <div class="nav-item"><span class="ico">🏆</span> Leaderboard</div>
-    </nav>
+
+    <div class="lb-sidebar">
+      <div class="lb-sidebar-head">🏆 Top Ticket Holders</div>
+      <div id="lbSidebar">
+        <div class="lb-sidebar-empty">Loading...</div>
+      </div>
+    </div>
+
     <div class="sidebar-footer">
       <div class="server-status">
         <div class="sdot"></div>
@@ -206,179 +200,173 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
     </div>
   </aside>
 
+  <!-- MAIN -->
   <main class="main">
     <div class="topbar">
       <div class="topbar-title">TitanMC — Player Statistics</div>
       <div class="topbar-badge">PRISON CLASSIC</div>
     </div>
 
-    <div class="content">
+    <div class="content-wrap">
+      <div class="content">
 
-      <div class="error-box" id="errorBox"></div>
-      <div class="loading-box" id="loadingBox">
-        <div class="spinner"></div>
-        <p>Fetching inmate records...</p>
+        <div class="error-box" id="errorBox"></div>
+        <div class="loading-box" id="loadingBox">
+          <div class="spinner"></div>
+          <p>Fetching inmate records...</p>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">⛏</div>
+          <div class="empty-title">PLAYER LOOKUP</div>
+          <div class="empty-sub">Search a player or click a name from the leaderboard</div>
+        </div>
+
+        <!-- PROFILE -->
+        <div id="profileSection">
+
+          <!-- Header -->
+          <div class="profile-header">
+            <div class="pskin-wrap">
+              <div class="pskin-glow"></div>
+              <img id="pSkin" src="" alt="Skin"/>
+            </div>
+            <div class="profile-info">
+              <div class="profile-tag">⛓ Inmate Record · TitanMC Prison Classic</div>
+              <div class="profile-name" id="pName">—</div>
+              <div class="profile-badges">
+                <span class="badge boff" id="pStatus">Offline</span>
+                <span class="badge bblue">Ward: N/A</span>
+                <span class="badge bgold">Prestige: N/A</span>
+                <span class="badge bpurple">Rebirth: N/A</span>
+              </div>
+              <div class="profile-uuid" id="pUUID"></div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <div class="qs-card">
+              <div class="qs-label">🎫 Tickets</div>
+              <div class="qs-value gold" id="qTickets">—</div>
+              <div class="qs-sub">Balance</div>
+            </div>
+            <div class="qs-card cs">
+              <div class="cs-tag">Coming Soon</div>
+              <div class="qs-label">⛏ Blocks Mined</div>
+              <div class="qs-value na">N/A</div>
+              <div class="qs-sub">All Time</div>
+            </div>
+            <div class="qs-card cs">
+              <div class="cs-tag">Coming Soon</div>
+              <div class="qs-label">💰 Balance</div>
+              <div class="qs-value na">N/A</div>
+              <div class="qs-sub">In-Game Money</div>
+            </div>
+            <div class="qs-card cs">
+              <div class="cs-tag">Coming Soon</div>
+              <div class="qs-label">🪙 Tokens</div>
+              <div class="qs-value na">N/A</div>
+              <div class="qs-sub">Token Balance</div>
+            </div>
+          </div>
+
+          <!-- Info + Currencies -->
+          <div class="two-col">
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>INFORMATION</div>
+                <div class="section-tag">Activity</div>
+              </div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right na">N/A</div></div>
+            </div>
+
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>CURRENCIES</div>
+                <div class="section-tag">Economy</div>
+              </div>
+              <div class="curr-grid">
+                <div class="curr-item">
+                  <div class="curr-name">🎫 Tickets</div>
+                  <div class="curr-val gold" id="cTickets">—</div>
+                </div>
+                <div class="curr-item cs">
+                  <div class="cs-tag" style="font-size:7px;padding:2px 6px;">Soon</div>
+                  <div class="curr-name">💰 Money</div>
+                  <div class="curr-val na">N/A</div>
+                </div>
+                <div class="curr-item cs">
+                  <div class="cs-tag" style="font-size:7px;padding:2px 6px;">Soon</div>
+                  <div class="curr-name">🪙 Tokens</div>
+                  <div class="curr-val na">N/A</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mining -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>MINING</div>
+              <div class="section-tag">Stats</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right na">N/A</div></div>
+          </div>
+
+          <!-- Cosmetics + Cell -->
+          <div class="two-col">
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>COSMETICS</div>
+                <div class="section-tag">Unlocked</div>
+              </div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🎨</div>Total Cosmetics</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">💃</div>Active Trail</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🎭</div>Active Tag</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🧢</div>Active Hat</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🌟</div>Active Aura</div><div class="srow-right na">N/A</div></div>
+            </div>
+
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>CELL</div>
+                <div class="section-tag">JetsPrisonCells</div>
+              </div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🏠</div>Cell Location</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">👥</div>Cell Members</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">⭐</div>Cell Level</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Cell Owner</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>Owned Since</div><div class="srow-right na">N/A</div></div>
+            </div>
+          </div>
+
+          <!-- Crates -->
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
+              <div class="section-tag">Loot</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Total Crates Opened</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🗳</div>Vote Crate</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Crate</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⚔</div>Koth Crate</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth Crate</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Titan Crate</div><div class="srow-right na">N/A</div></div>
+          </div>
+
+        </div><!-- end profileSection -->
+
       </div>
-
-      <!-- Empty State -->
-      <div class="empty-state" id="emptyState">
-        <div class="empty-icon">⛏</div>
-        <div class="empty-title">PLAYER LOOKUP</div>
-        <div class="empty-sub">Enter a username in the sidebar to view their stats</div>
-      </div>
-
-      <!-- Profile -->
-      <div id="profileSection">
-        <div class="profile-header">
-          <div class="pskin-wrap">
-            <div class="pskin-glow"></div>
-            <img id="pSkin" src="" alt="Skin"/>
-          </div>
-          <div class="profile-info">
-            <div class="profile-tag">⛓ Inmate Record · TitanMC Prison Classic</div>
-            <div class="profile-name" id="pName">—</div>
-            <div class="profile-badges">
-              <span class="badge boff" id="pStatus">Offline</span>
-              <span class="badge bblue">Mine: N/A</span>
-              <span class="badge bgold">Prestige: N/A</span>
-            </div>
-            <div class="profile-uuid" id="pUUID"></div>
-          </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="quick-stats">
-          <div class="qs-card">
-            <div class="qs-label">🎫 Tickets</div>
-            <div class="qs-value gold" id="qTickets">—</div>
-            <div class="qs-sub">Ticket Balance</div>
-          </div>
-          <div class="qs-card cs">
-            <div class="cs-tag">Coming Soon</div>
-            <div class="qs-label">⛏ Blocks Mined</div>
-            <div class="qs-value na">N/A</div>
-            <div class="qs-sub">All Time</div>
-          </div>
-          <div class="qs-card cs">
-            <div class="cs-tag">Coming Soon</div>
-            <div class="qs-label">💰 Balance</div>
-            <div class="qs-value na">N/A</div>
-            <div class="qs-sub">In-Game Money</div>
-          </div>
-          <div class="qs-card cs">
-            <div class="cs-tag">Coming Soon</div>
-            <div class="qs-label">🕒 Play Time</div>
-            <div class="qs-value na">N/A</div>
-            <div class="qs-sub">Total Hours</div>
-          </div>
-        </div>
-
-        <div class="two-col">
-          <!-- Info -->
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>INFORMATION</div>
-              <div class="section-tag">Activity</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🌍</div>Region</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right na">N/A</div></div>
-          </div>
-
-          <!-- Currencies -->
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>CURRENCIES</div>
-              <div class="section-tag">Economy</div>
-            </div>
-            <div class="curr-grid">
-              <div class="curr-item"><div class="curr-name">🎫 Tickets</div><div class="curr-val gold" id="cTickets">—</div></div>
-              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">💰 Money</div><div class="curr-val na">N/A</div></div>
-              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">🪙 Tokens</div><div class="curr-val na">N/A</div></div>
-              <div class="curr-item cs"><div class="cs-tag" style="font-size:8px;padding:2px 7px;">Soon</div><div class="curr-name">💎 Gems</div><div class="curr-val na">N/A</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mining -->
-        <div class="section">
-          <div class="section-head">
-            <div class="section-title"><span class="sdl"></span>MINING</div>
-            <div class="section-tag">Stats</div>
-          </div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">📊</div>Mining Level</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">⭐</div>Favorite Mine</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Daily Record</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">🎯</div>Mine Rank</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
-        </div>
-
-        <div class="two-col">
-          <!-- Pets -->
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>PETS</div>
-              <div class="section-tag">Companions</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🐾</div>Total XP Earned</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🐶</div>Pets Equipped</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">⬆</div>Total Level Ups</div><div class="srow-right na">N/A</div></div>
-            <div class="pets-mini">
-              <div class="pet-cell"><div class="pet-emoji">🐱</div><div class="pet-lbl">Pet 1</div><div class="pet-xp">N/A</div></div>
-              <div class="pet-cell"><div class="pet-emoji">🐺</div><div class="pet-lbl">Pet 2</div><div class="pet-xp">N/A</div></div>
-              <div class="pet-cell"><div class="pet-emoji">🦊</div><div class="pet-lbl">Pet 3</div><div class="pet-xp">N/A</div></div>
-            </div>
-          </div>
-
-          <!-- Chambers -->
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>CHAMBERS</div>
-              <div class="section-tag">Secret Rooms</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔒</div>Basic</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Classic</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">💎</div>Rare</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Epic</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🌟</div>Prestige</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔮</div>Preservation</div><div class="srow-right na">N/A</div></div>
-          </div>
-        </div>
-
-        <!-- Crates -->
-        <div class="section">
-          <div class="section-head">
-            <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
-            <div class="section-tag">Loot</div>
-          </div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Total Crates</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">🍀</div>Lucky Blocks</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Mining Felon</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Mining Convict</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">⚔</div>Mining Detainee</div><div class="srow-right na">N/A</div></div>
-          <div class="srow"><div class="srow-left"><div class="srow-icon">🏴</div>Mining Inmate</div><div class="srow-right na">N/A</div></div>
-        </div>
-
-      </div><!-- end profileSection -->
-
-      <!-- Leaderboard — shown always -->
-      <div class="section" id="lbSection">
-        <div class="section-head">
-          <div class="section-title"><span class="sdl"></span>TOP TICKET HOLDERS</div>
-          <div class="section-tag">All Time</div>
-        </div>
-        <div class="lb-head">
-          <span>#</span><span>Player</span><span style="text-align:right">Tickets</span>
-        </div>
-        <div id="lbBody">
-          <div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:2px;">Loading rankings...</div>
-        </div>
-      </div>
-
     </div>
   </main>
 </div>
@@ -434,6 +422,11 @@ function renderPlayer(data) {
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
+  // Highlight active in sidebar
+  document.querySelectorAll('.lb-sidebar-row').forEach(r => {
+    r.classList.toggle('active', r.dataset.name === data.name);
+  });
+
   document.getElementById('profileSection').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -449,7 +442,7 @@ function animCount(el, to) {
 }
 
 function timeAgo(date) {
-  const s = Math.floor((Date.now() - date) / 1000);
+  const s = Math.floor((Date.now() - new Date(date)) / 1000);
   if (s < 60) return s + 's ago';
   const m = Math.floor(s / 60); if (m < 60) return m + 'm ago';
   const h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
@@ -461,26 +454,27 @@ async function loadLeaderboard() {
     const res = await fetch('/api/leaderboard');
     const data = await res.json();
     const medals = ['🥇','🥈','🥉'];
-    document.getElementById('lbBody').innerHTML = data.length
-      ? data.map((p,i) => `
-        <div class="lb-row" onclick="lookupLB('${p.name}')">
-          <div class="lb-rank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i<3?medals[i]:p.rank}</div>
-          <div class="lb-pinfo">
-            <img class="lb-av" src="https://mc-heads.net/avatar/${p.uuid}/26" loading="lazy"/>
-            <span class="lb-pname">${p.name}</span>
-          </div>
-          <div class="lb-val">${p.tickets.toLocaleString()}</div>
-        </div>`).join('')
-      : '<div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted)">No players yet.</div>';
+    if (!data.length) {
+      document.getElementById('lbSidebar').innerHTML = '<div class="lb-sidebar-empty">No players yet.</div>';
+      return;
+    }
+    document.getElementById('lbSidebar').innerHTML = data.map((p, i) => `
+      <div class="lb-sidebar-row" data-name="${p.name}" onclick="clickLB('${p.name}')">
+        <div class="lb-srank ${i===0?'r1':i===1?'r2':i===2?'r3':'rn'}">${i < 3 ? medals[i] : p.rank}</div>
+        <img class="lb-sav" src="https://mc-heads.net/avatar/${p.uuid}/24" loading="lazy"/>
+        <div class="lb-sinfo">
+          <div class="lb-sname">${p.name}</div>
+          <div class="lb-sval">${p.tickets.toLocaleString()} tickets</div>
+        </div>
+      </div>`).join('');
   } catch {
-    document.getElementById('lbBody').innerHTML = '<div style="text-align:center;padding:28px;font-family:var(--mono);font-size:11px;color:var(--muted)">Could not load.</div>';
+    document.getElementById('lbSidebar').innerHTML = '<div class="lb-sidebar-empty">Could not load.</div>';
   }
 }
 
-function lookupLB(name) {
+function clickLB(name) {
   searchInput.value = name;
   searchPlayer();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 loadLeaderboard();
