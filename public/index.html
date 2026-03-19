@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TitanMC — Player Stats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #080810;
+    --bg2:       #0e0e1a;
+    --bg3:       #13131f;
+    --border:    rgba(255,255,255,0.06);
+    --gold:      #f5a623;
+    --gold2:     #ffcc5c;
+    --orange:    #ff6b35;
+    --glow:      rgba(245,166,35,0.18);
+    --glow2:     rgba(245,166,35,0.06);
+    --text:      #e8e8f0;
+    --muted:     #6b6b88;
+    --accent:    #7c3aed;
+    --green:     #22c55e;
+    --red:       #ef4444;
+    --font-head: 'Bebas Neue', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  /* ── AMBIENT GLOW ── */
+  .ambient {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%);
+    top: -150px; left: -100px;
+    animation: drift1 18s ease-in-out infinite;
+  }
+  .ambient-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
+    bottom: -100px; right: -80px;
+    animation: drift2 22s ease-in-out infinite;
+  }
+  @keyframes drift1 {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(40px, 30px); }
+  }
+  @keyframes drift2 {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(-30px, -20px); }
+  }
+
+  /* ── LAYOUT ── */
+  .page { position: relative; z-index: 2; }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,16,0.8);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 20px rgba(245,166,35,0.4);
+  }
+
+  .logo-text {
+    font-family: var(--font-head);
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+  .logo-text span { color: var(--gold); }
+
+  .header-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(52px, 10vw, 110px);
+    line-height: 0.9;
+    letter-spacing: 6px;
+    color: var(--text);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+  .hero-title .accent { color: var(--gold); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.35s;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SEARCH ── */
+  .search-container {
+    max-width: 540px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.5s;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--bg3);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px var(--glow), 0 0 40px var(--glow);
+  }
+
+  .search-icon {
+    padding: 0 16px;
+    color: var(--muted);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  #searchInput {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: 1px;
+    padding: 16px 0;
+  }
+
+  #searchInput::placeholder { color: var(--muted); }
+
+  #searchBtn {
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    border: none;
+    color: #000;
+    font-family: var(--font-head);
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 16px 28px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  #searchBtn:hover { opacity: 0.88; }
+  #searchBtn:active { transform: scale(0.97); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ── ERROR STATE ── */
+  .error-msg {
+    text-align: center;
+    padding: 32px;
+    color: var(--red);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 1px;
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 12px;
+    margin-top: 24px;
+    display: none;
+  }
+
+  /* ── LOADING ── */
+  .loading {
+    text-align: center;
+    padding: 48px;
+    display: none;
+  }
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading p {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── PLAYER CARD ── */
+  #playerCard {
+    display: none;
+    margin-top: 32px;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 16px 16px 0 0;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(245,166,35,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Corner decorations */
+  .card-header::after {
+    content: '';
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 60px; height: 60px;
+    border-top: 2px solid rgba(245,166,35,0.2);
+    border-right: 2px solid rgba(245,166,35,0.2);
+    border-radius: 0 8px 0 0;
+  }
+
+  .player-skin-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  #playerSkin {
+    width: 90px;
+    height: 90px;
+    image-rendering: pixelated;
+    border-radius: 10px;
+    border: 2px solid rgba(245,166,35,0.3);
+    box-shadow: 0 0 30px rgba(245,166,35,0.15);
+  }
+
+  .skin-glow {
+    position: absolute;
+    inset: -8px;
+    background: radial-gradient(circle, rgba(245,166,35,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .player-info { flex: 1; min-width: 0; }
+
+  .player-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .player-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .player-name {
+    font-family: var(--font-head);
+    font-size: 44px;
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 12px;
+    word-break: break-all;
+  }
+
+  .player-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meta-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
+
+  .meta-pill .dot.stale { background: var(--muted); box-shadow: none; }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 32px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row:hover { background: rgba(245,166,35,0.03); }
+
+  .stat-row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--gold), var(--orange));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .stat-row:hover::before { opacity: 1; }
+
+  .stat-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .stat-icon {
+    width: 34px; height: 34px;
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--text);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stat-value .unit {
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .stat-value.big {
+    font-size: 32px;
+    color: var(--gold2);
+    text-shadow: 0 0 30px rgba(245,166,35,0.3);
+  }
+
+  /* ── LEADERBOARD ── */
+  .section-title {
+    font-family: var(--font-head);
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--text);
+    margin: 56px 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .lb-table {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .lb-header {
+    display: grid;
+    grid-template-columns: 56px 1fr 160px;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(245,166,35,0.04);
+  }
+
+  .lb-header span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .lb-header span:last-child { text-align: right; }
+
+  .lb-row {
+    display: grid;
+    grid-template-columns: 56px 1fr 160px;
+    align-items: center;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: rgba(245,166,35,0.04); }
+
+  .lb-row.top1 { background: rgba(245,166,35,0.06); }
+  .lb-row.top2 { background: rgba(192,192,192,0.04); }
+  .lb-row.top3 { background: rgba(205,127,50,0.04); }
+
+  .lb-rank {
+    font-family: var(--font-head);
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .rank-1 { color: var(--gold); text-shadow: 0 0 16px rgba(245,166,35,0.5); }
+  .rank-2 { color: #c0c0c0; }
+  .rank-3 { color: #cd7f32; }
+  .rank-other { color: var(--muted); font-size: 16px; }
+
+  .lb-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lb-avatar {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    image-rendering: pixelated;
+    border: 1px solid var(--border);
+  }
+
+  .lb-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .lb-tickets {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--gold);
+    text-align: right;
+    letter-spacing: 1px;
+  }
+
+  .lb-loading {
+    text-align: center;
+    padding: 32px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-head);
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    opacity: 0.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero { padding: 48px 16px 40px; }
+    .card-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
+    .stat-row { padding: 18px 24px; }
+    .stat-value.big { font-size: 26px; }
+    .lb-row { grid-template-columns: 44px 1fr 120px; }
+  }
+
+  /* ── NUMBER COUNTER ANIMATION ── */
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .count-anim { animation: countUp 0.4s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🎫</div>
+      <div class="logo-text">TITAN<span>MC</span></div>
+    </div>
+    <div class="header-badge">PLAYER STATS · SEASON 2</div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">⛏ Prison Server · OG Classic</div>
+    <div class="hero-title">PLAYER<br><span class="accent">LOOKUP</span></div>
+    <div class="hero-sub">Search any player to view their stats and ticket balance</div>
+
+    <!-- Search -->
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-icon">🔍</div>
+        <input type="text" id="searchInput" placeholder="Enter username..." maxlength="16" autocomplete="off" spellcheck="false"/>
+        <div class="divider"></div>
+        <button id="searchBtn" onclick="searchPlayer()">SEARCH</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Error -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Fetching inmate records...</p>
+    </div>
+
+    <!-- Player Card -->
+    <div id="playerCard">
+      <div class="card-header">
+        <div class="player-skin-wrap">
+          <div class="skin-glow"></div>
+          <img id="playerSkin" src="" alt="Player Skin"/>
+        </div>
+        <div class="player-info">
+          <div class="player-label">Inmate File</div>
+          <div class="player-name" id="playerName"></div>
+          <div class="player-meta">
+            <div class="meta-pill" id="statusPill">
+              <span class="dot stale"></span>
+              <span id="lastSeen"></span>
+            </div>
+            <div class="meta-pill">
+              <span style="color:var(--muted)">UUID:</span>
+              <span id="playerUUID" style="font-family:var(--font-mono);font-size:10px;opacity:0.5;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-row">
+          <div class="stat-label">
+            <div class="stat-icon">🎫</div>
+            Ticket Balance
+          </div>
+          <div class="stat-value big" id="statTickets">—</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">
+            <div class="stat-icon">📋</div>
+            Player Name
+          </div>
+          <div class="stat-value" id="statName">—</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">
+            <div class="stat-icon">🕒</div>
+            Last Updated
+          </div>
+          <div class="stat-value" id="statUpdated">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="section-eyebrow">Rankings</div>
+    <div class="section-title">TOP TICKET HOLDERS</div>
+
+    <div class="lb-table">
+      <div class="lb-header">
+        <span>#</span>
+        <span>Player</span>
+        <span style="text-align:right">Tickets</span>
+      </div>
+      <div id="leaderboardBody">
+        <div class="lb-loading">Loading rankings...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">TITAN<span>MC</span></div>
+    <div class="footer-note">Stats refresh in real-time from the game server</div>
+  </footer>
+
+</div>
+
+<script>
+  // ── SEARCH ──────────────────────────────────────────────────────────────────
+  const searchInput = document.getElementById('searchInput');
+  const playerCard  = document.getElementById('playerCard');
+  const errorMsg    = document.getElementById('errorMsg');
+  const loading     = document.getElementById('loading');
+
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchPlayer();
+  });
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.style.display = 'block';
+    playerCard.style.display = 'none';
+    loading.style.display = 'none';
+  }
+
+  function hideError() {
+    errorMsg.style.display = 'none';
+  }
+
+  async function searchPlayer() {
+    const name = searchInput.value.trim();
+    if (!name) return;
+
+    hideError();
+    playerCard.style.display = 'none';
+    loading.style.display = 'block';
+
+    try {
+      const res = await fetch(`/api/player/${encodeURIComponent(name)}`);
+      const data = await res.json();
+
+      loading.style.display = 'none';
+
+      if (!res.ok) {
+        showError(data.error || 'Player not found.');
+        return;
+      }
+
+      renderPlayer(data);
+    } catch (err) {
+      loading.style.display = 'none';
+      showError('Could not reach the server. Please try again.');
+    }
+  }
+
+  function renderPlayer(data) {
+    // Skin from Crafatar
+    document.getElementById('playerSkin').src =
+      `https://crafatar.com/avatars/${data.uuid}?size=90&overlay&default=MHF_Steve`;
+
+    document.getElementById('playerName').textContent = data.name;
+    document.getElementById('playerUUID').textContent = data.uuid;
+
+    // Ticket counter animation
+    const ticketEl = document.getElementById('statTickets');
+    animateCount(ticketEl, 0, data.tickets, 800);
+
+    document.getElementById('statName').textContent = data.name;
+
+    // Last updated
+    const updated = data.last_updated ? new Date(data.last_updated) : null;
+    document.getElementById('statUpdated').textContent =
+      updated ? updated.toLocaleString() : 'Unknown';
+
+    // Last seen pill
+    const pill = document.getElementById('statusPill');
+    const dot  = pill.querySelector('.dot');
+    const seen = document.getElementById('lastSeen');
+    if (updated) {
+      const mins = Math.floor((Date.now() - updated.getTime()) / 60000);
+      if (mins < 10) {
+        dot.classList.remove('stale');
+        seen.textContent = 'Online recently';
+      } else {
+        dot.classList.add('stale');
+        seen.textContent = `Last seen ${timeAgo(updated)}`;
+      }
+    }
+
+    playerCard.style.display = 'block';
+    playerCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function animateCount(el, from, to, duration) {
+    const start = performance.now();
+    el.classList.remove('count-anim');
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(from + (to - from) * eased);
+      el.innerHTML = `${current.toLocaleString()} <span class="unit">Tickets</span>`;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  function timeAgo(date) {
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  }
+
+  // ── LEADERBOARD ─────────────────────────────────────────────────────────────
+  async function loadLeaderboard() {
+    const body = document.getElementById('leaderboardBody');
+
+    try {
+      const res  = await fetch('/api/leaderboard');
+      const data = await res.json();
+
+      if (!res.ok || !Array.isArray(data)) {
+        body.innerHTML = '<div class="lb-loading">Could not load rankings.</div>';
+        return;
+      }
+
+      if (data.length === 0) {
+        body.innerHTML = '<div class="lb-loading">No players found yet.</div>';
+        return;
+      }
+
+      const medals = ['🥇', '🥈', '🥉'];
+
+      body.innerHTML = data.map((p, i) => {
+        const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+        const rankDisplay = i < 3
+          ? `<span class="rank-${i+1}">${medals[i]}</span>`
+          : `<span class="rank-other">${p.rank}</span>`;
+
+        return `
+          <div class="lb-row ${rankClass}" onclick="lookupFromLB('${p.name}')">
+            <div class="lb-rank">${rankDisplay}</div>
+            <div class="lb-player">
+              <img class="lb-avatar" 
+                   src="https://crafatar.com/avatars/${p.uuid}?size=32&overlay&default=MHF_Steve" 
+                   alt="${p.name}" loading="lazy"/>
+              <span class="lb-name">${p.name}</span>
+            </div>
+            <div class="lb-tickets">${p.tickets.toLocaleString()}</div>
+          </div>`;
+      }).join('');
+
+    } catch {
+      body.innerHTML = '<div class="lb-loading">Could not reach server.</div>';
+    }
+  }
+
+  function lookupFromLB(name) {
+    searchInput.value = name;
+    searchPlayer();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Load on page start
+  loadLeaderboard();
+</script>
+</body>
+</html>
