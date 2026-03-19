@@ -33,7 +33,7 @@ async function initDB() {
     console.log('✅ Connected to MySQL database!');
     conn.release();
   } catch (err) {
-    console.error('❌ Failed to connect to database:', err.message);
+    console.error('❌ Failed to connect to database:', err.message, err.code, err.errno);
     process.exit(1);
   }
 }
