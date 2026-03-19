@@ -97,35 +97,21 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-// GET /api/cosmetics/:uuid — Get cosmetics counts for a player
-app.get('/api/cosmetics/:uuid', async (req, res) => {
-  const uuid = req.params.uuid;
+
+// GET /api/players — All players sorted by most recent
+app.get('/api/players', async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      `SELECT c.category, COUNT(*) as count
-       FROM \`UltraCosmetics-UnlockedCosmetics\` u
-       JOIN \`UltraCosmetics-Cosmetics\` c ON u.uuid_text = c.type
-       WHERE u.uuid = ?
-       GROUP BY c.category`,
-      [uuid]
+      `SELECT uuid, name, last_updated FROM \`${TABLE}\` ORDER BY last_updated DESC`
     );
-
-    const counts = {};
-    rows.forEach(r => { counts[r.category] = r.count; });
-
-    res.json({
-      hats:              counts['HAT']              || 0,
-      particles:         counts['PARTICLE']          || 0,
-      projectileEffects: counts['PROJECTILE_EFFECT'] || 0,
-      emotes:            counts['EMOTE']             || 0,
-      mounts:            counts['MOUNT']             || 0,
-      pets:              counts['PET']               || 0,
-      deathEffects:      counts['DEATH_EFFECT']      || 0,
-      total: rows.reduce((sum, r) => sum + r.count, 0)
-    });
+    res.json(rows.map(r => ({
+      uuid: r.uuid,
+      name: r.name,
+      last_updated: r.last_updated,
+    })));
   } catch (err) {
-    console.error('Cosmetics error:', err.message);
-    res.status(500).json({ error: 'Could not fetch cosmetics.' });
+    console.error('DB error:', err.message);
+    res.status(500).json({ error: 'Database error.' });
   }
 });
 
