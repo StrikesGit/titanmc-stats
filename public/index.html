@@ -552,10 +552,10 @@ async function loadAchievements(uuid) {
       var date = new Date(a.obtained_at).toLocaleDateString('en-US', {
         year: 'numeric', month: 'short', day: 'numeric'
       });
-      var tooltip = label + '&#10;Earned: ' + date;
-      return '<div class="ach-item" data-tooltip="' + tooltip + '">'
-        + '<img src="' + bookImg + '" alt="' + label + '"/>'
-        + '</div>';
+      var tooltip = label + '&#10;Achievement Unlocked';
+    return '<div class="ach-item" data-tooltip="' + tooltip + '">'
+    + '<img src="' + bookImg + '" alt="' + label + '"/>'
+    + '</div>';
     }).join('');
 
   } catch(e) {
