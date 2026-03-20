@@ -93,15 +93,40 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .borange{color:var(--orange);border-color:rgba(232,135,58,0.3);background:rgba(232,135,58,0.06);}
 .profile-uuid{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;}
 
+/* ACHIEVEMENTS */
 .profile-achievements{margin-top:16px;border-top:1px solid var(--border2);padding-top:12px;}
 .achievements-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px;}
 .achievements-list{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.ach-none{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
 .ach-item{position:relative;width:28px;height:28px;cursor:pointer;transition:transform 0.2s;}
 .ach-item img{width:100%;height:100%;image-rendering:pixelated;opacity:1;transition:opacity 0.2s,filter 0.2s;}
 .ach-item:hover{transform:translateY(-2px);z-index:10;}
 .ach-item:hover img{filter:drop-shadow(0 0 8px var(--blue2));}
-.ach-item::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;padding:6px 10px;border-radius:4px;white-space:pre-line;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.5);z-index:100;text-align:center;min-width:120px;line-height:1.4;}
-.ach-item:hover::after{opacity:1;visibility:visible;border-color:var(--blue);}
+.ach-item::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  bottom:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--bg3);
+  border:1px solid var(--blue);
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  padding:6px 10px;
+  border-radius:4px;
+  white-space:pre-line;
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.2s,visibility 0.2s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  z-index:100;
+  text-align:center;
+  min-width:140px;
+  line-height:1.5;
+}
+.ach-item:hover::after{opacity:1;visibility:visible;}
 
 .quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
 .qs-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 15px;position:relative;overflow:hidden;transition:border-color 0.2s;}
@@ -142,11 +167,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 
 .pickaxe-section{display:flex;align-items:stretch;}
 .pickaxe-viewer{width:180px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px;border-right:1px solid var(--border);background:rgba(37,150,190,0.02);}
-.pickaxe-img{
-  width:100px;height:100px;
-  image-rendering:pixelated;
-  filter:drop-shadow(0 4px 16px rgba(37,150,190,0.5)) drop-shadow(0 0 6px rgba(91,184,216,0.3));
-}
+.pickaxe-img{width:100px;height:100px;image-rendering:pixelated;filter:drop-shadow(0 4px 16px rgba(37,150,190,0.5)) drop-shadow(0 0 6px rgba(91,184,216,0.3));}
 .pickaxe-name-lbl{font-family:'Oxanium',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--blue2);margin-top:10px;text-align:center;}
 .pickaxe-uses-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted2);margin-top:2px;}
 .pickaxe-enchants{flex:1;}
@@ -234,11 +255,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 
           <div class="profile-header">
             <div class="skin-panel">
-              <iframe id="skinIframe"
-                src="about:blank"
-                scrolling="no"
-                allowtransparency="true">
-              </iframe>
+              <iframe id="skinIframe" src="about:blank" scrolling="no" allowtransparency="true"></iframe>
               <div class="skin-hint">drag to rotate</div>
             </div>
             <div class="profile-info">
@@ -251,40 +268,12 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                 <span class="badge bpurple">Rebirth: N/A</span>
               </div>
               <div class="profile-uuid" id="pUUID"></div>
-              
+
+              <!-- ACHIEVEMENTS — dynamic -->
               <div class="profile-achievements">
                 <div class="achievements-label">🏆 Achievements</div>
-                <div class="achievements-list">
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
-                  <div class="ach-item" data-tooltip="Achievement: N/A&#10;Lore: Locked">
-                    <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Star"/>
-                  </div>
+                <div class="achievements-list" id="achievementsList">
+                  <span class="ach-none">Loading...</span>
                 </div>
               </div>
 
@@ -317,6 +306,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
+          <!-- TOOLS -->
           <div class="section">
             <div class="section-head">
               <div class="section-title"><span class="sdl"></span>TOOLS</div>
@@ -324,12 +314,10 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
             <div class="pickaxe-section">
               <div class="pickaxe-viewer">
-                <img
-                  class="pickaxe-img"
+                <img class="pickaxe-img"
                   src="https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png"
                   alt="Diamond Pickaxe"
-                  onerror="this.src='https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/1c/Diamond_Pickaxe_JE3_BE3.png'"
-                />
+                  onerror="this.src='https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/1c/Diamond_Pickaxe_JE3_BE3.png'"/>
                 <div class="pickaxe-name-lbl">Titan Pick</div>
                 <div class="pickaxe-uses-lbl" id="pickaxeUses">N/A uses</div>
               </div>
@@ -433,6 +421,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 </div>
 
 <script>
+// ── PLAYERS LIST ─────────────────────────────────────────────────────────────
 var allPlayers = [];
 
 async function loadPlayers() {
@@ -479,6 +468,7 @@ function pickFirst() {
   if (first) first.click();
 }
 
+// ── LOAD PLAYER ──────────────────────────────────────────────────────────────
 function showError(msg) {
   document.getElementById('errorBox').textContent = '⚠ ' + msg;
   document.getElementById('errorBox').style.display = 'block';
@@ -508,6 +498,7 @@ async function loadPlayer(name) {
 }
 
 function renderPlayer(data) {
+  // 3D skin via McView3D iframe
   var iframe = document.getElementById('skinIframe');
   iframe.src = 'https://kurojs.github.io/McView3D/embed.html?skin=' + data.name + '&animation=walk&bg=0x00000000';
 
@@ -527,10 +518,53 @@ function renderPlayer(data) {
   document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
+
+  // Load achievements separately
+  loadAchievements(data.uuid);
+
   document.getElementById('profileSection').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
+async function loadAchievements(uuid) {
+  var list = document.getElementById('achievementsList');
+  list.innerHTML = '<span class="ach-none">Loading...</span>';
+
+  try {
+    var res = await fetch('/api/achievements/' + uuid);
+    var data = await res.json();
+
+    if (!res.ok || !Array.isArray(data) || data.length === 0) {
+      list.innerHTML = '<span class="ach-none">No achievements yet.</span>';
+      return;
+    }
+
+    // Format achievement ID nicely: "first_blood" → "First Blood"
+    function formatId(id) {
+      return id.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    }
+
+    var bookImg = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png';
+
+    list.innerHTML = data.map(function(a) {
+      var label = formatId(a.id);
+      var date = new Date(a.obtained_at).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      var tooltip = label + '&#10;Earned: ' + date;
+      return '<div class="ach-item" data-tooltip="' + tooltip + '">'
+        + '<img src="' + bookImg + '" alt="' + label + '"/>'
+        + '</div>';
+    }).join('');
+
+  } catch(e) {
+    console.error('Achievements error:', e);
+    list.innerHTML = '<span class="ach-none">Could not load achievements.</span>';
+  }
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
 function animCount(el, to) {
   var start = performance.now(), dur = 900;
   function tick(now) {
