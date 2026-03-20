@@ -540,7 +540,6 @@ async function loadAchievements(uuid) {
       return;
     }
 
-    // Format achievement ID nicely: "first_blood" → "First Blood"
     function formatId(id) {
       return id.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
     }
@@ -549,13 +548,13 @@ async function loadAchievements(uuid) {
 
     list.innerHTML = data.map(function(a) {
       var label = formatId(a.id);
-      var date = new Date(a.obtained_at).toLocaleDateString('en-US', {
-        year: 'numeric', month: 'short', day: 'numeric'
-      });
-      var tooltip = label + '&#10;Achievement Unlocked';
-    return '<div class="ach-item" data-tooltip="' + tooltip + '">'
-    + '<img src="' + bookImg + '" alt="' + label + '"/>'
-    + '</div>';
+      var date = a.obtained_at
+        ? new Date(a.obtained_at).toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'})
+        : 'Date unknown';
+      var tooltip = label + '&#10;' + date;
+      return '<div class="ach-item" data-tooltip="' + tooltip + '">'
+        + '<img src="' + bookImg + '" alt="' + label + '"/>'
+        + '</div>';
     }).join('');
 
   } catch(e) {
