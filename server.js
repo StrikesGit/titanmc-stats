@@ -10,18 +10,18 @@ const PORT = process.env.PORT || 3000;
 // IMPORTANT: Move these to environment variables before going public!
 // Create a .env file and use dotenv, or set them in your server panel.
 const DB_CONFIG = {
-  host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: 'autorack.proxy.rlwy.net',
+  port: 15703,
+  user: 'root',
+  password: 'OgQsuhtYXAoegrFqArBrtNSaBnxVZCYJ',
+  database: 'railway',
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
   connectTimeout: 10000,
 };
 
-const TABLE = process.env.DB_TABLE || 'titantickets_data';
+const TABLE = 'titantickets_data';
 
 let pool;
 
