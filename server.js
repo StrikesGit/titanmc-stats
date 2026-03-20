@@ -10,18 +10,18 @@ const PORT = process.env.PORT || 3000;
 // IMPORTANT: Move these to environment variables before going public!
 // Create a .env file and use dotenv, or set them in your server panel.
 const DB_CONFIG = {
-  host: 'autorack.proxy.rlwy.net',
-  port: 15703,
-  user: 'root',
-  password: 'OgQsuhtYXAoegrFqArBrtNSaBnxVZCYJ',
-  database: 'railway',
+  host: process.env.DB_HOST || 'gamesdal179.bisecthosting.com',
+  port: process.env.DB_PORT || 3307,
+  user: process.env.DB_USER || 'u80623255_d3AcJ05Fmy',
+  password: process.env.DB_PASS || 'REPLACE_WITH_YOUR_NEW_PASSWORD', // Change this after resetting!
+  database: process.env.DB_NAME || 's80623255_titanmc_luckperms',
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
   connectTimeout: 10000,
 };
 
-const TABLE = 'titantickets_data';
+const TABLE = process.env.DB_TABLE || 'titantickets_data';
 
 let pool;
 
@@ -33,7 +33,7 @@ async function initDB() {
     console.log('✅ Connected to MySQL database!');
     conn.release();
   } catch (err) {
-    console.error('❌ Failed to connect to database:', err.message, err.code, err.errno);
+    console.error('❌ Failed to connect to database:', err.message);
     process.exit(1);
   }
 }
@@ -77,44 +77,33 @@ app.get('/api/player/:name', async (req, res) => {
   }
 });
 
-
-
-
-// GET /api/players — All players list
-app.get('/api/players', async (req, res) => {
-  try {
-    const [rows] = await pool.execute(
-      `SELECT uuid, name, last_updated FROM \`${TABLE}\` ORDER BY last_updated DESC`
-    );
-    res.json(rows.map(r => ({
-      uuid: r.uuid,
-      name: r.name,
-      last_updated: r.last_updated,
-    })));
-  } catch (err) {
-    console.error('DB error:', err.message);
-    res.status(500).json({ error: 'Database error.' });
-  }
-});
-
-
 // GET /api/players — All players sorted by most recent
 app.get('/api/players', async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT uuid, name, last_updated FROM \`${TABLE}\` ORDER BY last_updated DESC`
     );
-    res.json(rows.map(r => ({
-      uuid: r.uuid,
-      name: r.name,
-      last_updated: r.last_updated,
-    })));
+    res.json(rows.map(r => ({ uuid: r.uuid, name: r.name, last_updated: r.last_updated })));
   } catch (err) {
     console.error('DB error:', err.message);
     res.status(500).json({ error: 'Database error.' });
   }
 });
 
+// GET /api/achievements/:uuid — Get achievements for a player
+app.get('/api/achievements/:uuid', async (req, res) => {
+  const uuid = req.params.uuid;
+  try {
+    const [rows] = await pool.execute(
+      `SELECT achievement_id, obtained_at FROM \`titanachievements_data\` WHERE uuid = ? ORDER BY obtained_at ASC`,
+      [uuid]
+    );
+    res.json(rows.map(r => ({ id: r.achievement_id, obtained_at: r.obtained_at })));
+  } catch (err) {
+    console.error('Achievements error:', err.message);
+    res.status(500).json({ error: 'Could not fetch achievements.' });
+  }
+});
 
 // GET /api/leaderboard — Top 10 players by ticket balance
 app.get('/api/leaderboard', async (req, res) => {
