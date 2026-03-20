@@ -96,10 +96,10 @@ app.get('/api/achievements/:uuid', async (req, res) => {
   const uuid = req.params.uuid;
   try {
     const [rows] = await pool.execute(
-      `SELECT achievement_id FROM \`titanachievements_data\` WHERE uuid = ?`,
+      `SELECT achievement_id, obtained_at FROM \`titanachievements_data\` WHERE uuid = ?`,
       [uuid]
     );
-    res.json(rows.map(r => ({ id: r.achievement_id })));
+    res.json(rows.map(r => ({ id: r.achievement_id, obtained_at: r.obtained_at })));
   } catch (err) {
     console.error('Achievements error:', err.message);
     res.status(500).json({ error: 'Could not fetch achievements.' });
