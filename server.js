@@ -94,6 +94,22 @@ app.get('/api/player/:name', async (req, res) => {
       console.warn('TitanMoney query failed:', e.message);
     }
 
+    // TitanCustomTool
+    let totalBlocks = null, rawBlocks = null, fishCaught = null;
+    try {
+      const [toolRows] = await pool.execute(
+        'SELECT total_blocks, raw_blocks, fish_caught FROM `titancustomtool_data` WHERE uuid = ? LIMIT 1',
+        [player.uuid]
+      );
+      if (toolRows.length > 0) {
+        totalBlocks = Math.floor(toolRows[0].total_blocks);
+        rawBlocks   = Math.floor(toolRows[0].raw_blocks);
+        fishCaught  = Math.floor(toolRows[0].fish_caught);
+      }
+    } catch(e) {
+      console.warn('TitanCustomTool query failed:', e.message);
+    }
+
     res.json({
       uuid: player.uuid,
       name: player.name,
@@ -104,6 +120,9 @@ app.get('/api/player/:name', async (req, res) => {
       rebirth,
       tokens,
       money,
+      totalBlocks,
+      rawBlocks,
+      fishCaught,
     });
   } catch (err) {
     console.error('DB error:', err.message);
