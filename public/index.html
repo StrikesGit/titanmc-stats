@@ -438,6 +438,9 @@ async function loadPlayers() {
 }
 
 function renderPlayerList(players) {
+  document.querySelectorAll('.badge.bblue')[0].textContent   = 'Ward: '     + (data.rank     || 'N/A');
+  document.querySelectorAll('.badge.borange')[0].textContent = 'Prestige: ' + (data.prestige || 'N/A');
+  document.querySelectorAll('.badge.bpurple')[0].textContent = 'Rebirth: '  + (data.rebirth  || 'N/A');
   if (!players.length) {
     document.getElementById('playersList').innerHTML = '<div class="players-empty">No players found.</div>';
     return;
