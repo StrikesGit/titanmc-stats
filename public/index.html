@@ -505,8 +505,8 @@ function renderPlayer(data) {
   document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
   document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
   document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
-  var moneyVal  = data.money  !== 'N/A' ? Number(data.money).toLocaleString()  : 'N/A';
-  var tokensVal = data.tokens !== 'N/A' ? Number(data.tokens).toLocaleString() : 'N/A';
+  var moneyVal  = (data.money  != null && data.money  !== 'N/A') ? Number(data.money).toLocaleString()  : 'N/A';
+  var tokensVal = (data.tokens != null && data.tokens !== 'N/A') ? Number(data.tokens).toLocaleString() : 'N/A';
   document.getElementById('qsMoney').textContent   = moneyVal;
   document.getElementById('qsTokens').textContent  = tokensVal;
   document.getElementById('currMoney').textContent  = moneyVal;
