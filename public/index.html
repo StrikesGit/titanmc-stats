@@ -201,6 +201,18 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   .pickaxe-section{flex-direction:column;}
   .pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}
 }
+
+/* STATS GRAPH */
+.stats-graph-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+.stats-graph-section .section-head{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border);background:rgba(37,150,190,0.03);}
+.graph-wrap{padding:20px;position:relative;}
+.graph-bars{display:flex;align-items:flex-end;gap:8px;height:120px;width:100%;}
+.graph-bar-group{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;}
+.graph-bar{width:100%;border-radius:4px 4px 0 0;transition:height 0.8s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0.85;min-height:2px;position:relative;}
+.graph-bar:hover{opacity:1;filter:brightness(1.2);}
+.graph-bar-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted2);letter-spacing:0.5px;text-align:center;white-space:nowrap;}
+.graph-bar-val{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--blue2);letter-spacing:0.5px;text-align:center;}
+.graph-line{position:absolute;left:20px;right:20px;border-top:1px dashed rgba(37,150,190,0.1);}
 </style>
 </head>
 <body>
@@ -209,7 +221,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">TITAN<span>MC</span></div>
-      <div class="logo-sub">Prison Classic · Season 2</div>
+      <div class="logo-sub">Classic Prison · Season 2</div>
     </div>
     <div class="sidebar-filter">
       <div class="filter-wrap">
@@ -234,7 +246,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   <main class="main">
     <div class="topbar">
       <div class="topbar-title">TitanMC — Player Statistics</div>
-      <div class="topbar-badge">PRISON CLASSIC</div>
+      <div class="topbar-badge">CLASSIC PRISON</div>
     </div>
     <div class="content-wrap">
       <div class="content">
@@ -259,7 +271,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="skin-hint">drag to rotate</div>
             </div>
             <div class="profile-info">
-              <div class="profile-tag">⛓ Inmate Record · TitanMC Prison Classic</div>
+              <div class="profile-tag">⛓ Inmate Record · TitanMC Classic Prison</div>
               <div class="profile-name" id="pName">—</div>
               <div class="profile-badges">
                 <span class="badge boff" id="pStatus">Offline</span>
@@ -303,6 +315,19 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
           </div>
 
+          <!-- STATS GRAPH -->
+          <div class="stats-graph-section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>STATS OVERVIEW</div>
+              <div class="section-tag">Comparison</div>
+            </div>
+            <div class="graph-wrap">
+              <div class="graph-bars" id="statsGraph">
+                <!-- bars rendered by JS -->
+              </div>
+            </div>
+          </div>
+
           <!-- TOOLS -->
           <div class="section">
             <div class="section-head">
@@ -316,7 +341,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                   alt="Pickaxe"
                   onerror="this.src='https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png'"/>
                 <div class="pickaxe-name-lbl" id="pickaxeName">N/A</div>
-                <div class="pickaxe-uses-lbl" id="pickaxeUses">N/A uses</div>
               </div>
               <div class="pickaxe-enchants" id="pickaxeEnchants">
                 <div class="ench-group">
@@ -497,19 +521,14 @@ function renderPlayer(data) {
   document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
   document.getElementById('miningPrestige').textContent = data.prestige || 'N/A';
   document.getElementById('miningRebirth').textContent  = data.rebirth  || 'N/A';
-  var blocksVal    = data.totalBlocks != null ? Number(data.totalBlocks).toLocaleString() : 'N/A';
-  var rawBlocksVal = data.rawBlocks   != null ? Number(data.rawBlocks).toLocaleString()   : 'N/A';
-  var fishVal      = data.fishCaught  != null ? Number(data.fishCaught).toLocaleString()  : 'N/A';
-  document.getElementById('qsBlocks').textContent       = blocksVal;
-  document.getElementById('miningBlocks').textContent   = blocksVal;
-  document.getElementById('miningRawBlocks').textContent = rawBlocksVal;
-  document.getElementById('miningFish').textContent     = fishVal;
-  var moneyVal  = (data.money  != null && data.money  !== 'N/A') ? Number(data.money).toLocaleString()  : 'N/A';
-  var tokensVal = (data.tokens != null && data.tokens !== 'N/A') ? Number(data.tokens).toLocaleString() : 'N/A';
-  document.getElementById('qsMoney').textContent   = moneyVal;
-  document.getElementById('qsTokens').textContent  = tokensVal;
-  document.getElementById('currMoney').textContent  = moneyVal;
-  document.getElementById('currTokens').textContent = tokensVal;
+  setNum('qsBlocks',        data.totalBlocks);
+  setNum('miningBlocks',    data.totalBlocks);
+  setNum('miningRawBlocks', data.rawBlocks);
+  setNum('miningFish',      data.fishCaught);
+  setNum('qsMoney',    data.money);
+  setNum('qsTokens',   data.tokens);
+  setNum('currMoney',  data.money);
+  setNum('currTokens', data.tokens);
   document.getElementById('pickaxeOwner').textContent = data.name;
   renderPickaxe(data.currentPickaxe, data.name);
 
@@ -524,21 +543,22 @@ function renderPlayer(data) {
   document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
   document.getElementById('infoFirstJoin').textContent  = data.firstJoin   || 'N/A';
   document.getElementById('infoPlaytime').textContent   = data.playtime    || 'N/A';
-  document.getElementById('infoTotalJoins').textContent = data.totalJoins  || 'N/A';
+  document.getElementById('infoTotalJoins').textContent = data.totalJoins != null ? Number(data.totalJoins).toLocaleString() : 'N/A';
   document.getElementById('cellName').textContent       = data.cellName       || 'N/A';
   document.getElementById('cellMembers').textContent    = data.cellMembers    || 'N/A';
   document.getElementById('cellOwnedSince').textContent = data.cellOwnedSince || 'N/A';
-  document.getElementById('crateTotal').textContent   = data.crateTotal   != null ? data.crateTotal.toLocaleString()   : 'N/A';
-  document.getElementById('crateVote').textContent    = data.crateVote    != null ? data.crateVote.toLocaleString()    : 'N/A';
-  document.getElementById('crateFish').textContent    = data.crateFish    != null ? data.crateFish.toLocaleString()    : 'N/A';
-  document.getElementById('crateKoth').textContent    = data.crateKoth    != null ? data.crateKoth.toLocaleString()    : 'N/A';
-  document.getElementById('crateRebirth').textContent = data.crateRebirth != null ? data.crateRebirth.toLocaleString() : 'N/A';
-  document.getElementById('crateTitan').textContent   = data.crateTitan   != null ? data.crateTitan.toLocaleString()   : 'N/A';
+  setNum('crateTotal',   data.crateTotal);
+  setNum('crateVote',    data.crateVote);
+  setNum('crateFish',    data.crateFish);
+  setNum('crateKoth',    data.crateKoth);
+  setNum('crateRebirth', data.crateRebirth);
+  setNum('crateTitan',   data.crateTitan);
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
   // Load achievements separately
   loadAchievements(data.uuid);
+  renderStatsGraph(data);
 
   document.getElementById('profileSection').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -655,6 +675,37 @@ function animCount(el, to) {
     if (p < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+}
+
+function setNum(id, val) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (val == null) { el.textContent = 'N/A'; return; }
+  var num = Number(val);
+  animCount(el, num);
+}
+
+function renderStatsGraph(data) {
+  var bars = [
+    { label: 'Tickets',  val: data.tickets      || 0, color: '#f0a500' },
+    { label: 'Money',    val: data.money         || 0, color: '#2ecc71' },
+    { label: 'Tokens',   val: data.tokens        || 0, color: '#5bb8d8' },
+    { label: 'Blocks',   val: data.totalBlocks   || 0, color: '#a78bfa' },
+    { label: 'Fish',     val: data.fishCaught    || 0, color: '#4fc3f7' },
+    { label: 'Crates',   val: data.crateTotal    || 0, color: '#e8873a' },
+    { label: 'Joins',    val: data.totalJoins    || 0, color: '#f472b6' },
+  ];
+  var max = Math.max.apply(null, bars.map(function(b){ return b.val; })) || 1;
+  var container = document.getElementById('statsGraph');
+  if (!container) return;
+  container.innerHTML = bars.map(function(b) {
+    var pct = Math.max((b.val / max) * 100, b.val > 0 ? 4 : 1);
+    return '<div class="graph-bar-group">'
+      + '<div class="graph-bar-val">' + (b.val > 999 ? (b.val/1000).toFixed(1)+'k' : b.val) + '</div>'
+      + '<div class="graph-bar" style="height:' + pct + '%;background:' + b.color + ';box-shadow:0 0 8px ' + b.color + '40;" title="' + b.label + ': ' + b.val.toLocaleString() + '"></div>'
+      + '<div class="graph-bar-label">' + b.label + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function timeAgo(date) {
