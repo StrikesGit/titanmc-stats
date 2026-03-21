@@ -295,13 +295,13 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             <div class="qs-card cs">
               <div class="cs-tag">Coming Soon</div>
               <div class="qs-label">💰 Balance</div>
-              <div class="qs-value na">N/A</div>
+              <div class="qs-value na" id="qsMoney">N/A</div>
               <div class="qs-sub">In-Game Money</div>
             </div>
             <div class="qs-card cs">
               <div class="cs-tag">Coming Soon</div>
               <div class="qs-label">🪙 Tokens</div>
-              <div class="qs-value na">N/A</div>
+              <div class="qs-value na" id="qsTokens">N/A</div>
               <div class="qs-sub">Token Balance</div>
             </div>
           </div>
@@ -368,12 +368,12 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                 <div class="curr-item cs">
                   <div class="cs-tag" style="font-size:7px;padding:2px 6px;">Soon</div>
                   <div class="curr-name">💰 Money</div>
-                  <div class="curr-val na">N/A</div>
+                  <div class="curr-val na" id="currMoney">N/A</div>
                 </div>
                 <div class="curr-item cs">
                   <div class="cs-tag" style="font-size:7px;padding:2px 6px;">Soon</div>
                   <div class="curr-name">🪙 Tokens</div>
-                  <div class="curr-val na">N/A</div>
+                  <div class="curr-val na" id="currTokens">N/A</div>
                 </div>
               </div>
             </div>
@@ -509,6 +509,12 @@ function renderPlayer(data) {
   document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
   document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
   document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
+  var moneyVal  = data.money  !== 'N/A' ? Number(data.money).toLocaleString()  : 'N/A';
+  var tokensVal = data.tokens !== 'N/A' ? Number(data.tokens).toLocaleString() : 'N/A';
+  document.getElementById('qsMoney').textContent   = moneyVal;
+  document.getElementById('qsTokens').textContent  = tokensVal;
+  document.getElementById('currMoney').textContent  = moneyVal;
+  document.getElementById('currTokens').textContent = tokensVal;
   document.getElementById('pickaxeOwner').textContent = data.name;
 
   var updated = data.last_updated ? new Date(data.last_updated) : null;
