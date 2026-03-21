@@ -38,7 +38,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// GET /api/player/:name
 app.get('/api/player/:name', async (req, res) => {
   const name = req.params.name.trim();
   if (!name || name.length > 16 || !/^[a-zA-Z0-9_]+$/.test(name)) {
@@ -55,7 +54,6 @@ app.get('/api/player/:name', async (req, res) => {
     }
     const player = rows[0];
 
-    // TitanRanks
     let rank = 'N/A', prestige = 'N/A', rebirth = 'N/A';
     try {
       const [r] = await pool.execute(
@@ -69,7 +67,6 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('TitanRanks:', e.message); }
 
-    // TitanTokens
     let tokens = null;
     try {
       const [r] = await pool.execute(
@@ -79,7 +76,6 @@ app.get('/api/player/:name', async (req, res) => {
       if (r.length > 0) tokens = Math.floor(r[0].balance);
     } catch(e) { console.warn('TitanTokens:', e.message); }
 
-    // TitanMoney
     let money = null, firstJoin = null, playtime = null, totalJoins = null;
     try {
       const [r] = await pool.execute(
@@ -105,7 +101,6 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('TitanMoney:', e.message); }
 
-    // TitanCellsHook — query by owner_uuid
     let cellName = null, cellMembers = null, cellOwnedSince = null;
     try {
       const [cellRows] = await pool.execute(
@@ -113,15 +108,15 @@ app.get('/api/player/:name', async (req, res) => {
         [player.uuid]
       );
       if (cellRows.length > 0) {
-        // Player can own multiple cells — join all cell names
+
         cellName = cellRows.map(r => r.cell_name).join(', ');
-        // Members from first cell (or combine all)
+
         const allMembers = cellRows
           .map(r => r.members)
           .filter(m => m && m.trim() !== '')
           .join(', ');
         cellMembers = allMembers || '0';
-        // Oldest owned_since
+
         const oldest = Math.min(...cellRows.map(r => Number(r.owned_since)));
         if (oldest && oldest > 0) {
           const d = new Date(oldest);
@@ -130,7 +125,6 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('TitanCellsHook:', e.message); }
 
-    // ExcellentCrates
     let crateTotal = null, crateVote = null, crateFish = null, crateKoth = null, crateRebirth = null, crateTitan = null;
     try {
       const [crateRows] = await pool.execute(
@@ -148,7 +142,6 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('ExcellentCrates:', e.message); }
 
-    // TitanCustomTool
     let totalBlocks = null, rawBlocks = null, fishCaught = null, currentPickaxe = null;
     try {
       const [r] = await pool.execute(
@@ -184,7 +177,6 @@ app.get('/api/player/:name', async (req, res) => {
   }
 });
 
-// GET /api/players
 app.get('/api/players', async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -197,7 +189,6 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-// GET /api/achievements/:uuid
 app.get('/api/achievements/:uuid', async (req, res) => {
   const uuid = req.params.uuid;
   try {
@@ -212,7 +203,6 @@ app.get('/api/achievements/:uuid', async (req, res) => {
   }
 });
 
-// GET /api/leaderboard
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -236,6 +226,6 @@ app.get('*', (req, res) => {
 
 initDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`🚀 TitanMC Stats running at http://localhost:${PORT}`);
+    console.log(`🚀 TitanMC Stats running at http:
   });
 });
