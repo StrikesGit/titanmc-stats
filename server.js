@@ -6,9 +6,6 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── DATABASE CONFIG ─────────────────────────────────────────────────────────
-// IMPORTANT: Move these to environment variables before going public!
-// Create a .env file and use dotenv, or set them in your server panel.
 const DB_CONFIG = {
   host: 'autorack.proxy.rlwy.net',
   port: 15703,
@@ -16,7 +13,7 @@ const DB_CONFIG = {
   password: 'OgQsuhtYXAoegrFqArBrtNSaBnxVZCYJ',
   database: 'railway',
   waitForConnections: true,
-  connectionLimit: 5,
+  connectionLimit: 10,
   queueLimit: 0,
   connectTimeout: 10000,
 };
@@ -28,44 +25,36 @@ let pool;
 async function initDB() {
   try {
     pool = mysql.createPool(DB_CONFIG);
-    // Test connection
     const conn = await pool.getConnection();
     console.log('✅ Connected to MySQL database!');
     conn.release();
   } catch (err) {
-    console.error('❌ Failed to connect to database:', err.message);
+    console.error('❌ Failed to connect to database:', err.message, err.code, err.errno);
     process.exit(1);
   }
 }
 
-// ─── MIDDLEWARE ──────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ─── API ROUTES ──────────────────────────────────────────────────────────────
-
-// GET /api/player/:name — Look up a player by username
+// GET /api/player/:name
 app.get('/api/player/:name', async (req, res) => {
   const name = req.params.name.trim();
-
   if (!name || name.length > 16 || !/^[a-zA-Z0-9_]+$/.test(name)) {
     return res.status(400).json({ error: 'Invalid player name.' });
   }
-
   try {
     const [rows] = await pool.execute(
       `SELECT uuid, name, balance, last_updated FROM \`${TABLE}\` WHERE name = ? LIMIT 1`,
       [name]
     );
-
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Player not found. They may have never joined the server.' });
     }
-
     const player = rows[0];
 
-    // Get ranks from TitanRanks
+    // Get rank data from TitanRanks
     let rank = 'N/A', prestige = 'N/A', rebirth = 'N/A';
     try {
       const [rankRows] = await pool.execute(
@@ -96,7 +85,7 @@ app.get('/api/player/:name', async (req, res) => {
   }
 });
 
-// GET /api/players — All players sorted by most recent
+// GET /api/players
 app.get('/api/players', async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -109,13 +98,12 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-// GET /api/achievements/:uuid — Get achievements for a player
-// GET /api/achievements/:uuid — Get achievements for a player
+// GET /api/achievements/:uuid
 app.get('/api/achievements/:uuid', async (req, res) => {
   const uuid = req.params.uuid;
   try {
     const [rows] = await pool.execute(
-      `SELECT achievement_id, obtained_at FROM \`titanachievements_data\` WHERE uuid = ?`,
+      `SELECT achievement_id, obtained_at FROM \`titanachievements_data\` WHERE uuid = ? ORDER BY obtained_at ASC`,
       [uuid]
     );
     res.json(rows.map(r => ({ id: r.achievement_id, obtained_at: r.obtained_at })));
@@ -125,13 +113,12 @@ app.get('/api/achievements/:uuid', async (req, res) => {
   }
 });
 
-// GET /api/leaderboard — Top 10 players by ticket balance
+// GET /api/leaderboard
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT uuid, name, balance FROM \`${TABLE}\` ORDER BY balance DESC LIMIT 10`
     );
-
     res.json(rows.map((r, i) => ({
       rank: i + 1,
       uuid: r.uuid,
@@ -144,12 +131,10 @@ app.get('/api/leaderboard', async (req, res) => {
   }
 });
 
-// Serve frontend for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── START ───────────────────────────────────────────────────────────────────
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 TitanMC Stats running at http://localhost:${PORT}`);
