@@ -130,6 +130,24 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('TitanCellsHook:', e.message); }
 
+    // ExcellentCrates
+    let crateTotal = null, crateVote = null, crateFish = null, crateKoth = null, crateRebirth = null, crateTitan = null;
+    try {
+      const [crateRows] = await pool.execute(
+        'SELECT crateData FROM `excellentcrates_users` WHERE uuid = ? LIMIT 1',
+        [player.uuid]
+      );
+      if (crateRows.length > 0 && crateRows[0].crateData) {
+        const cd = JSON.parse(crateRows[0].crateData);
+        crateVote    = cd.vote    ? (cd.vote.openings    ?? 0) : 0;
+        crateFish    = cd.fish    ? (cd.fish.openings    ?? 0) : 0;
+        crateKoth    = cd.koth    ? (cd.koth.openings    ?? 0) : 0;
+        crateRebirth = cd.rebirth ? (cd.rebirth.openings ?? 0) : 0;
+        crateTitan   = cd.titan   ? (cd.titan.openings   ?? 0) : 0;
+        crateTotal   = (crateVote + crateFish + crateKoth + crateRebirth + crateTitan);
+      }
+    } catch(e) { console.warn('ExcellentCrates:', e.message); }
+
     // TitanCustomTool
     let totalBlocks = null, rawBlocks = null, fishCaught = null, currentPickaxe = null;
     try {
@@ -157,6 +175,7 @@ app.get('/api/player/:name', async (req, res) => {
       firstJoin, playtime, totalJoins,
       cellName, cellMembers, cellOwnedSince,
       totalBlocks, rawBlocks, fishCaught, currentPickaxe,
+      crateTotal, crateVote, crateFish, crateKoth, crateRebirth, crateTitan,
     });
 
   } catch (err) {
