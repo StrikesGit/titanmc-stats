@@ -383,8 +383,8 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right" id="miningRawBlocks">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Caught</div><div class="srow-right" id="miningFish">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na" id="miningWard">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right" id="miningPrestige">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right" id="miningRebirth">N/A</div></div>
           </div>
 
           <div class="section">
@@ -504,7 +504,9 @@ function renderPlayer(data) {
   document.getElementById('badgeWard').textContent     = 'Ward: '     + (data.rank     || 'N/A');
   document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
   document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
-  document.getElementById('miningWard').textContent = data.rank || 'N/A';
+  document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
+  document.getElementById('miningPrestige').textContent = data.prestige || 'N/A';
+  document.getElementById('miningRebirth').textContent  = data.rebirth  || 'N/A';
   var blocksVal    = data.totalBlocks != null ? Number(data.totalBlocks).toLocaleString() : 'N/A';
   var rawBlocksVal = data.rawBlocks   != null ? Number(data.rawBlocks).toLocaleString()   : 'N/A';
   var fishVal      = data.fishCaught  != null ? Number(data.fishCaught).toLocaleString()  : 'N/A';
