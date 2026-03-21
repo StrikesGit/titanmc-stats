@@ -382,9 +382,9 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="section-title"><span class="sdl"></span>CELL</div>
               <div class="section-tag">JetsPrisonCells</div>
             </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🏠</div>Cell Location(s)</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">👥</div>Cell Members</div><div class="srow-right na">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>Owned Since</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏠</div>Cell Location(s)</div><div class="srow-right" id="cellName">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👥</div>Cell Members</div><div class="srow-right" id="cellMembers">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>Owned Since</div><div class="srow-right" id="cellOwnedSince">N/A</div></div>
           </div>
 
           <div class="section">
@@ -525,6 +525,9 @@ function renderPlayer(data) {
   document.getElementById('infoFirstJoin').textContent  = data.firstJoin   || 'N/A';
   document.getElementById('infoPlaytime').textContent   = data.playtime    || 'N/A';
   document.getElementById('infoTotalJoins').textContent = data.totalJoins  || 'N/A';
+  document.getElementById('cellName').textContent       = data.cellName       || 'N/A';
+  document.getElementById('cellMembers').textContent    = data.cellMembers    || 'N/A';
+  document.getElementById('cellOwnedSince').textContent = data.cellOwnedSince || 'N/A';
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
