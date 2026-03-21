@@ -83,13 +83,31 @@ app.get('/api/player/:name', async (req, res) => {
     }
 
     // TitanMoney (Vault bridge)
-    let money = null;
+    let money = null, firstJoin = null, playtime = null, totalJoins = null;
     try {
       const [moneyRows] = await pool.execute(
-        'SELECT balance FROM `titanmoney_data` WHERE uuid = ? LIMIT 1',
+        'SELECT balance, first_join, playtime, total_joins FROM `titanmoney_data` WHERE uuid = ? LIMIT 1',
         [player.uuid]
       );
-      if (moneyRows.length > 0) money = Math.floor(moneyRows[0].balance);
+      if (moneyRows.length > 0) {
+        money = Math.floor(moneyRows[0].balance);
+        // Format first_join timestamp
+        if (moneyRows[0].first_join) {
+          const d = new Date(moneyRows[0].first_join);
+          firstJoin = d.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
+        }
+        // Format playtime from milliseconds to readable
+        if (moneyRows[0].playtime) {
+          const ms = moneyRows[0].playtime;
+          const mins = Math.floor(ms / 60000);
+          const hours = Math.floor(mins / 60);
+          const days = Math.floor(hours / 24);
+          if (days > 0) playtime = days + 'd ' + (hours % 24) + 'h';
+          else if (hours > 0) playtime = hours + 'h ' + (mins % 60) + 'm';
+          else playtime = mins + 'm';
+        }
+        totalJoins = moneyRows[0].total_joins ?? 'N/A';
+      }
     } catch(e) {
       console.warn('TitanMoney query failed:', e.message);
     }
@@ -127,6 +145,9 @@ app.get('/api/player/:name', async (req, res) => {
       rawBlocks,
       fishCaught,
       currentPickaxe,
+      firstJoin,
+      playtime,
+      totalJoins,
     });
   } catch (err) {
     console.error('DB error:', err.message);
