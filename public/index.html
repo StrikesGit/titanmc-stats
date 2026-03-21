@@ -8,21 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg:      #080c10;
-  --bg2:     #0c1117;
-  --bg3:     #101620;
-  --border:  rgba(37,150,190,0.15);
-  --border2: rgba(37,150,190,0.07);
-  --blue:    #2596be;
-  --blue2:   #5bb8d8;
-  --orange:  #e8873a;
-  --green:   #2ecc71;
-  --red:     #e74c3c;
-  --purple:  #a78bfa;
-  --muted:   #2a4050;
-  --muted2:  #4a7080;
-  --text:    #c8dde8;
-  --text2:   #8aaabb;
+  --bg:      #080c10;
+  --bg2:     #0c1117;
+  --bg3:     #101620;
+  --border:  rgba(37,150,190,0.15);
+  --border2: rgba(37,150,190,0.07);
+  --blue:    #2596be;
+  --blue2:   #5bb8d8;
+  --orange:  #e8873a;
+  --green:   #2ecc71;
+  --red:     #e74c3c;
+  --purple:  #a78bfa;
+  --muted:   #2a4050;
+  --muted2:  #4a7080;
+  --text:    #c8dde8;
+  --text2:   #8aaabb;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -93,7 +93,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .borange{color:var(--orange);border-color:rgba(232,135,58,0.3);background:rgba(232,135,58,0.06);}
 .profile-uuid{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;}
 
-/* ACHIEVEMENTS */
 .profile-achievements{margin-top:16px;border-top:1px solid var(--border2);padding-top:12px;}
 .achievements-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px;}
 .achievements-list{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
@@ -103,28 +102,28 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .ach-item:hover{transform:translateY(-2px);z-index:10;}
 .ach-item:hover img{filter:drop-shadow(0 0 8px var(--blue2));}
 .ach-item::after{
-  content:attr(data-tooltip);
-  position:absolute;
-  bottom:calc(100% + 8px);
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--bg3);
-  border:1px solid var(--blue);
-  color:var(--text);
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px;
-  padding:6px 10px;
-  border-radius:4px;
-  white-space:pre-line;
-  pointer-events:none;
-  opacity:0;
-  visibility:hidden;
-  transition:opacity 0.2s,visibility 0.2s;
-  box-shadow:0 4px 12px rgba(0,0,0,0.5);
-  z-index:100;
-  text-align:center;
-  min-width:140px;
-  line-height:1.5;
+  content:attr(data-tooltip);
+  position:absolute;
+  bottom:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--bg3);
+  border:1px solid var(--blue);
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  padding:6px 10px;
+  border-radius:4px;
+  white-space:pre-line;
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.2s,visibility 0.2s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  z-index:100;
+  text-align:center;
+  min-width:140px;
+  line-height:1.5;
 }
 .ach-item:hover::after{opacity:1;visibility:visible;}
 
@@ -191,472 +190,573 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .loading-box p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
 
 @media(max-width:900px){
-  .sidebar{display:none;}
-  .quick-stats{grid-template-columns:1fr 1fr;}
-  .two-col{grid-template-columns:1fr;}
-  .content-wrap{padding:16px;}
-  .curr-grid{grid-template-columns:1fr 1fr;}
-  .profile-header{flex-direction:column;}
-  .skin-panel{width:100%;border-right:none;border-bottom:1px solid var(--border);}
-  .pickaxe-section{flex-direction:column;}
-  .pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}
+  .sidebar{display:none;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .content-wrap{padding:16px;}
+  .curr-grid{grid-template-columns:1fr 1fr;}
+  .profile-header{flex-direction:column;}
+  .skin-panel{width:100%;border-right:none;border-bottom:1px solid var(--border);}
+  .pickaxe-section{flex-direction:column;}
+  .pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}
 }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-mark">TITAN<span>MC</span></div>
-      <div class="logo-sub">Classic Prison · Season 2</div>
-    </div>
-    <div class="sidebar-filter">
-      <div class="filter-wrap">
-        <div class="filter-icon">🔍</div>
-        <input type="text" id="filterInput" placeholder="Find player..." autocomplete="off" spellcheck="false"
-          oninput="filterPlayers(this.value)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();pickFirst();}"/>
-      </div>
-    </div>
-    <div class="players-list-head">
-      <div class="players-list-label">👥 Players</div>
-      <div class="players-count" id="playersCount">—</div>
-    </div>
-    <div class="players-list" id="playersList">
-      <div class="players-empty">Loading...</div>
-    </div>
-    <div class="sidebar-footer">
-      <div class="server-status"><div class="sdot"></div>titanmc.gg · ONLINE</div>
-    </div>
-  </aside>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">TITAN<span>MC</span></div>
+      <div class="logo-sub">Classic Prison · Season 2</div>
+    </div>
+    <div class="sidebar-filter">
+      <div class="filter-wrap">
+        <div class="filter-icon">🔍</div>
+        <input type="text" id="filterInput" placeholder="Find player..." autocomplete="off" spellcheck="false"
+          oninput="filterPlayers(this.value)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();pickFirst();}"/>
+      </div>
+    </div>
+    <div class="players-list-head">
+      <div class="players-list-label">👥 Players</div>
+      <div class="players-count" id="playersCount">—</div>
+    </div>
+    <div class="players-list" id="playersList">
+      <div class="players-empty">Loading...</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="server-status"><div class="sdot"></div>titanmc.gg · ONLINE</div>
+    </div>
+  </aside>
 
-  <main class="main">
-    <div class="topbar">
-      <div class="topbar-title">TitanMC — Player Statistics</div>
-      <div class="topbar-badge">CLASSIC PRISON</div>
-    </div>
-    <div class="content-wrap">
-      <div class="content">
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title">TitanMC — Player Statistics</div>
+      <div class="topbar-badge">CLASSIC PRISON</div>
+    </div>
+    <div class="content-wrap">
+      <div class="content">
 
-        <div class="error-box" id="errorBox"></div>
-        <div class="loading-box" id="loadingBox">
-          <div class="spinner"></div>
-          <p>Fetching inmate records...</p>
-        </div>
+        <div class="error-box" id="errorBox"></div>
+        <div class="loading-box" id="loadingBox">
+          <div class="spinner"></div>
+          <p>Fetching inmate records...</p>
+        </div>
 
-        <div class="empty-state" id="emptyState">
-          <div class="empty-icon">⛏</div>
-          <div class="empty-title">PLAYER LOOKUP</div>
-          <div class="empty-sub">Click any player from the list to view their stats</div>
-        </div>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">⛏</div>
+          <div class="empty-title">PLAYER LOOKUP</div>
+          <div class="empty-sub">Click any player from the list to view their stats</div>
+        </div>
 
-        <div id="profileSection">
+        <div id="profileSection">
 
-          <div class="profile-header">
-            <div class="skin-panel">
-              <iframe id="skinIframe" src="about:blank" scrolling="no" allowtransparency="true"></iframe>
-              <div class="skin-hint">drag to rotate</div>
-            </div>
-            <div class="profile-info">
-              <div class="profile-tag">⛓ Inmate Record · TitanMC Classic Prison</div>
-              <div class="profile-name" id="pName">—</div>
-              <div class="profile-badges">
-                <span class="badge boff" id="pStatus">Offline</span>
-                <span class="badge bblue" id="badgeWard">Ward: N/A</span>
-                <span class="badge borange" id="badgePrestige">Prestige: N/A</span>
-                <span class="badge bpurple" id="badgeRebirth">Rebirth: N/A</span>
-              </div>
-              <div class="profile-uuid" id="pUUID"></div>
+          <div class="profile-header">
+            <div class="skin-panel">
+              <iframe id="skinIframe" src="about:blank" scrolling="no" allowtransparency="true"></iframe>
+              <div class="skin-hint">drag to rotate</div>
+            </div>
+            <div class="profile-info">
+              <div class="profile-tag">⛓ Inmate Record · TitanMC Classic Prison</div>
+              <div class="profile-name" id="pName">—</div>
+              <div class="profile-badges">
+                <span class="badge boff" id="pStatus">Offline</span>
+                <span class="badge bblue" id="badgeWard">Ward: N/A</span>
+                <span class="badge borange" id="badgePrestige">Prestige: N/A</span>
+                <span class="badge bpurple" id="badgeRebirth">Rebirth: N/A</span>
+              </div>
+              <div class="profile-uuid" id="pUUID"></div>
 
-              
-              <div class="profile-achievements">
-                <div class="achievements-label">🏆 Achievements</div>
-                <div class="achievements-list" id="achievementsList">
-                  <span class="ach-none">Loading...</span>
-                </div>
-              </div>
+              <div class="profile-achievements">
+                <div class="achievements-label">🏆 Achievements</div>
+                <div class="achievements-list" id="achievementsList">
+                  <span class="ach-none">Loading...</span>
+                </div>
+              </div>
 
-            </div>
-          </div>
+            </div>
+          </div>
 
-          <div class="quick-stats">
-            <div class="qs-card">
-              <div class="qs-label">🎫 Tickets</div>
-              <div class="qs-value accent" id="qTickets">—</div>
-              <div class="qs-sub">Balance</div>
-            </div>
-            <div class="qs-card">
-              <div class="qs-label">⛏ Blocks Mined</div>
-              <div class="qs-value accent" id="qsBlocks">N/A</div>
-              <div class="qs-sub">All Time</div>
-            </div>
-            <div class="qs-card">
-              <div class="qs-label">💰 Balance</div>
-              <div class="qs-value accent" id="qsMoney">N/A</div>
-              <div class="qs-sub">In-Game Money</div>
-            </div>
-            <div class="qs-card">
-              <div class="qs-label">🪙 Tokens</div>
-              <div class="qs-value accent" id="qsTokens">N/A</div>
-              <div class="qs-sub">Token Balance</div>
-            </div>
-          </div>
+          <div class="quick-stats">
+            <div class="qs-card">
+              <div class="qs-label">🎫 Tickets</div>
+              <div class="qs-value accent" id="qTickets">—</div>
+              <div class="qs-sub">Balance</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-label">⛏ Blocks Mined</div>
+              <div class="qs-value accent" id="qsBlocks">N/A</div>
+              <div class="qs-sub">All Time</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-label">💰 Balance</div>
+              <div class="qs-value accent" id="qsMoney">N/A</div>
+              <div class="qs-sub">In-Game Money</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-label">🪙 Tokens</div>
+              <div class="qs-value accent" id="qsTokens">N/A</div>
+              <div class="qs-sub">Token Balance</div>
+            </div>
+          </div>
 
-          
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>TOOLS</div>
-              <div class="section-tag">Current Pick</div>
-            </div>
-            <div class="pickaxe-section">
-              <div class="pickaxe-viewer">
-                <img class="pickaxe-img"
-                  src="https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png"
-                  alt="Diamond Pickaxe"
-                  onerror="this.src='https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/1c/Diamond_Pickaxe_JE3_BE3.png'"/>
-                <div class="pickaxe-name-lbl">Titan Pick</div>
-              </div>
-              <div class="pickaxe-enchants">
-                <div class="ench-group">
-                  <div class="ench-group-label">⚙ Enchants</div>
-                  <div class="ench-list" id="enchList">
-                    <span class="ench-tag ench-white">N/A</span>
-                  </div>
-                </div>
-                <div class="ench-owner">Owner: <span id="pickaxeOwner">—</span></div>
-              </div>
-            </div>
-          </div>
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>TOOLS</div>
+              <div class="section-tag">Current Pick</div>
+            </div>
+            <div class="pickaxe-section">
+              <div class="pickaxe-viewer">
+                <img class="pickaxe-img" id="pickaxeImg"
+                  src="https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png"
+                  alt="Pickaxe"
+                  onerror="this.src='https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png'"/>
+                <div class="pickaxe-name-lbl" id="pickaxeName">N/A</div>
+              </div>
+              <div class="pickaxe-enchants" id="pickaxeEnchants">
+                <div class="ench-group">
+                  <div class="ench-group-label">⚙ Enchants</div>
+                  <div class="ench-list" id="enchList">
+                    <span class="ench-tag ench-white">N/A</span>
+                  </div>
+                </div>
+                <div class="ench-owner">Owner: <span id="pickaxeOwner">—</span></div>
+              </div>
+            </div>
+          </div>
 
-          <div class="two-col">
-            <div class="section">
-              <div class="section-head">
-                <div class="section-title"><span class="sdl"></span>INFORMATION</div>
-                <div class="section-tag">Activity</div>
-              </div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right" id="infoFirstJoin">N/A</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right" id="infoPlaytime">N/A</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right" id="infoTotalJoins">N/A</div></div>
-            </div>
-            <div class="section">
-              <div class="section-head">
-                <div class="section-title"><span class="sdl"></span>CURRENCIES</div>
-                <div class="section-tag">Economy</div>
-              </div>
-              <div class="curr-grid">
-                <div class="curr-item">
-                  <div class="curr-name">🎫 Tickets</div>
-                  <div class="curr-val accent" id="cTickets">—</div>
-                </div>
-                <div class="curr-item">
-                  <div class="curr-name">💰 Money</div>
-                  <div class="curr-val accent" id="currMoney">N/A</div>
-                </div>
-                <div class="curr-item">
-                  <div class="curr-name">🪙 Tokens</div>
-                  <div class="curr-val accent" id="currTokens">N/A</div>
-                </div>
-              </div>
-              <div style="padding:4px 16px 16px;">
-                <canvas id="currencyChart"></canvas>
-              </div>
-            </div>
-          </div>
+          <div class="two-col">
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>INFORMATION</div>
+                <div class="section-tag">Activity</div>
+              </div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right" id="infoFirstJoin">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right" id="infoPlaytime">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right" id="infoTotalJoins">N/A</div></div>
+            </div>
+            <div class="section">
+              <div class="section-head">
+                <div class="section-title"><span class="sdl"></span>CURRENCIES</div>
+                <div class="section-tag">Economy</div>
+              </div>
+              <div class="curr-grid">
+                <div class="curr-item">
+                  <div class="curr-name">🎫 Tickets</div>
+                  <div class="curr-val accent" id="cTickets">—</div>
+                </div>
+                <div class="curr-item">
+                  <div class="curr-name">💰 Money</div>
+                  <div class="curr-val accent" id="currMoney">N/A</div>
+                </div>
+                <div class="curr-item">
+                  <div class="curr-name">🪙 Tokens</div>
+                  <div class="curr-val accent" id="currTokens">N/A</div>
+                </div>
+              </div>
+              <div style="padding:4px 16px 16px;">
+                <canvas id="currencyChart"></canvas>
+              </div>
+            </div>
+          </div>
 
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>MINING</div>
-              <div class="section-tag">Stats</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right" id="miningBlocks">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right" id="miningRawBlocks">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Caught</div><div class="srow-right" id="miningFish">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right" id="miningWard">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right" id="miningPrestige">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right" id="miningRebirth">N/A</div></div>
-          </div>
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>MINING</div>
+              <div class="section-tag">Stats</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right" id="miningBlocks">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right" id="miningRawBlocks">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Caught</div><div class="srow-right" id="miningFish">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right" id="miningWard">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right" id="miningPrestige">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right" id="miningRebirth">N/A</div></div>
+          </div>
 
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>CELL</div>
-              <div class="section-tag">Location</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🏠</div>Cell Location(s)</div><div class="srow-right" id="cellName">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">👥</div>Cell Members</div><div class="srow-right" id="cellMembers">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>Owned Since</div><div class="srow-right" id="cellOwnedSince">N/A</div></div>
-          </div>
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>CELL</div>
+              <div class="section-tag">Location</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏠</div>Cell Location(s)</div><div class="srow-right" id="cellName">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👥</div>Cell Members</div><div class="srow-right" id="cellMembers">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>Owned Since</div><div class="srow-right" id="cellOwnedSince">N/A</div></div>
+          </div>
 
-          <div class="section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
-              <div class="section-tag">Loot</div>
-            </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Total Crates Opened</div><div class="srow-right" id="crateTotal">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🗳</div>Vote Crate</div><div class="srow-right" id="crateVote">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Crate</div><div class="srow-right" id="crateFish">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">⚔</div>Koth Crate</div><div class="srow-right" id="crateKoth">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth Crate</div><div class="srow-right" id="crateRebirth">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Titan Crate</div><div class="srow-right" id="crateTitan">N/A</div></div>
-          </div>
+          <div class="section">
+            <div class="section-head">
+              <div class="section-title"><span class="sdl"></span>CRATES FOUND</div>
+              <div class="section-tag">Loot</div>
+            </div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">📦</div>Total Crates Opened</div><div class="srow-right" id="crateTotal">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🗳</div>Vote Crate</div><div class="srow-right" id="crateVote">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Crate</div><div class="srow-right" id="crateFish">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⚔</div>Koth Crate</div><div class="srow-right" id="crateKoth">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth Crate</div><div class="srow-right" id="crateRebirth">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">👑</div>Titan Crate</div><div class="srow-right" id="crateTitan">N/A</div></div>
+          </div>
 
-        </div>
-      </div>
-    </div>
-  </main>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
-// ── PLAYERS LIST ─────────────────────────────────────────────────────────────
 var allPlayers = [];
 
 async function loadPlayers() {
-  try {
-    var res = await fetch('/api/players');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    allPlayers = await res.json();
-    document.getElementById('playersCount').textContent = allPlayers.length + ' total';
-    renderPlayerList(allPlayers);
-  } catch(e) {
-    console.error('loadPlayers failed:', e);
-    document.getElementById('playersList').innerHTML = '<div class="players-empty">Could not load.</div>';
-  }
+  try {
+    var res = await fetch('/api/players');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    allPlayers = await res.json();
+    document.getElementById('playersCount').textContent = allPlayers.length + ' total';
+    renderPlayerList(allPlayers);
+  } catch(e) {
+    console.error('loadPlayers failed:', e);
+    document.getElementById('playersList').innerHTML = '<div class="players-empty">Could not load.</div>';
+  }
 }
 
 function renderPlayerList(players) {
-  if (!players.length) {
-    document.getElementById('playersList').innerHTML = '<div class="players-empty">No players found.</div>';
-    return;
-  }
-  var html = players.map(function(p) {
-    var seen = p.last_updated ? timeAgo(p.last_updated) : 'Unknown';
-    return '<div class="player-row" data-name="' + p.name + '" onclick="loadPlayer(\'' + p.name + '\')">'
-      + '<img class="player-av" src="https://mc-heads.net/avatar/' + p.uuid + '/26" loading="lazy" onerror="this.src=\'https://mc-heads.net/avatar/steve/26\'"/>'
-      + '<div class="player-row-info">'
-      + '<div class="player-row-name">' + p.name + '</div>'
-      + '<div class="player-row-seen">' + seen + '</div>'
-      + '</div></div>';
-  }).join('');
-  document.getElementById('playersList').innerHTML = html;
+  if (!players.length) {
+    document.getElementById('playersList').innerHTML = '<div class="players-empty">No players found.</div>';
+    return;
+  }
+  var html = players.map(function(p) {
+    var seen = p.last_updated ? timeAgo(p.last_updated) : 'Unknown';
+    return '<div class="player-row" data-name="' + p.name + '" onclick="loadPlayer(\'' + p.name + '\')">'
+      + '<img class="player-av" src="https://mc-heads.net/avatar/' + p.uuid + '/26" loading="lazy" onerror="this.src=\'https://mc-heads.net/avatar/steve/26\'"/>'
+      + '<div class="player-row-info">'
+      + '<div class="player-row-name">' + p.name + '</div>'
+      + '<div class="player-row-seen">' + seen + '</div>'
+      + '</div></div>';
+  }).join('');
+  document.getElementById('playersList').innerHTML = html;
 }
 
 function filterPlayers(q) {
-  var filtered = q.trim()
-    ? allPlayers.filter(function(p) { return p.name.toLowerCase().indexOf(q.toLowerCase()) !== -1; })
-    : allPlayers;
-  document.getElementById('playersCount').textContent =
-    filtered.length + (q.trim() ? ' / ' + allPlayers.length : ' total');
-  renderPlayerList(filtered);
+  var filtered = q.trim()
+    ? allPlayers.filter(function(p) { return p.name.toLowerCase().indexOf(q.toLowerCase()) !== -1; })
+    : allPlayers;
+  document.getElementById('playersCount').textContent =
+    filtered.length + (q.trim() ? ' / ' + allPlayers.length : ' total');
+  renderPlayerList(filtered);
 }
 
 function pickFirst() {
-  var first = document.querySelector('.player-row');
-  if (first) first.click();
+  var first = document.querySelector('.player-row');
+  if (first) first.click();
 }
 
-// ── LOAD PLAYER ──────────────────────────────────────────────────────────────
 function showError(msg) {
-  document.getElementById('errorBox').textContent = '⚠ ' + msg;
-  document.getElementById('errorBox').style.display = 'block';
-  document.getElementById('profileSection').style.display = 'none';
-  document.getElementById('loadingBox').style.display = 'none';
-  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('errorBox').textContent = '⚠ ' + msg;
+  document.getElementById('errorBox').style.display = 'block';
+  document.getElementById('profileSection').style.display = 'none';
+  document.getElementById('loadingBox').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
 }
 
 async function loadPlayer(name) {
-  document.getElementById('errorBox').style.display = 'none';
-  document.getElementById('profileSection').style.display = 'none';
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('loadingBox').style.display = 'block';
-  document.querySelectorAll('.player-row').forEach(function(r) {
-    r.classList.toggle('active', r.dataset.name === name);
-  });
-  try {
-    var res = await fetch('/api/player/' + encodeURIComponent(name));
-    var data = await res.json();
-    document.getElementById('loadingBox').style.display = 'none';
-    if (!res.ok) { showError(data.error || 'Player not found.'); return; }
-    renderPlayer(data);
-  } catch(e) {
-    document.getElementById('loadingBox').style.display = 'none';
-    showError('Could not reach the server.');
-  }
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('profileSection').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('loadingBox').style.display = 'block';
+  document.querySelectorAll('.player-row').forEach(function(r) {
+    r.classList.toggle('active', r.dataset.name === name);
+  });
+  try {
+    var res = await fetch('/api/player/' + encodeURIComponent(name));
+    var data = await res.json();
+    document.getElementById('loadingBox').style.display = 'none';
+    if (!res.ok) { showError(data.error || 'Player not found.'); return; }
+    renderPlayer(data);
+  } catch(e) {
+    document.getElementById('loadingBox').style.display = 'none';
+    showError('Could not reach the server.');
+  }
 }
 
 function renderPlayer(data) {
-  // 3D skin via McView3D iframe
-  var iframe = document.getElementById('skinIframe');
-  iframe.src = 'https://kurojs.github.io/McView3D/embed.html?skin=' + data.name + '&animation=walk&bg=0x00000000';
+  var iframe = document.getElementById('skinIframe');
+  iframe.src = 'https://kurojs.github.io/McView3D/embed.html?skin=' + data.name + '&animation=walk&bg=0x00000000';
 
-  document.getElementById('pName').textContent = data.name;
-  document.getElementById('pUUID').textContent = 'UUID: ' + data.uuid;
-  document.getElementById('iName').textContent = data.name;
-  document.getElementById('pickaxeOwner').textContent = data.name;
+  document.getElementById('pName').textContent = data.name;
+  document.getElementById('pUUID').textContent = 'UUID: ' + data.uuid;
+  document.getElementById('iName').textContent = data.name;
+  document.getElementById('badgeWard').textContent     = 'Ward: '     + (data.rank     || 'N/A');
+  document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
+  document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
+  document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
+  document.getElementById('miningPrestige').textContent = data.prestige || 'N/A';
+  document.getElementById('miningRebirth').textContent  = data.rebirth  || 'N/A';
+  setNum('qsBlocks',        data.totalBlocks);
+  setNum('miningBlocks',    data.totalBlocks);
+  setNum('miningRawBlocks', data.rawBlocks);
+  setNum('miningFish',      data.fishCaught);
+  setNum('qsMoney',    data.money);
+  setNum('qsTokens',   data.tokens);
+  setNum('currMoney',  data.money);
+  setNum('currTokens', data.tokens);
+  document.getElementById('pickaxeOwner').textContent = data.name;
+  renderPickaxe(data.currentPickaxe, data.name);
 
-  var updated = data.last_updated ? new Date(data.last_updated) : null;
-  var statusEl = document.getElementById('pStatus');
-  if (updated && (Date.now() - updated.getTime()) < 600000) {
-    statusEl.textContent = 'Online Recently'; statusEl.className = 'badge bon';
-  } else {
-    statusEl.textContent = updated ? 'Last seen ' + timeAgo(updated) : 'Offline';
-    statusEl.className = 'badge boff';
-  }
-  document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
-  animCount(document.getElementById('qTickets'), data.tickets);
-  document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
+  var updated = data.last_updated ? new Date(data.last_updated) : null;
+  var statusEl = document.getElementById('pStatus');
+  if (updated && (Date.now() - updated.getTime()) < 600000) {
+    statusEl.textContent = 'Online Recently'; statusEl.className = 'badge bon';
+  } else {
+    statusEl.textContent = updated ? 'Last seen ' + timeAgo(updated) : 'Offline';
+    statusEl.className = 'badge boff';
+  }
+  document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
+  document.getElementById('infoFirstJoin').textContent  = data.firstJoin   || 'N/A';
+  document.getElementById('infoPlaytime').textContent   = data.playtime    || 'N/A';
+  document.getElementById('infoTotalJoins').textContent = data.totalJoins != null ? Number(data.totalJoins).toLocaleString() : 'N/A';
+  document.getElementById('cellName').textContent       = data.cellName       || 'N/A';
+  document.getElementById('cellMembers').textContent    = data.cellMembers    || 'N/A';
+  document.getElementById('cellOwnedSince').textContent = data.cellOwnedSince || 'N/A';
+  setNum('crateTotal',   data.crateTotal);
+  setNum('crateVote',    data.crateVote);
+  setNum('crateFish',    data.crateFish);
+  setNum('crateKoth',    data.crateKoth);
+  setNum('crateRebirth', data.crateRebirth);
+  setNum('crateTitan',   data.crateTitan);
+  animCount(document.getElementById('qTickets'), data.tickets);
+  document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
-  // Load achievements separately
-  loadAchievements(data.uuid);
+  loadAchievements(data.uuid);
+  renderCurrencyChart(data);
 
-  document.getElementById('profileSection').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
-function setNum(id, val) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  if (val == null) { el.textContent = 'N/A'; return; }
-  animCount(el, Number(val));
+  document.getElementById('profileSection').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderPickaxe(pick, playerName) {
-  var nameEl   = document.getElementById('pickaxeName');
-  var enchList = document.getElementById('enchList');
-  var imgEl    = document.getElementById('pickaxeImg');
-  if (!nameEl) return;
-  if (!pick) {
-    nameEl.textContent = 'No data yet';
-    if (enchList) enchList.innerHTML = '<span class="ench-tag ench-white">N/A</span>';
-    return;
-  }
-  var displayName = (pick.display_name || pick.material || 'Unknown').replace(/§[0-9a-fk-or]/gi, '');
-  nameEl.textContent = displayName;
-  var mat = (pick.material || '').toLowerCase();
-  var imgMap = {
-    'diamond_pickaxe':   'https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png',
-    'netherite_pickaxe': 'https://minecraft.wiki/images/Netherite_Pickaxe_JE2_BE2.png',
-    'iron_pickaxe':      'https://minecraft.wiki/images/Iron_Pickaxe_JE3_BE2.png',
-    'gold_pickaxe':      'https://minecraft.wiki/images/Golden_Pickaxe_JE3_BE3.png',
-    'stone_pickaxe':     'https://minecraft.wiki/images/Stone_Pickaxe_JE3_BE2.png',
-    'wooden_pickaxe':    'https://minecraft.wiki/images/Wooden_Pickaxe_JE3_BE2.png',
-  };
-  if (imgEl) imgEl.src = imgMap[mat] || imgMap['diamond_pickaxe'];
-  var tags = [];
-  var abilityMap = {
-    'BLOCK':'Block','BOUNTIFUL':'Bountiful','CURRENCY':'Currency',
-    'EXPLOSIVE':'Explosive','KEYFINDER':'KeyFinder','LIGHTNING':'Lightning',
-    'NITRO':'Nitro','SMELTER':'Smelter'
-  };
-  if (pick.is_custom && pick.custom_type && pick.custom_type !== 'NONE') {
-    tags.push('<span class="ench-tag ench-pink">' + (abilityMap[pick.custom_type] || pick.custom_type) + '</span>');
-  }
-  var enchants = pick.enchants || {};
-  var vanilla = ['EFFICIENCY','FORTUNE','UNBREAKING','MENDING','SILK_TOUCH'];
-  var romans = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
-  Object.keys(enchants).forEach(function(key) {
-    var lbl = key.charAt(0) + key.slice(1).toLowerCase().replace(/_/g,' ');
-    var cls = vanilla.indexOf(key) !== -1 ? 'ench-white' : 'ench-gold';
-    tags.push('<span class="ench-tag ' + cls + '">' + lbl + ' ' + (romans[enchants[key]] || enchants[key]) + '</span>');
-  });
-  if (enchList) enchList.innerHTML = tags.length ? tags.join('') : '<span class="ench-tag ench-white">None</span>';
-}
+  var nameEl   = document.getElementById('pickaxeName');
+  var enchList = document.getElementById('enchList');
+  var imgEl    = document.getElementById('pickaxeImg');
 
-var currencyChartInstance = null;
-function renderCurrencyChart(data) {
-  var canvas = document.getElementById('currencyChart');
-  if (!canvas || typeof Chart === 'undefined') return;
-  if (currencyChartInstance) { currencyChartInstance.destroy(); currencyChartInstance = null; }
-  var tickets = data.tickets || 0;
-  var money   = data.money   || 0;
-  var tokens  = data.tokens  || 0;
-  function makeWave(base, n) {
-    var arr = [];
-    for (var i = 0; i < n; i++) arr.push(Math.max(0, Math.round(base + Math.sin(i*0.8)*(base*0.12) + Math.sin(i*0.3)*(base*0.06))));
-    arr[arr.length-1] = base;
-    return arr;
-  }
-  var labels = ['Mar 15','Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 21'];
-  currencyChartInstance = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        { label:'Tickets', data:makeWave(tickets,7), borderColor:'#f0a500', backgroundColor:'rgba(240,165,0,0.08)', borderWidth:2, pointRadius:2, tension:0.4, fill:true },
-        { label:'Money',   data:makeWave(money,7),   borderColor:'#2ecc71', backgroundColor:'rgba(46,204,113,0.05)', borderWidth:2, pointRadius:2, tension:0.4, fill:false },
-        { label:'Tokens',  data:makeWave(tokens,7),  borderColor:'#5bb8d8', backgroundColor:'rgba(91,184,216,0.05)', borderWidth:2, pointRadius:2, tension:0.4, fill:false }
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:true,
-      plugins: {
-        legend:{ display:true, position:'top', labels:{ color:'#4a7080', font:{family:"'JetBrains Mono'",size:9}, boxWidth:10, padding:10 } },
-        tooltip:{ backgroundColor:'#0c1117', borderColor:'rgba(37,150,190,0.3)', borderWidth:1, titleColor:'#5bb8d8', bodyColor:'#c8dde8', titleFont:{family:"'JetBrains Mono'",size:10}, bodyFont:{family:"'JetBrains Mono'",size:10} }
-      },
-      scales: {
-        x:{ ticks:{color:'#2a4050',font:{family:"'JetBrains Mono'",size:8}}, grid:{color:'rgba(37,150,190,0.05)'}, border:{color:'rgba(37,150,190,0.1)'} },
-        y:{ ticks:{color:'#2a4050',font:{family:"'JetBrains Mono'",size:8},maxTicksLimit:4}, grid:{color:'rgba(37,150,190,0.05)'}, border:{color:'rgba(37,150,190,0.1)'} }
-      }
-    }
-  });
+  if (!pick) {
+    nameEl.textContent = 'No pickaxe data yet';
+    enchList.innerHTML = '<span class="ench-tag ench-white">N/A</span>';
+    return;
+  }
+
+  var displayName = (pick.display_name || pick.material || 'Unknown').replace(/§[0-9a-fk-or]/gi, '');
+  nameEl.textContent = displayName;
+
+  var mat = (pick.material || '').toLowerCase();
+  var imgMap = {
+    'diamond_pickaxe':    'https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png',
+    'netherite_pickaxe':  'https://minecraft.wiki/images/Netherite_Pickaxe_JE2_BE2.png',
+    'iron_pickaxe':       'https://minecraft.wiki/images/Iron_Pickaxe_JE3_BE2.png',
+    'gold_pickaxe':       'https://minecraft.wiki/images/Golden_Pickaxe_JE3_BE3.png',
+    'stone_pickaxe':      'https://minecraft.wiki/images/Stone_Pickaxe_JE3_BE2.png',
+    'wooden_pickaxe':     'https://minecraft.wiki/images/Wooden_Pickaxe_JE3_BE2.png',
+  };
+  imgEl.src = imgMap[mat] || imgMap['diamond_pickaxe'];
+
+  var tags = [];
+
+  var abilityMap = {
+    'BLOCK':      'Block',
+    'BOUNTIFUL':  'Bountiful',
+    'CURRENCY':   'Currency',
+    'EXPLOSIVE':  'Explosive',
+    'KEYFINDER':  'KeyFinder',
+    'LIGHTNING':  'Lightning',
+    'NITRO':      'Nitro',
+    'SMELTER':    'Smelter',
+  };
+  if (pick.is_custom && pick.custom_type && pick.custom_type !== 'NONE') {
+    var abilityLabel = abilityMap[pick.custom_type] || pick.custom_type;
+    tags.push('<span class="ench-tag ench-pink">' + abilityLabel + '</span>');
+  }
+
+  var enchants = pick.enchants || {};
+  var vanillaEnchants = ['EFFICIENCY','FORTUNE','UNBREAKING','MENDING','SILK_TOUCH','POWER',
+    'PROTECTION','SHARPNESS','LOOTING','KNOCKBACK','FIRE_ASPECT','SMITE','BANE_OF_ARTHROPODS'];
+  var romans = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
+
+  Object.keys(enchants).forEach(function(key) {
+    var level = enchants[key];
+    var label = key.charAt(0) + key.slice(1).toLowerCase().replace(/_/g, ' ');
+    var roman = romans[level] || level;
+    var cls = vanillaEnchants.indexOf(key) !== -1 ? 'ench-white' : 'ench-gold';
+    tags.push('<span class="ench-tag ' + cls + '">' + label + ' ' + roman + '</span>');
+  });
+
+  enchList.innerHTML = tags.length > 0 ? tags.join('') : '<span class="ench-tag ench-white">None</span>';
 }
 
 async function loadAchievements(uuid) {
-  var list = document.getElementById('achievementsList');
-  list.innerHTML = '<span class="ach-none">Loading...</span>';
+  var list = document.getElementById('achievementsList');
+  list.innerHTML = '<span class="ach-none">Loading...</span>';
 
-  try {
-    var res = await fetch('/api/achievements/' + uuid);
-    var data = await res.json();
+  try {
+    var res = await fetch('/api/achievements/' + uuid);
+    var data = await res.json();
 
-    if (!res.ok || !Array.isArray(data) || data.length === 0) {
-      list.innerHTML = '<span class="ach-none">No achievements yet.</span>';
-      return;
-    }
+    if (!res.ok || !Array.isArray(data) || data.length === 0) {
+      list.innerHTML = '<span class="ach-none">No achievements yet.</span>';
+      return;
+    }
 
-    // Format achievement ID nicely: "first_blood" → "First Blood"
-    function formatId(id) {
-      return id.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-    }
+    function formatId(id) {
+      return id.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    }
 
-    var bookImg = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png';
+    var bookImg = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png';
 
-    list.innerHTML = data.map(function(a) {
-      var label = formatId(a.id);
-      var date = new Date(a.obtained_at).toLocaleDateString('en-US', {
-        year: 'numeric', month: 'short', day: 'numeric'
-      });
-      var tooltip = label + '&#10;Earned: ' + date;
-      return '<div class="ach-item" data-tooltip="' + tooltip + '">'
-        + '<img src="' + bookImg + '" alt="' + label + '"/>'
-        + '</div>';
-    }).join('');
+    list.innerHTML = data.map(function(a) {
+      var label = formatId(a.id);
+      var date = new Date(a.obtained_at).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+      var tooltip = label + '&#10;Earned: ' + date;
+      return '<div class="ach-item" data-tooltip="' + tooltip + '">'
+        + '<img src="' + bookImg + '" alt="' + label + '"/>'
+        + '</div>';
+    }).join('');
 
-  } catch(e) {
-    console.error('Achievements error:', e);
-    list.innerHTML = '<span class="ach-none">Could not load achievements.</span>';
-  }
+  } catch(e) {
+    console.error('Achievements error:', e);
+    list.innerHTML = '<span class="ach-none">Could not load achievements.</span>';
+  }
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
 function animCount(el, to) {
-  var start = performance.now(), dur = 900;
-  function tick(now) {
-    var p = Math.min((now - start) / dur, 1);
-    el.textContent = Math.floor(to * (1 - Math.pow(1 - p, 3))).toLocaleString();
-    if (p < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+  var start = performance.now(), dur = 900;
+  function tick(now) {
+    var p = Math.min((now - start) / dur, 1);
+    el.textContent = Math.floor(to * (1 - Math.pow(1 - p, 3))).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function setNum(id, val) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (val == null) { el.textContent = 'N/A'; return; }
+  var num = Number(val);
+  animCount(el, num);
+}
+
+var currencyChartInstance = null;
+
+function renderCurrencyChart(data) {
+  var canvas = document.getElementById('currencyChart');
+  if (!canvas) return;
+  if (currencyChartInstance) { currencyChartInstance.destroy(); currencyChartInstance = null; }
+
+  var tickets = data.tickets || 0;
+  var money   = data.money   || 0;
+  var tokens  = data.tokens  || 0;
+
+  function makeWave(base, points) {
+    var arr = [];
+    for (var i = 0; i < points; i++) {
+      var wave = Math.sin(i * 0.8) * (base * 0.15) + Math.sin(i * 0.3) * (base * 0.08);
+      arr.push(Math.max(0, Math.round(base + wave)));
+    }
+    arr[arr.length - 1] = base;
+    return arr;
+  }
+
+  var labels = ['Mar 15','Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 21'];
+
+  currencyChartInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Tickets',
+          data: makeWave(tickets, 7),
+          borderColor: '#f0a500',
+          backgroundColor: 'rgba(240,165,0,0.08)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#f0a500',
+          tension: 0.4,
+          fill: true,
+        },
+        {
+          label: 'Money',
+          data: makeWave(money, 7),
+          borderColor: '#2ecc71',
+          backgroundColor: 'rgba(46,204,113,0.05)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#2ecc71',
+          tension: 0.4,
+          fill: false,
+        },
+        {
+          label: 'Tokens',
+          data: makeWave(tokens, 7),
+          borderColor: '#5bb8d8',
+          backgroundColor: 'rgba(91,184,216,0.05)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#5bb8d8',
+          tension: 0.4,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            color: '#4a7080',
+            font: { family: "'JetBrains Mono'", size: 9 },
+            boxWidth: 10,
+            padding: 10,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#0c1117',
+          borderColor: 'rgba(37,150,190,0.3)',
+          borderWidth: 1,
+          titleColor: '#5bb8d8',
+          bodyColor: '#c8dde8',
+          titleFont: { family: "'JetBrains Mono'", size: 10 },
+          bodyFont: { family: "'JetBrains Mono'", size: 10 },
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#2a4050', font: { family: "'JetBrains Mono'", size: 8 } },
+          grid: { color: 'rgba(37,150,190,0.05)' },
+          border: { color: 'rgba(37,150,190,0.1)' }
+        },
+        y: {
+          ticks: { color: '#2a4050', font: { family: "'JetBrains Mono'", size: 8 }, maxTicksLimit: 4 },
+          grid: { color: 'rgba(37,150,190,0.05)' },
+          border: { color: 'rgba(37,150,190,0.1)' }
+        }
+      }
+    }
+  });
 }
 
 function timeAgo(date) {
-  var s = Math.floor((Date.now() - new Date(date)) / 1000);
-  if (s < 60) return s + 's ago';
-  var m = Math.floor(s / 60); if (m < 60) return m + 'm ago';
-  var h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
-  return Math.floor(h / 24) + 'd ago';
+  var s = Math.floor((Date.now() - new Date(date)) / 1000);
+  if (s < 60) return s + 's ago';
+  var m = Math.floor(s / 60); if (m < 60) return m + 'm ago';
+  var h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
 }
 
 loadPlayers();
