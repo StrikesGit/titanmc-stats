@@ -311,28 +311,18 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
             <div class="pickaxe-section">
               <div class="pickaxe-viewer">
-                <img class="pickaxe-img"
+                <img class="pickaxe-img" id="pickaxeImg"
                   src="https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png"
-                  alt="Diamond Pickaxe"
-                  onerror="this.src='https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/1c/Diamond_Pickaxe_JE3_BE3.png'"/>
-                <div class="pickaxe-name-lbl">Titan Pick</div>
+                  alt="Pickaxe"
+                  onerror="this.src='https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png'"/>
+                <div class="pickaxe-name-lbl" id="pickaxeName">N/A</div>
                 <div class="pickaxe-uses-lbl" id="pickaxeUses">N/A uses</div>
               </div>
-              <div class="pickaxe-enchants">
+              <div class="pickaxe-enchants" id="pickaxeEnchants">
                 <div class="ench-group">
-                  <div class="ench-group-label">⚙ Vanilla Enchants</div>
-                  <div class="ench-list">
-                    <span class="ench-tag ench-white">Efficiency V</span>
-                    <span class="ench-tag ench-white">Fortune III</span>
-                    <span class="ench-tag ench-white">Unbreaking III</span>
-                    <span class="ench-tag ench-white">Mending I</span>
-                  </div>
-                </div>
-                <div class="ench-group">
-                  <div class="ench-group-label">✨ Custom Enchants</div>
-                  <div class="ench-list">
-                    <span class="ench-tag ench-gold">Bountiful</span>
-                    <span class="ench-tag ench-pink">Explosive</span>
+                  <div class="ench-group-label">⚙ Enchants</div>
+                  <div class="ench-list" id="enchList">
+                    <span class="ench-tag ench-white">N/A</span>
                   </div>
                 </div>
                 <div class="ench-owner">Owner: <span id="pickaxeOwner">—</span></div>
@@ -521,6 +511,7 @@ function renderPlayer(data) {
   document.getElementById('currMoney').textContent  = moneyVal;
   document.getElementById('currTokens').textContent = tokensVal;
   document.getElementById('pickaxeOwner').textContent = data.name;
+  renderPickaxe(data.currentPickaxe, data.name);
 
   var updated = data.last_updated ? new Date(data.last_updated) : null;
   var statusEl = document.getElementById('pStatus');
@@ -539,6 +530,57 @@ function renderPlayer(data) {
 
   document.getElementById('profileSection').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── PICKAXE ──────────────────────────────────────────────────────────────────
+function renderPickaxe(pick, playerName) {
+  var nameEl   = document.getElementById('pickaxeName');
+  var enchList = document.getElementById('enchList');
+  var imgEl    = document.getElementById('pickaxeImg');
+
+  if (!pick) {
+    nameEl.textContent = 'No pickaxe data yet';
+    enchList.innerHTML = '<span class="ench-tag ench-white">N/A</span>';
+    return;
+  }
+
+  // Display name — strip Minecraft color codes (§X)
+  var displayName = (pick.display_name || pick.material || 'Unknown').replace(/§[0-9a-fk-or]/gi, '');
+  nameEl.textContent = displayName;
+
+  // Pickaxe image based on material
+  var mat = (pick.material || '').toLowerCase();
+  var imgMap = {
+    'diamond_pickaxe':    'https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png',
+    'netherite_pickaxe':  'https://minecraft.wiki/images/Netherite_Pickaxe_JE2_BE2.png',
+    'iron_pickaxe':       'https://minecraft.wiki/images/Iron_Pickaxe_JE3_BE2.png',
+    'gold_pickaxe':       'https://minecraft.wiki/images/Golden_Pickaxe_JE3_BE3.png',
+    'stone_pickaxe':      'https://minecraft.wiki/images/Stone_Pickaxe_JE3_BE2.png',
+    'wooden_pickaxe':     'https://minecraft.wiki/images/Wooden_Pickaxe_JE3_BE2.png',
+  };
+  imgEl.src = imgMap[mat] || imgMap['diamond_pickaxe'];
+
+  // Enchants
+  var enchants = pick.enchants || {};
+  var keys = Object.keys(enchants);
+  if (keys.length === 0) {
+    enchList.innerHTML = '<span class="ench-tag ench-white">None</span>';
+    return;
+  }
+
+  // Vanilla enchants shown in white, custom in gold/pink
+  var vanillaEnchants = ['EFFICIENCY','FORTUNE','UNBREAKING','MENDING','SILK_TOUCH','POWER',
+    'PROTECTION','SHARPNESS','LOOTING','KNOCKBACK','FIRE_ASPECT','SMITE','BANE_OF_ARTHROPODS'];
+
+  enchList.innerHTML = keys.map(function(key) {
+    var level = enchants[key];
+    var label = key.charAt(0) + key.slice(1).toLowerCase().replace(/_/g, ' ');
+    // Convert level number to roman numeral
+    var romans = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
+    var roman  = romans[level] || level;
+    var cls = vanillaEnchants.indexOf(key) !== -1 ? 'ench-white' : 'ench-gold';
+    return '<span class="ench-tag ' + cls + '">' + label + ' ' + roman + '</span>';
+  }).join('');
 }
 
 // ── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
