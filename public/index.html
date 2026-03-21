@@ -263,9 +263,9 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="profile-name" id="pName">—</div>
               <div class="profile-badges">
                 <span class="badge boff" id="pStatus">Offline</span>
-                <span class="badge bblue">Ward: N/A</span>
-                <span class="badge borange">Prestige: N/A</span>
-                <span class="badge bpurple">Rebirth: N/A</span>
+                <span class="badge bblue" id="badgeWard">Ward: N/A</span>
+                <span class="badge borange" id="badgePrestige">Prestige: N/A</span>
+                <span class="badge bpurple" id="badgeRebirth">Rebirth: N/A</span>
               </div>
               <div class="profile-uuid" id="pUUID"></div>
 
@@ -438,9 +438,6 @@ async function loadPlayers() {
 }
 
 function renderPlayerList(players) {
-  document.querySelectorAll('.badge.bblue')[0].textContent   = 'Ward: '     + (data.rank     || 'N/A');
-  document.querySelectorAll('.badge.borange')[0].textContent = 'Prestige: ' + (data.prestige || 'N/A');
-  document.querySelectorAll('.badge.bpurple')[0].textContent = 'Rebirth: '  + (data.rebirth  || 'N/A');
   if (!players.length) {
     document.getElementById('playersList').innerHTML = '<div class="players-empty">No players found.</div>';
     return;
@@ -508,6 +505,9 @@ function renderPlayer(data) {
   document.getElementById('pName').textContent = data.name;
   document.getElementById('pUUID').textContent = 'UUID: ' + data.uuid;
   document.getElementById('iName').textContent = data.name;
+  document.getElementById('badgeWard').textContent     = 'Ward: '     + (data.rank     || 'N/A');
+  document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
+  document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
   document.getElementById('pickaxeOwner').textContent = data.name;
 
   var updated = data.last_updated ? new Date(data.last_updated) : null;
