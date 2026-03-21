@@ -560,27 +560,40 @@ function renderPickaxe(pick, playerName) {
   };
   imgEl.src = imgMap[mat] || imgMap['diamond_pickaxe'];
 
-  // Enchants
-  var enchants = pick.enchants || {};
-  var keys = Object.keys(enchants);
-  if (keys.length === 0) {
-    enchList.innerHTML = '<span class="ench-tag ench-white">None</span>';
-    return;
+  // Build enchant tags
+  var tags = [];
+
+  // Custom ability from custom_type
+  var abilityMap = {
+    'BLOCK':      'Block',
+    'BOUNTIFUL':  'Bountiful',
+    'CURRENCY':   'Currency',
+    'EXPLOSIVE':  'Explosive',
+    'KEYFINDER':  'KeyFinder',
+    'LIGHTNING':  'Lightning',
+    'NITRO':      'Nitro',
+    'SMELTER':    'Smelter',
+  };
+  if (pick.is_custom && pick.custom_type && pick.custom_type !== 'NONE') {
+    var abilityLabel = abilityMap[pick.custom_type] || pick.custom_type;
+    tags.push('<span class="ench-tag ench-pink">' + abilityLabel + '</span>');
   }
 
-  // Vanilla enchants shown in white, custom in gold/pink
+  // Vanilla enchants
+  var enchants = pick.enchants || {};
   var vanillaEnchants = ['EFFICIENCY','FORTUNE','UNBREAKING','MENDING','SILK_TOUCH','POWER',
     'PROTECTION','SHARPNESS','LOOTING','KNOCKBACK','FIRE_ASPECT','SMITE','BANE_OF_ARTHROPODS'];
+  var romans = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
 
-  enchList.innerHTML = keys.map(function(key) {
+  Object.keys(enchants).forEach(function(key) {
     var level = enchants[key];
     var label = key.charAt(0) + key.slice(1).toLowerCase().replace(/_/g, ' ');
-    // Convert level number to roman numeral
-    var romans = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
-    var roman  = romans[level] || level;
+    var roman = romans[level] || level;
     var cls = vanillaEnchants.indexOf(key) !== -1 ? 'ench-white' : 'ench-gold';
-    return '<span class="ench-tag ' + cls + '">' + label + ' ' + roman + '</span>';
-  }).join('');
+    tags.push('<span class="ench-tag ' + cls + '">' + label + ' ' + roman + '</span>');
+  });
+
+  enchList.innerHTML = tags.length > 0 ? tags.join('') : '<span class="ench-tag ench-white">None</span>';
 }
 
 // ── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
