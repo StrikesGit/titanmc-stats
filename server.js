@@ -26,10 +26,10 @@ async function initDB() {
   try {
     pool = mysql.createPool(DB_CONFIG);
     const conn = await pool.getConnection();
-    console.log('Connected to MySQL database!');
+    console.log('✅ Connected to MySQL database!');
     conn.release();
   } catch (err) {
-    console.error('Failed to connect to database:', err.message);
+    console.error('❌ Failed to connect to database:', err.message, err.code, err.errno);
     process.exit(1);
   }
 }
@@ -108,9 +108,15 @@ app.get('/api/player/:name', async (req, res) => {
         [player.uuid]
       );
       if (cellRows.length > 0) {
+
         cellName = cellRows.map(r => r.cell_name).join(', ');
-        const allMembers = cellRows.map(r => r.members).filter(m => m && m.trim() !== '').join(', ');
+
+        const allMembers = cellRows
+          .map(r => r.members)
+          .filter(m => m && m.trim() !== '')
+          .join(', ');
         cellMembers = allMembers || '0';
+
         const oldest = Math.min(...cellRows.map(r => Number(r.owned_since)));
         if (oldest && oldest > 0) {
           const d = new Date(oldest);
@@ -118,6 +124,23 @@ app.get('/api/player/:name', async (req, res) => {
         }
       }
     } catch(e) { console.warn('TitanCellsHook:', e.message); }
+
+    let crateTotal = null, crateVote = null, crateFish = null, crateKoth = null, crateRebirth = null, crateTitan = null;
+    try {
+      const [crateRows] = await pool.execute(
+        'SELECT crateData FROM `excellentcrates_users` WHERE uuid = ? LIMIT 1',
+        [player.uuid]
+      );
+      if (crateRows.length > 0 && crateRows[0].crateData) {
+        const cd = JSON.parse(crateRows[0].crateData);
+        crateVote    = cd.vote    ? (cd.vote.openings    ?? 0) : 0;
+        crateFish    = cd.fish    ? (cd.fish.openings    ?? 0) : 0;
+        crateKoth    = cd.koth    ? (cd.koth.openings    ?? 0) : 0;
+        crateRebirth = cd.rebirth ? (cd.rebirth.openings ?? 0) : 0;
+        crateTitan   = cd.titan   ? (cd.titan.openings   ?? 0) : 0;
+        crateTotal   = (crateVote + crateFish + crateKoth + crateRebirth + crateTitan);
+      }
+    } catch(e) { console.warn('ExcellentCrates:', e.message); }
 
     let totalBlocks = null, rawBlocks = null, fishCaught = null, currentPickaxe = null;
     try {
@@ -134,23 +157,6 @@ app.get('/api/player/:name', async (req, res) => {
         }
       }
     } catch(e) { console.warn('TitanCustomTool:', e.message); }
-
-    let crateTotal = null, crateVote = null, crateFish = null, crateKoth = null, crateRebirth = null, crateTitan = null;
-    try {
-      const [crateRows] = await pool.execute(
-        'SELECT crateData FROM `excellentcrates_users` WHERE uuid = ? LIMIT 1',
-        [player.uuid]
-      );
-      if (crateRows.length > 0 && crateRows[0].crateData) {
-        const cd = JSON.parse(crateRows[0].crateData);
-        crateVote    = cd.vote    ? (cd.vote.openings    ?? 0) : 0;
-        crateFish    = cd.fish    ? (cd.fish.openings    ?? 0) : 0;
-        crateKoth    = cd.koth    ? (cd.koth.openings    ?? 0) : 0;
-        crateRebirth = cd.rebirth ? (cd.rebirth.openings ?? 0) : 0;
-        crateTitan   = cd.titan   ? (cd.titan.openings   ?? 0) : 0;
-        crateTotal   = crateVote + crateFish + crateKoth + crateRebirth + crateTitan;
-      }
-    } catch(e) { console.warn('ExcellentCrates:', e.message); }
 
     res.json({
       uuid: player.uuid,
@@ -220,6 +226,6 @@ app.get('*', (req, res) => {
 
 initDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 TitanMC Stats running at http:
   });
 });
