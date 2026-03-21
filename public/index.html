@@ -337,10 +337,10 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
                 <div class="section-tag">Activity</div>
               </div>
               <div class="srow"><div class="srow-left"><div class="srow-icon">👤</div>Username</div><div class="srow-right" id="iName">—</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">📅</div>First Joined</div><div class="srow-right" id="infoFirstJoin">N/A</div></div>
               <div class="srow"><div class="srow-left"><div class="srow-icon">🕒</div>Last Online</div><div class="srow-right" id="iLastSeen">—</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right na">N/A</div></div>
-              <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right na">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">⏱</div>Play Time</div><div class="srow-right" id="infoPlaytime">N/A</div></div>
+              <div class="srow"><div class="srow-left"><div class="srow-icon">🔗</div>Total Joins</div><div class="srow-right" id="infoTotalJoins">N/A</div></div>
             </div>
             <div class="section">
               <div class="section-head">
@@ -372,7 +372,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right" id="miningBlocks">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right" id="miningRawBlocks">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Caught</div><div class="srow-right" id="miningFish">N/A</div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na" id="miningWard">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right" id="miningWard">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right" id="miningPrestige">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right" id="miningRebirth">N/A</div></div>
           </div>
@@ -522,6 +522,9 @@ function renderPlayer(data) {
     statusEl.className = 'badge boff';
   }
   document.getElementById('iLastSeen').textContent = updated ? updated.toLocaleDateString() : 'Unknown';
+  document.getElementById('infoFirstJoin').textContent  = data.firstJoin   || 'N/A';
+  document.getElementById('infoPlaytime').textContent   = data.playtime    || 'N/A';
+  document.getElementById('infoTotalJoins').textContent = data.totalJoins  || 'N/A';
   animCount(document.getElementById('qTickets'), data.tickets);
   document.getElementById('cTickets').textContent = data.tickets.toLocaleString();
 
