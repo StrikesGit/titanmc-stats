@@ -95,16 +95,19 @@ app.get('/api/player/:name', async (req, res) => {
     }
 
     // TitanCustomTool
-    let totalBlocks = null, rawBlocks = null, fishCaught = null;
+    let totalBlocks = null, rawBlocks = null, fishCaught = null, currentPickaxe = null;
     try {
       const [toolRows] = await pool.execute(
-        'SELECT total_blocks, raw_blocks, fish_caught FROM `titancustomtool_data` WHERE uuid = ? LIMIT 1',
+        'SELECT total_blocks, raw_blocks, fish_caught, current_pickaxe FROM `titancustomtool_data` WHERE uuid = ? LIMIT 1',
         [player.uuid]
       );
       if (toolRows.length > 0) {
         totalBlocks = Math.floor(toolRows[0].total_blocks);
         rawBlocks   = Math.floor(toolRows[0].raw_blocks);
         fishCaught  = Math.floor(toolRows[0].fish_caught);
+        if (toolRows[0].current_pickaxe) {
+          try { currentPickaxe = JSON.parse(toolRows[0].current_pickaxe); } catch(e) {}
+        }
       }
     } catch(e) {
       console.warn('TitanCustomTool query failed:', e.message);
@@ -123,6 +126,7 @@ app.get('/api/player/:name', async (req, res) => {
       totalBlocks,
       rawBlocks,
       fishCaught,
+      currentPickaxe,
     });
   } catch (err) {
     console.error('DB error:', err.message);
