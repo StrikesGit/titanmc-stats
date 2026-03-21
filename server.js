@@ -112,6 +112,57 @@ app.get('/api/player/:name', async (req, res) => {
       console.warn('TitanMoney query failed:', e.message);
     }
 
+    // TitanCellsHook
+    let cellName = null, cellMembers = null, cellOwnedSince = null;
+    try {
+      // cell_name format is Cell_E_40 — derive from rank e.g. E4 -> Cell_E_40
+      // We search for any cell matching the pattern Cell_{ward_letter}_{ward_number}0
+      // Simpler: just search for cell_name starting with Cell_ and rank letters
+      const rankForCell = rank !== 'N/A' ? rank.replace(/(\D+)(\d+)/, 'Cell_$1_$20') : null;
+      if (rankForCell) {
+        const [cellRows] = await pool.execute(
+          'SELECT cell_name, members, owned_since FROM `titancellshook_data` WHERE cell_name = ? LIMIT 1',
+          [rankForCell]
+        );
+        if (cellRows.length > 0) {
+          cellName = cellRows[0].cell_name;
+          cellMembers = cellRows[0].members || '0';
+          if (cellRows[0].owned_since) {
+            const d = new Date(cellRows[0].owned_since);
+            cellOwnedSince = d.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
+          }
+        }
+      }
+    } catch(e) {
+      console.warn('TitanCellsHook query failed:', e.message);
+    }
+
+    // TitanCellsHook
+    let cellName = null, cellMembers = null, cellOwnedSince = null;
+    try {
+      if (rank !== 'N/A') {
+        // rank = "E4" -> cell_name = "Cell_E_40"
+        const match = rank.match(/^([A-Za-z]+)([0-9]+)$/);
+        if (match) {
+          const cellKey = 'Cell_' + match[1] + '_' + match[2] + '0';
+          const [cellRows] = await pool.execute(
+            'SELECT cell_name, members, owned_since FROM `titancellshook_data` WHERE cell_name = ? LIMIT 1',
+            [cellKey]
+          );
+          if (cellRows.length > 0) {
+            cellName = cellRows[0].cell_name;
+            cellMembers = cellRows[0].members || '0';
+            if (cellRows[0].owned_since) {
+              const d = new Date(Number(cellRows[0].owned_since));
+              cellOwnedSince = d.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
+            }
+          }
+        }
+      }
+    } catch(e) {
+      console.warn('TitanCellsHook query failed:', e.message);
+    }
+
     // TitanCustomTool
     let totalBlocks = null, rawBlocks = null, fishCaught = null, currentPickaxe = null;
     try {
@@ -148,6 +199,9 @@ app.get('/api/player/:name', async (req, res) => {
       firstJoin,
       playtime,
       totalJoins,
+      cellName,
+      cellMembers,
+      cellOwnedSince,
     });
   } catch (err) {
     console.error('DB error:', err.message);
