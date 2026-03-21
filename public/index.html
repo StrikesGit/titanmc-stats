@@ -286,10 +286,9 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="qs-value accent" id="qTickets">—</div>
               <div class="qs-sub">Balance</div>
             </div>
-            <div class="qs-card cs">
-              <div class="cs-tag">Coming Soon</div>
+            <div class="qs-card">
               <div class="qs-label">⛏ Blocks Mined</div>
-              <div class="qs-value na">N/A</div>
+              <div class="qs-value accent" id="qsBlocks">N/A</div>
               <div class="qs-sub">All Time</div>
             </div>
             <div class="qs-card">
@@ -380,8 +379,9 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="section-title"><span class="sdl"></span>MINING</div>
               <div class="section-tag">Stats</div>
             </div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right" id="miningBlocks">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right" id="miningRawBlocks">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🐟</div>Fish Caught</div><div class="srow-right" id="miningFish">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na" id="miningWard">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right na">N/A</div></div>
@@ -504,7 +504,14 @@ function renderPlayer(data) {
   document.getElementById('badgeWard').textContent     = 'Ward: '     + (data.rank     || 'N/A');
   document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
   document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
-  document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
+  document.getElementById('miningWard').textContent = data.rank || 'N/A';
+  var blocksVal    = data.totalBlocks != null ? Number(data.totalBlocks).toLocaleString() : 'N/A';
+  var rawBlocksVal = data.rawBlocks   != null ? Number(data.rawBlocks).toLocaleString()   : 'N/A';
+  var fishVal      = data.fishCaught  != null ? Number(data.fishCaught).toLocaleString()  : 'N/A';
+  document.getElementById('qsBlocks').textContent       = blocksVal;
+  document.getElementById('miningBlocks').textContent   = blocksVal;
+  document.getElementById('miningRawBlocks').textContent = rawBlocksVal;
+  document.getElementById('miningFish').textContent     = fishVal;
   var moneyVal  = (data.money  != null && data.money  !== 'N/A') ? Number(data.money).toLocaleString()  : 'N/A';
   var tokensVal = (data.tokens != null && data.tokens !== 'N/A') ? Number(data.tokens).toLocaleString() : 'N/A';
   document.getElementById('qsMoney').textContent   = moneyVal;
