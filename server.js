@@ -65,11 +65,30 @@ app.get('/api/player/:name', async (req, res) => {
 
     const player = rows[0];
 
+    // Get ranks from TitanRanks
+    let rank = 'N/A', prestige = 'N/A', rebirth = 'N/A';
+    try {
+      const [rankRows] = await pool.execute(
+        `SELECT rank, prestige, rebirth FROM \`titanranks_players\` WHERE uuid = ? LIMIT 1`,
+        [player.uuid]
+      );
+      if (rankRows.length > 0) {
+        rank     = rankRows[0].rank     ?? 'N/A';
+        prestige = rankRows[0].prestige ?? 'N/A';
+        rebirth  = rankRows[0].rebirth  ?? 'N/A';
+      }
+    } catch(e) {
+      console.warn('TitanRanks query failed:', e.message);
+    }
+
     res.json({
       uuid: player.uuid,
       name: player.name,
       tickets: Math.floor(player.balance),
       last_updated: player.last_updated,
+      rank,
+      prestige,
+      rebirth,
     });
   } catch (err) {
     console.error('DB error:', err.message);
