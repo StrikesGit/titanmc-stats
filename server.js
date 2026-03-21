@@ -105,25 +105,27 @@ app.get('/api/player/:name', async (req, res) => {
       }
     } catch(e) { console.warn('TitanMoney:', e.message); }
 
-    // TitanCellsHook — rank "E3" -> "Cell_E_30"
+    // TitanCellsHook — query by owner_uuid
     let cellName = null, cellMembers = null, cellOwnedSince = null;
     try {
-      if (rank !== 'N/A') {
-        const match = rank.match(/^([A-Za-z]+)([0-9]+)$/);
-        if (match) {
-          const cellKey = 'Cell_' + match[1] + '_' + match[2] + '0';
-          const [r] = await pool.execute(
-            'SELECT cell_name, members, owned_since FROM `titancellshook_data` WHERE cell_name = ? LIMIT 1',
-            [cellKey]
-          );
-          if (r.length > 0) {
-            cellName = r[0].cell_name;
-            cellMembers = r[0].members || '0';
-            if (r[0].owned_since) {
-              const d = new Date(Number(r[0].owned_since));
-              cellOwnedSince = d.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
-            }
-          }
+      const [cellRows] = await pool.execute(
+        'SELECT cell_name, members, owned_since FROM `titancellshook_data` WHERE owner_uuid = ?',
+        [player.uuid]
+      );
+      if (cellRows.length > 0) {
+        // Player can own multiple cells — join all cell names
+        cellName = cellRows.map(r => r.cell_name).join(', ');
+        // Members from first cell (or combine all)
+        const allMembers = cellRows
+          .map(r => r.members)
+          .filter(m => m && m.trim() !== '')
+          .join(', ');
+        cellMembers = allMembers || '0';
+        // Oldest owned_since
+        const oldest = Math.min(...cellRows.map(r => Number(r.owned_since)));
+        if (oldest && oldest > 0) {
+          const d = new Date(oldest);
+          cellOwnedSince = d.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
         }
       }
     } catch(e) { console.warn('TitanCellsHook:', e.message); }
