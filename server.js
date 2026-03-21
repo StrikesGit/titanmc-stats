@@ -58,7 +58,7 @@ app.get('/api/player/:name', async (req, res) => {
     let rank = 'N/A', prestige = 'N/A', rebirth = 'N/A';
     try {
       const [rankRows] = await pool.execute(
-        `SELECT rank, prestige, rebirth FROM \`titanranks_players\` WHERE uuid = ? LIMIT 1`,
+        `SELECT \`rank\`, prestige, rebirth FROM \`titanranks_players\` WHERE uuid = ? LIMIT 1`,
         [player.uuid]
       );
       if (rankRows.length > 0) {
