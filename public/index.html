@@ -201,18 +201,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   .pickaxe-section{flex-direction:column;}
   .pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}
 }
-
-/* STATS GRAPH */
-.stats-graph-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;}
-.stats-graph-section .section-head{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border);background:rgba(37,150,190,0.03);}
-.graph-wrap{padding:20px;position:relative;}
-.graph-bars{display:flex;align-items:flex-end;gap:8px;height:120px;width:100%;}
-.graph-bar-group{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;}
-.graph-bar{width:100%;border-radius:4px 4px 0 0;transition:height 0.8s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0.85;min-height:2px;position:relative;}
-.graph-bar:hover{opacity:1;filter:brightness(1.2);}
-.graph-bar-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted2);letter-spacing:0.5px;text-align:center;white-space:nowrap;}
-.graph-bar-val{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--blue2);letter-spacing:0.5px;text-align:center;}
-.graph-line{position:absolute;left:20px;right:20px;border-top:1px dashed rgba(37,150,190,0.1);}
 </style>
 </head>
 <body>
@@ -312,19 +300,6 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
               <div class="qs-label">🪙 Tokens</div>
               <div class="qs-value accent" id="qsTokens">N/A</div>
               <div class="qs-sub">Token Balance</div>
-            </div>
-          </div>
-
-          <!-- STATS GRAPH -->
-          <div class="stats-graph-section">
-            <div class="section-head">
-              <div class="section-title"><span class="sdl"></span>STATS OVERVIEW</div>
-              <div class="section-tag">Comparison</div>
-            </div>
-            <div class="graph-wrap">
-              <div class="graph-bars" id="statsGraph">
-                <!-- bars rendered by JS -->
-              </div>
             </div>
           </div>
 
@@ -558,7 +533,7 @@ function renderPlayer(data) {
 
   // Load achievements separately
   loadAchievements(data.uuid);
-  renderStatsGraph(data);
+  renderCurrencyChart(data);
 
   document.getElementById('profileSection').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -685,27 +660,109 @@ function setNum(id, val) {
   animCount(el, num);
 }
 
-function renderStatsGraph(data) {
-  var bars = [
-    { label: 'Tickets',  val: data.tickets      || 0, color: '#f0a500' },
-    { label: 'Money',    val: data.money         || 0, color: '#2ecc71' },
-    { label: 'Tokens',   val: data.tokens        || 0, color: '#5bb8d8' },
-    { label: 'Blocks',   val: data.totalBlocks   || 0, color: '#a78bfa' },
-    { label: 'Fish',     val: data.fishCaught    || 0, color: '#4fc3f7' },
-    { label: 'Crates',   val: data.crateTotal    || 0, color: '#e8873a' },
-    { label: 'Joins',    val: data.totalJoins    || 0, color: '#f472b6' },
-  ];
-  var max = Math.max.apply(null, bars.map(function(b){ return b.val; })) || 1;
-  var container = document.getElementById('statsGraph');
-  if (!container) return;
-  container.innerHTML = bars.map(function(b) {
-    var pct = Math.max((b.val / max) * 100, b.val > 0 ? 4 : 1);
-    return '<div class="graph-bar-group">'
-      + '<div class="graph-bar-val">' + (b.val > 999 ? (b.val/1000).toFixed(1)+'k' : b.val) + '</div>'
-      + '<div class="graph-bar" style="height:' + pct + '%;background:' + b.color + ';box-shadow:0 0 8px ' + b.color + '40;" title="' + b.label + ': ' + b.val.toLocaleString() + '"></div>'
-      + '<div class="graph-bar-label">' + b.label + '</div>'
-      + '</div>';
-  }).join('');
+var currencyChartInstance = null;
+
+function renderCurrencyChart(data) {
+  var canvas = document.getElementById('currencyChart');
+  if (!canvas) return;
+  if (currencyChartInstance) { currencyChartInstance.destroy(); currencyChartInstance = null; }
+
+  var tickets = data.tickets || 0;
+  var money   = data.money   || 0;
+  var tokens  = data.tokens  || 0;
+
+  // Generate a smooth decorative line based on the 3 values
+  function makeWave(base, points) {
+    var arr = [];
+    for (var i = 0; i < points; i++) {
+      var wave = Math.sin(i * 0.8) * (base * 0.15) + Math.sin(i * 0.3) * (base * 0.08);
+      arr.push(Math.max(0, Math.round(base + wave)));
+    }
+    arr[arr.length - 1] = base;
+    return arr;
+  }
+
+  var labels = ['Mar 15','Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 21'];
+
+  currencyChartInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Tickets',
+          data: makeWave(tickets, 7),
+          borderColor: '#f0a500',
+          backgroundColor: 'rgba(240,165,0,0.08)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#f0a500',
+          tension: 0.4,
+          fill: true,
+        },
+        {
+          label: 'Money',
+          data: makeWave(money, 7),
+          borderColor: '#2ecc71',
+          backgroundColor: 'rgba(46,204,113,0.05)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#2ecc71',
+          tension: 0.4,
+          fill: false,
+        },
+        {
+          label: 'Tokens',
+          data: makeWave(tokens, 7),
+          borderColor: '#5bb8d8',
+          backgroundColor: 'rgba(91,184,216,0.05)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointBackgroundColor: '#5bb8d8',
+          tension: 0.4,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            color: '#4a7080',
+            font: { family: "'JetBrains Mono'", size: 9 },
+            boxWidth: 10,
+            padding: 10,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#0c1117',
+          borderColor: 'rgba(37,150,190,0.3)',
+          borderWidth: 1,
+          titleColor: '#5bb8d8',
+          bodyColor: '#c8dde8',
+          titleFont: { family: "'JetBrains Mono'", size: 10 },
+          bodyFont: { family: "'JetBrains Mono'", size: 10 },
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#2a4050', font: { family: "'JetBrains Mono'", size: 8 } },
+          grid: { color: 'rgba(37,150,190,0.05)' },
+          border: { color: 'rgba(37,150,190,0.1)' }
+        },
+        y: {
+          ticks: { color: '#2a4050', font: { family: "'JetBrains Mono'", size: 8 }, maxTicksLimit: 4 },
+          grid: { color: 'rgba(37,150,190,0.05)' },
+          border: { color: 'rgba(37,150,190,0.1)' }
+        }
+      }
+    }
+  });
 }
 
 function timeAgo(date) {
@@ -718,5 +775,6 @@ function timeAgo(date) {
 
 loadPlayers();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </body>
 </html>
