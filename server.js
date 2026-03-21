@@ -54,11 +54,11 @@ app.get('/api/player/:name', async (req, res) => {
     }
     const player = rows[0];
 
-    // Get rank data from TitanRanks
+    // TitanRanks
     let rank = 'N/A', prestige = 'N/A', rebirth = 'N/A';
     try {
       const [rankRows] = await pool.execute(
-        `SELECT \`rank\`, prestige, rebirth FROM \`titanranks_players\` WHERE uuid = ? LIMIT 1`,
+        'SELECT `rank`, prestige, rebirth FROM `titanranks_players` WHERE uuid = ? LIMIT 1',
         [player.uuid]
       );
       if (rankRows.length > 0) {
@@ -70,6 +70,30 @@ app.get('/api/player/:name', async (req, res) => {
       console.warn('TitanRanks query failed:', e.message);
     }
 
+    // TitanTokens
+    let tokens = 'N/A';
+    try {
+      const [tokenRows] = await pool.execute(
+        'SELECT balance FROM `titantokens_data` WHERE uuid = ? LIMIT 1',
+        [player.uuid]
+      );
+      if (tokenRows.length > 0) tokens = Math.floor(tokenRows[0].balance);
+    } catch(e) {
+      console.warn('TitanTokens query failed:', e.message);
+    }
+
+    // TitanMoney (Vault bridge)
+    let money = 'N/A';
+    try {
+      const [moneyRows] = await pool.execute(
+        'SELECT balance FROM `titanmoney_data` WHERE uuid = ? LIMIT 1',
+        [player.uuid]
+      );
+      if (moneyRows.length > 0) money = Math.floor(moneyRows[0].balance);
+    } catch(e) {
+      console.warn('TitanMoney query failed:', e.message);
+    }
+
     res.json({
       uuid: player.uuid,
       name: player.name,
@@ -78,6 +102,8 @@ app.get('/api/player/:name', async (req, res) => {
       rank,
       prestige,
       rebirth,
+      tokens,
+      money,
     });
   } catch (err) {
     console.error('DB error:', err.message);
@@ -103,7 +129,7 @@ app.get('/api/achievements/:uuid', async (req, res) => {
   const uuid = req.params.uuid;
   try {
     const [rows] = await pool.execute(
-      `SELECT achievement_id, obtained_at FROM \`titanachievements_data\` WHERE uuid = ? ORDER BY obtained_at ASC`,
+      'SELECT achievement_id, obtained_at FROM `titanachievements_data` WHERE uuid = ? ORDER BY obtained_at ASC',
       [uuid]
     );
     res.json(rows.map(r => ({ id: r.achievement_id, obtained_at: r.obtained_at })));
