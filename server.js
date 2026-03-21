@@ -71,7 +71,7 @@ app.get('/api/player/:name', async (req, res) => {
     }
 
     // TitanTokens
-    let tokens = 'N/A';
+    let tokens = null;
     try {
       const [tokenRows] = await pool.execute(
         'SELECT balance FROM `titantokens_data` WHERE uuid = ? LIMIT 1',
@@ -83,7 +83,7 @@ app.get('/api/player/:name', async (req, res) => {
     }
 
     // TitanMoney (Vault bridge)
-    let money = 'N/A';
+    let money = null;
     try {
       const [moneyRows] = await pool.execute(
         'SELECT balance FROM `titanmoney_data` WHERE uuid = ? LIMIT 1',
