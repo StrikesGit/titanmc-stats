@@ -386,7 +386,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
             </div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">⛏</div>Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">💣</div>Raw Blocks Mined</div><div class="srow-right na">N/A <span class="rank-tag">Coming Soon</span></div></div>
-            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na">N/A</div></div>
+            <div class="srow"><div class="srow-left"><div class="srow-icon">🏆</div>Ward</div><div class="srow-right na" id="miningWard">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">✨</div>Prestige</div><div class="srow-right na">N/A</div></div>
             <div class="srow"><div class="srow-left"><div class="srow-icon">🔄</div>Rebirth</div><div class="srow-right na">N/A</div></div>
           </div>
@@ -508,6 +508,7 @@ function renderPlayer(data) {
   document.getElementById('badgeWard').textContent     = 'Ward: '     + (data.rank     || 'N/A');
   document.getElementById('badgePrestige').textContent = 'Prestige: ' + (data.prestige || 'N/A');
   document.getElementById('badgeRebirth').textContent  = 'Rebirth: '  + (data.rebirth  || 'N/A');
+  document.getElementById('miningWard').textContent     = data.rank     || 'N/A';
   document.getElementById('pickaxeOwner').textContent = data.name;
 
   var updated = data.last_updated ? new Date(data.last_updated) : null;
