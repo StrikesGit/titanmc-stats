@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/player/:name', async (req, res) => {
   const name = req.params.name.trim();
-  if (!name || name.length > 16 || !/^[a-zA-Z0-9_]+$/.test(name)) {
+  if (!name || name.length > 16 || !/^[a-zA-Z0-9_.]+$/.test(name))
     return res.status(400).json({ error: 'Invalid player name.' });
   }
 
