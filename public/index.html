@@ -47,6 +47,8 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid var(--border);background:rgba(8,12,16,0.92);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
 .topbar-title{font-family:'Oxanium',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;}
 .topbar-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--blue2);background:rgba(37,150,190,0.1);border:1px solid rgba(37,150,190,0.25);padding:4px 10px;border-radius:4px;}
+.mobile-search{display:none;flex:1;max-width:260px;margin:0 12px;}
+.mobile-search .filter-wrap{background:rgba(37,150,190,0.07);}
 .content-wrap{flex:1;display:flex;justify-content:center;padding:28px 32px 60px;}
 .content{width:100%;max-width:860px;}
 .empty-state{text-align:center;padding:100px 20px;}
@@ -133,7 +135,20 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading-box p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
-@media(max-width:900px){.sidebar{display:none;}.quick-stats{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.content-wrap{padding:16px;}.curr-grid{grid-template-columns:1fr 1fr;}.profile-header{flex-direction:column;}.skin-panel{width:100%;border-right:none;border-bottom:1px solid var(--border);}.pickaxe-section{flex-direction:column;}.pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}}
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .mobile-search{display:flex;}
+  .topbar{padding:12px 16px;}
+  .topbar-title{display:none;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .content-wrap{padding:16px;}
+  .curr-grid{grid-template-columns:1fr 1fr;}
+  .profile-header{flex-direction:column;}
+  .skin-panel{width:100%;border-right:none;border-bottom:1px solid var(--border);}
+  .pickaxe-section{flex-direction:column;}
+  .pickaxe-viewer{width:100%;border-right:none;border-bottom:1px solid var(--border);}
+}
 </style>
 </head>
 <body>
@@ -161,6 +176,12 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   <main class="main">
     <div class="topbar">
       <div class="topbar-title">TitanMC — Player Statistics</div>
+      <div class="mobile-search">
+        <div class="filter-wrap">
+          <div class="filter-icon">🔍</div>
+          <input type="text" id="filterInputMobile" placeholder="Find player..." autocomplete="off" spellcheck="false" oninput="filterPlayers(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();pickFirst();}"/>
+        </div>
+      </div>
       <div class="topbar-badge">CLASSIC PRISON</div>
     </div>
     <div class="content-wrap">
